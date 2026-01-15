@@ -34,6 +34,8 @@ export default function ProjectsPage() {
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [selectedTemplates, setSelectedTemplates] = useState<ProjectTemplate[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [selectedTemplateDetail, setSelectedTemplateDetail] = useState<ProjectTemplate | null>(null);
+  const [templateMilestonesProgress, setTemplateMilestonesProgress] = useState<Record<string, string[]>>({});
 
   const [userXP, setUserXP] = useState(0);
   const [dailyXP, setDailyXP] = useState(1250);
@@ -72,6 +74,23 @@ export default function ProjectsPage() {
       localStorage.setItem('projects', JSON.stringify(projects));
     }
   }, [projects, isLoaded]);
+
+  useEffect(() => {
+    const savedTemplateProgress = localStorage.getItem('templateMilestonesProgress');
+    if (savedTemplateProgress) {
+      try {
+        setTemplateMilestonesProgress(JSON.parse(savedTemplateProgress));
+      } catch {
+        setTemplateMilestonesProgress({});
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('templateMilestonesProgress', JSON.stringify(templateMilestonesProgress));
+    }
+  }, [templateMilestonesProgress, isLoaded]);
 
   useEffect(() => {
     const newLevel = calculateLevel(userXP + dailyXP);
@@ -114,6 +133,33 @@ export default function ProjectsPage() {
     } else {
       setSelectedTemplates([...PROJECT_TEMPLATES]);
     }
+  };
+
+  const handleTemplateDetail = (template: ProjectTemplate) => {
+    setSelectedTemplateDetail(template);
+  };
+
+  const handleCloseTemplateDetail = () => {
+    setSelectedTemplateDetail(null);
+  };
+
+  const handleToggleTemplateMilestone = (templateId: string, milestoneTitle: string) => {
+    setTemplateMilestonesProgress(prev => {
+      const completed = prev[templateId] || [];
+      const isCompleted = completed.includes(milestoneTitle);
+      let newCompleted: string[];
+      
+      if (isCompleted) {
+        newCompleted = completed.filter(m => m !== milestoneTitle);
+      } else {
+        newCompleted = [...completed, milestoneTitle];
+      }
+      
+      return {
+        ...prev,
+        [templateId]: newCompleted
+      };
+    });
   };
 
   const handleCreateProject = () => {
@@ -811,6 +857,9 @@ export default function ProjectsPage() {
               <Row>
                 {PROJECT_TEMPLATES.map((template) => {
                   const isSelected = selectedTemplates.some(t => t.id === template.id);
+                  const completedMilestones = templateMilestonesProgress[template.id]?.length || 0;
+                  const totalMilestones = template.suggestedMilestones.length;
+                  
                   return (
                     <Col md={6} key={template.id} className="mb-3">
                       <Card 
@@ -826,6 +875,7 @@ export default function ProjectsPage() {
                         }}
                         className="hover-card"
                         onClick={() => handleSelectTemplate(template)}
+                        onDoubleClick={() => handleTemplateDetail(template)}
                       >
                         <Card.Body>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
@@ -853,8 +903,31 @@ export default function ProjectsPage() {
                           <Card.Text style={{ color: '#8892b0', fontSize: '0.85rem' }}>
                             {template.description}
                           </Card.Text>
-                          <div style={{ color: '#FFD700' }}>
-                            +{template.xpReward} XP
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div style={{ color: '#FFD700' }}>
+                              +{template.xpReward} XP
+                            </div>
+                            <Badge bg={completedMilestones === totalMilestones ? 'success' : 'secondary'}>
+                              {completedMilestones}/{totalMilestones} ✅
+                            </Badge>
+                          </div>
+                          {completedMilestones > 0 && completedMilestones < totalMilestones && (
+                            <ProgressBar 
+                              now={(completedMilestones / totalMilestones) * 100} 
+                              variant="success" 
+                              style={{ height: '4px', marginTop: '8px' }}
+                            />
+                          )}
+                          <div className="d-flex gap-1 mt-2 flex-wrap">
+                            {template.suggestedMilestones.slice(0, 2).map((m, idx) => (
+                              <Badge 
+                                key={idx} 
+                                bg={templateMilestonesProgress[template.id]?.includes(m) ? 'success' : 'secondary'}
+                                style={{ fontSize: '0.65rem' }}
+                              >
+                                {templateMilestonesProgress[template.id]?.includes(m) ? '✅' : '⭕'} {m.substring(0, 12)}...
+                              </Badge>
+                            ))}
                           </div>
                           {isSelected && (
                             <div className="text-center mt-2">
@@ -889,6 +962,138 @@ export default function ProjectsPage() {
               : '🚀 Vytvořit Projekt'}
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* Template Detail Modal */}
+      <Modal show={!!selectedTemplateDetail} onHide={handleCloseTemplateDetail} size="lg" centered>
+        {selectedTemplateDetail && (
+          <>
+            <Modal.Header 
+              closeButton
+              style={{ 
+                background: `linear-gradient(90deg, ${selectedTemplateDetail.color}, ${selectedTemplateDetail.color}80)`,
+                color: '#fff'
+              }}
+            >
+              <Modal.Title>
+                {selectedTemplateDetail.icon} {selectedTemplateDetail.title}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ background: '#1a1a2e' }}>
+              <p style={{ color: '#8892b0', marginBottom: '20px' }}>
+                {selectedTemplateDetail.description}
+              </p>
+              
+              <div className="d-flex gap-3 mb-4 flex-wrap">
+                <Badge bg="info">⏱️ {selectedTemplateDetail.estimatedHours}h</Badge>
+                <Badge bg="warning" style={{ color: '#000' }}>⭐ +{selectedTemplateDetail.xpReward} XP</Badge>
+                <Badge bg="secondary">{selectedTemplateDetail.skills.length} dovedností</Badge>
+              </div>
+
+              <h5 style={{ color: '#fff', marginBottom: '15px' }}>📋 Checklist Úkolů</h5>
+              
+              <div className="mb-4">
+                <div className="d-flex justify-content-between mb-2">
+                  <small style={{ color: '#8892b0' }}>Pokrok</small>
+                  <small style={{ color: '#fff' }}>
+                    {templateMilestonesProgress[selectedTemplateDetail.id]?.length || 0}/{selectedTemplateDetail.suggestedMilestones.length}
+                  </small>
+                </div>
+                <ProgressBar 
+                  now={((templateMilestonesProgress[selectedTemplateDetail.id]?.length || 0) / selectedTemplateDetail.suggestedMilestones.length) * 100}
+                  variant="success"
+                  style={{ height: '10px' }}
+                  animated
+                />
+              </div>
+
+              <ListGroup>
+                {selectedTemplateDetail.suggestedMilestones.map((milestone, idx) => {
+                  const isCompleted = templateMilestonesProgress[selectedTemplateDetail.id]?.includes(milestone);
+                  return (
+                    <ListGroup.Item 
+                      key={idx}
+                      style={{ 
+                        background: isCompleted ? 'rgba(76,175,80,0.2)' : 'rgba(255,255,255,0.05)',
+                        border: 'none',
+                        cursor: 'pointer',
+                        marginBottom: '8px',
+                        borderRadius: '10px'
+                      }}
+                      onClick={() => handleToggleTemplateMilestone(selectedTemplateDetail.id, milestone)}
+                    >
+                      <div className="d-flex align-items-center gap-3">
+                        <div 
+                          style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '50%',
+                            background: isCompleted ? '#4CAF50' : 'transparent',
+                            border: `2px solid ${isCompleted ? '#4CAF50' : '#667eea'}`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: 'all 0.3s ease'
+                          }}
+                        >
+                          {isCompleted && '✓'}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <span style={{ 
+                            color: '#fff',
+                            textDecoration: isCompleted ? 'line-through' : 'none',
+                            opacity: isCompleted ? 0.6 : 1
+                          }}>
+                            {milestone}
+                          </span>
+                        </div>
+                        <Badge bg="success" style={{ opacity: isCompleted ? 1 : 0 }}>
+                          +100 XP
+                        </Badge>
+                      </div>
+                    </ListGroup.Item>
+                  );
+                })}
+              </ListGroup>
+
+              <h6 style={{ color: '#fff', marginTop: '20px', marginBottom: '10px' }}>🎯 Cíle</h6>
+              <ul style={{ color: '#8892b0' }}>
+                {selectedTemplateDetail.defaultGoals.map((goal, idx) => (
+                  <li key={idx}>{goal}</li>
+                ))}
+              </ul>
+
+              <h6 style={{ color: '#fff', marginTop: '15px', marginBottom: '10px' }}>💡 Dovednosti k rozvoji</h6>
+              <div className="d-flex gap-2 flex-wrap">
+                {selectedTemplateDetail.skills.map((skill, idx) => (
+                  <Badge key={idx} bg="primary">{skill}</Badge>
+                ))}
+              </div>
+            </Modal.Body>
+            <Modal.Footer style={{ background: '#1a1a2e' }}>
+              <Button variant="secondary" onClick={handleCloseTemplateDetail}>
+                Zavřít
+              </Button>
+              {selectedTemplates.some(t => t.id === selectedTemplateDetail.id) ? (
+                <Button variant="warning" onClick={() => {
+                  handleSelectTemplate(selectedTemplateDetail);
+                }}>
+                  ❌ Odznačit šablonu
+                </Button>
+              ) : (
+                <Button 
+                  variant="success"
+                  onClick={() => {
+                    handleSelectTemplate(selectedTemplateDetail);
+                  }}
+                >
+                  ✅ Vybrat šablonu
+                </Button>
+              )}
+            </Modal.Footer>
+          </>
+        )}
       </Modal>
 
       <style jsx global>{`
