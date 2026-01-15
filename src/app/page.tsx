@@ -590,6 +590,7 @@ export default function Home() {
   const [goalProgress, setGoalProgress] = useState<number>(0);
   const [showProgressModal, setShowProgressModal] = useState(false);
   const [lifeGoals, setLifeGoals] = useState<LifeGoal[]>(DEFAULT_GOALS);
+  const [isProjectsExpanded, setIsProjectsExpanded] = useState(true);
   const [isLifeOSExpanded, setIsLifeOSExpanded] = useState(false);
   const [showGoalsManager, setShowGoalsManager] = useState(false);
 
@@ -908,8 +909,100 @@ export default function Home() {
            </Container>
         </nav>
 
-         <Container fluid className="px-4">
-            {/* LIFE OS 2026 - Collapsible Dashboard */}
+          <Container fluid className="px-4">
+            {/* 🚀 PROJEKTY - Collapsible Dashboard */}
+            <Row className="mb-4">
+              <Col>
+                <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%)' }}>
+                  <Card.Header 
+                    className="bg-transparent border-bottom border-secondary text-dark py-3"
+                    onClick={() => setIsProjectsExpanded(!isProjectsExpanded)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex align-items-center gap-3">
+                        <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
+                          <span style={{ transition: 'transform 0.3s ease', transform: isProjectsExpanded ? 'rotate(90deg)' : 'rotate(0deg)', display: 'inline-block' }}>
+                            ▶
+                          </span>
+                          🚀 Projekty
+                        </h4>
+                        <Badge bg="info" className="fs-6">
+                          2 Aktivní
+                        </Badge>
+                      </div>
+                      <div className="d-flex align-items-center gap-3">
+                        <div className="text-end">
+                          <div className="fw-bold text-info">🔐</div>
+                          <small className="text-white-50">Logování algoritmů</small>
+                        </div>
+                        <Link href="/projects">
+                          <Button variant="info" size="sm">
+                            📊 Přejít na Projekty
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </Card.Header>
+                  <Collapse in={isProjectsExpanded}>
+                    <Card.Body className="p-3">
+                      <Row xs={1} md={2} lg={3} className="g-3">
+                        <Col>
+                          <Card style={{ background: 'rgba(33,150,243,0.15)', border: '1px solid rgba(33,150,243,0.3)' }}>
+                            <Card.Body>
+                              <div className="d-flex justify-content-between align-items-start mb-2">
+                                <span style={{ fontSize: '1.8rem' }}>🚀</span>
+                                <Badge bg="primary">Vývoj</Badge>
+                              </div>
+                              <h6 style={{ color: '#fff' }}>Learning Platform Vývoj</h6>
+                              <small style={{ color: '#aaa' }}>Hlavní vývojový projekt</small>
+                              <ProgressBar now={35} variant="primary" className="mt-2" />
+                              <div className="d-flex justify-content-between mt-2">
+                                <small style={{ color: '#888' }}>35% pokrok</small>
+                                <small style={{ color: '#FFD700' }}>+3,548 XP</small>
+                              </div>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                        <Col>
+                          <Card style={{ background: 'rgba(96,125,139,0.15)', border: '1px solid rgba(96,125,139,0.3)' }}>
+                            <Card.Body>
+                              <div className="d-flex justify-content-between align-items-start mb-2">
+                                <span style={{ fontSize: '1.8rem' }}>⚙️</span>
+                                <Badge bg="secondary">Učení</Badge>
+                              </div>
+                              <h6 style={{ color: '#fff' }}>CNC Dovednosti Mastery</h6>
+                              <small style={{ color: '#aaa' }}>CNC programování</small>
+                              <ProgressBar now={25} variant="secondary" className="mt-2" />
+                              <div className="d-flex justify-content-between mt-2">
+                                <small style={{ color: '#888' }}>25% pokrok</small>
+                                <small style={{ color: '#FFD700' }}>+1,235 XP</small>
+                              </div>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                        <Col>
+                          <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
+                            <Card.Body className="text-center">
+                              <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>➕</div>
+                              <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
+                              <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
+                              <Link href="/projects">
+                                <Button variant="outline-light" size="sm" className="mt-2 w-100">
+                                  Vytvořit Projekt
+                                </Button>
+                              </Link>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Collapse>
+                </Card>
+              </Col>
+            </Row>
+
+            {/* 🎯 CÍLE - Collapsible Dashboard */}
             <Row className="mb-4">
               <Col>
                 <Card className="glass-effect border-0">
@@ -924,7 +1017,7 @@ export default function Home() {
                           <span style={{ transition: 'transform 0.3s ease', transform: isLifeOSExpanded ? 'rotate(90deg)' : 'rotate(0deg)', display: 'inline-block' }}>
                             ▶
                           </span>
-                          🎯 LIFE OS 2026
+                          🎯 Cíle
                         </h4>
                         <Badge bg="success" className="fs-6">
                           {getCompletedCount()}/{lifeGoals.length} Cílů
@@ -1050,7 +1143,7 @@ export default function Home() {
         {/* --- GOALS MANAGER MODAL --- */}
         <Modal show={showGoalsManager} onHide={() => setShowGoalsManager(false)} size="xl" centered contentClassName="glass-modal">
           <Modal.Header closeButton className="bg-dark text-white border-secondary">
-            <Modal.Title className="fw-bold">🎯 Správce Cílů - LIFE OS 2026</Modal.Title>
+            <Modal.Title className="fw-bold">🎯 Správce Cílů</Modal.Title>
           </Modal.Header>
           <Modal.Body className="bg-dark text-white p-0" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
             <Row className="g-0">
