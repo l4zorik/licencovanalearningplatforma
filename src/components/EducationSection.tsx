@@ -194,6 +194,8 @@ const CNCSkillsWithFacts = ({
       {renderSkillRow(cncSkills.slice(15, 20))}
       <div className="my-3">{renderFact(CNC_FACTS[3])}</div>
       {renderSkillRow(cncSkills.slice(20, 25))}
+      <div className="my-3">{renderFact(CNC_FACTS[4])}</div>
+      {renderSkillRow(cncSkills.slice(25, 30))}
       <div className="text-center mt-3">
         <small className="text-muted">⚙️ CNC & Engineering: {cncSkills.length} skills</small>
       </div>

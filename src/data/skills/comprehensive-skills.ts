@@ -212,6 +212,11 @@ export const COMPREHENSIVE_SKILL_DATA: EnhancedSkillData[] = [
   createSkill('cnc-workholding', 'Upínání obrobků', 'CNC & Engineering', 'Upínání obrobků na stroje', '🗜️', '#8D6E63', ['cnc', 'workholding', 'fixtures', 'jigs'], { junior: 32000, mid: 55000, senior: 90000, lead: 130000 }, 80, 3, ['Vices', 'Fixtures', 'Chucks']),
   createSkill('cnc-cad', 'CAD pro výrobu', 'CNC & Engineering', 'Tvorba 3D modelů pro výrobu', '📐', '#2196F3', ['cnc', 'cad', '3d modeling', 'design'], { junior: 35000, mid: 65000, senior: 110000, lead: 170000 }, 85, 3, ['SolidWorks', 'Fusion 360', 'Inventor']),
   createSkill('cnc-cam', 'CAM pro CNC', 'CNC & Engineering', 'Tvorba drah nástrojů v CAM', '💻', '#009688', ['cnc', 'cam', 'toolpath', 'postprocessing'], { junior: 38000, mid: 70000, senior: 115000, lead: 180000 }, 88, 4, ['Mastercam', 'PowerMILL', 'HyperMILL']),
+  createSkill('cnc-documentation', 'Technická dokumentace', 'CNC & Engineering', 'Tvorba technické dokumentace pro CNC výrobu', '📄', '#6C757D', ['cnc', 'documentation', 'technical', ' manuals'], { junior: 30000, mid: 50000, senior: 85000, lead: 130000 }, 75, 2, ['Technical Writing', 'Drawings', 'Standards']),
+  createSkill('cnc-drawings', 'Výkresová dokumentace', 'CNC & Engineering', 'Čtení a tvorba technických výkresů', '📜', '#495057', ['cnc', 'drawings', 'technical', ' blueprints'], { junior: 32000, mid: 55000, senior: 90000, lead: 140000 }, 82, 3, ['GD&T', 'Blueprint Reading', 'CAD']),
+  createSkill('nc-program-docs', 'NC Program dokumentace', 'CNC & Engineering', 'Dokumentace a archivace NC programů', '💾', '#343a40', ['cnc', 'nc', 'documentation', 'archive'], { junior: 28000, mid: 48000, senior: 80000, lead: 120000 }, 68, 2, ['Version Control', 'Program Management', 'Data Organization']),
+  createSkill('cnc-iso-norms', 'ISO Normy pro CNC', 'CNC & Engineering', 'Znalost a aplikace ISO norem ve výrobě', '📋', '#20C997', ['cnc', 'iso', 'standards', 'quality'], { junior: 35000, mid: 60000, senior: 100000, lead: 150000 }, 72, 3, ['ISO 9001', 'ISO 2768', 'ASME Y14.5']),
+  createSkill('cnc-work-instructions', 'Pracovní postupy', 'CNC & Engineering', 'Tvorba pracovních instrukcí a návodek', '📝', '#0DCAF0', ['cnc', 'work instructions', 'procedures', 'safety'], { junior: 30000, mid: 50000, senior: 85000, lead: 130000 }, 70, 2, ['Process Documentation', 'Safety Regulations', 'Training']),
 ];
 
 export const getSkillById = (id: string): EnhancedSkillData | undefined => {
@@ -257,5 +262,10 @@ export const CNC_FACTS = [
     id: 'cnc-fact-4',
     text: '💡 Věděli jste? Průměrný CNC program pro složitý díl obsahuje 5000-10000 řádků kódu. Jeden překlep může zničit nástroj za 5000 Kč!',
     position: 20
+  },
+  {
+    id: 'cnc-fact-5',
+    text: '💡 Věděli jste? Moderní CNC stroje dokáží obrábět 5 os současně. Nejdražší nástroje stojí i 50 000 Kč a vydrží jen pár hodin!',
+    position: 25
   }
 ];
