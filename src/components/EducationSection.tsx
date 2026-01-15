@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback, useMemo } from 'react';
-import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer } from 'react-bootstrap';
+import React, { useState, useCallback, useMemo } from 'react';
+import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
 import { Course, SkillCategory } from '@/types';
 import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS } from '@/data/skills/comprehensive-skills';
 
@@ -38,10 +38,20 @@ export const SKILL_TEMPLATES: DisplaySkill[] = COMPREHENSIVE_SKILL_DATA.map(skil
   description: skill.longDescription,
   modules: skill.projects.length > 0 
     ? skill.projects.map((p, i) => ({ id: `${skill.id}-p${i}`, title: p.title, isCompleted: false }))
-    : [{ id: `${skill.id}-m1`, title: `Learn ${skill.name} Fundamentals`, isCompleted: false }],
+    : [
+        { id: `${skill.id}-m1`, title: `Základy ${skill.name}`, isCompleted: false },
+        { id: `${skill.id}-m2`, title: `Praktické aplikace`, isCompleted: false },
+        { id: `${skill.id}-m3`, title: `Pokročilé techniky`, isCompleted: false },
+        { id: `${skill.id}-m4`, title: `Certifikace a praxe`, isCompleted: false }
+      ],
   resources: skill.resources.length > 0 
     ? skill.resources 
-    : [{ name: `${skill.name} Official Documentation`, url: '#', type: 'doc' }],
+    : [
+        { name: `${skill.name} Official Documentation`, url: '#', type: 'doc' },
+        { name: `Online kurzy (Udemy, Coursera)`, url: '#', type: 'course' },
+        { name: `YouTube tutoriály`, url: '#', type: 'video' },
+        { name: `Knihy a e-booky`, url: '#', type: 'book' }
+      ],
   difficulty: skill.marketData.difficultyToLearn,
   careerPaths: skill.careerPaths,
   iconColor: skill.iconColor,
@@ -87,6 +97,19 @@ const SKILL_CATEGORIES = [
   'Fitness & Health',
   'Reselling & Business'
 ];
+
+const CATEGORY_STYLES: Record<string, { primary: string; secondary: string; gradient: string }> = {
+  'CNC & Engineering': { primary: '#607D8B', secondary: '#455A64', gradient: 'linear-gradient(135deg, #607D8B 0%, #455A64 100%)' },
+  'Programming': { primary: '#3776AB', secondary: '#2E5A82', gradient: 'linear-gradient(135deg, #3776AB 0%, #2E5A82 100%)' },
+  'Data Science & AI': { primary: '#FF6F00', secondary: '#E65100', gradient: 'linear-gradient(135deg, #FF6F00 0%, #E65100 100%)' },
+  'Cybersecurity': { primary: '#00D4FF', secondary: '#0099CC', gradient: 'linear-gradient(135deg, #00D4FF 0%, #0099CC 100%)' },
+  'Cloud & DevOps': { primary: '#FF9900', secondary: '#CC7A00', gradient: 'linear-gradient(135deg, #FF9900 0%, #CC7A00 100%)' },
+  'Management & Leadership': { primary: '#4CAF50', secondary: '#388E3C', gradient: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)' },
+  'Marketing & PR': { primary: '#E91E63', secondary: '#C2185B', gradient: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)' },
+  'default': { primary: '#6C757D', secondary: '#545B62', gradient: 'linear-gradient(135deg, #6C757D 0%, #545B62 100%)' }
+};
+
+const getCategoryStyle = (category: string) => CATEGORY_STYLES[category] || CATEGORY_STYLES['default'];
 
 interface Props {
   myCourses: Course[];
@@ -385,20 +408,20 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
         </div>
       </div>
 
-      <Row>
-        <Col md={8}>
-          {displayedSkills.length === 0 ? (
-            <Card className="text-center p-5 border-0 bg-light">
-              <Card.Body>
-                <div className="fs-1 mb-3">🛠️</div>
-                <h5>Skill Board je prázdný</h5>
-                <p className="text-muted">Klikni na + Přidat Skill a vyber si dovednosti k rozvoji.</p>
-                <Button variant="primary" onClick={() => setShowAddModal(true)}>
-                  + Přidat Skill
-                </Button>
-              </Card.Body>
-            </Card>
-          ) : (
+      {displayedSkills.length === 0 ? (
+        <Card className="text-center p-5 border-0 bg-light">
+          <Card.Body>
+            <div className="fs-1 mb-3">🛠️</div>
+            <h5>Skill Board je prázdný</h5>
+            <p className="text-muted">Klikni na + Přidat Skill a vyber si dovednosti k rozvoji.</p>
+            <Button variant="primary" onClick={() => setShowAddModal(true)}>
+              + Přidat Skill
+            </Button>
+          </Card.Body>
+        </Card>
+      ) : (
+        <Row>
+          <Col md={8}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
               {displayedSkills.map(skill => (
                 <Card 
@@ -462,50 +485,50 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                 </Card>
               ))}
             </div>
-          )}
-        </Col>
+          </Col>
 
-        <Col md={4}>
-          <Card className="shadow-sm border-0">
-            <Card.Header className="bg-secondary text-white">
-              <h5 className="mb-0">📂 Archiv ({archivedSkills.length})</h5>
-            </Card.Header>
-            <Card.Body>
-              <ArchiveDropZone onDrop={archiveSkill} />
-              
-              {archivedSkills.length > 0 && (
-                <div className="mt-3">
-                  {archivedSkills.map(skill => (
-                    <Card key={skill.id} className="mb-2 border-secondary">
-                      <Card.Body className="d-flex justify-content-between align-items-center py-2">
-                        <div>
-                          <h6 className="mb-0" style={{ fontSize: '0.9rem' }}>{skill.icon} {skill.title}</h6>
-                        </div>
-                        <div className="d-flex gap-1">
-                          <Button
-                            variant="outline-success"
-                            size="sm"
-                            onClick={() => restoreSkill(skill)}
-                          >
-                            ↩
-                          </Button>
-                          <Button
-                            variant="outline-danger"
-                            size="sm"
-                            onClick={() => setArchivedSkills(prev => prev.filter(s => s.id !== skill.id))}
-                          >
-                            🗑️
-                          </Button>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+          <Col md={4}>
+            <Card className="shadow-sm border-0">
+              <Card.Header className="bg-secondary text-white">
+                <h5 className="mb-0">📂 Archiv ({archivedSkills.length})</h5>
+              </Card.Header>
+              <Card.Body>
+                <ArchiveDropZone onDrop={archiveSkill} />
+                
+                {archivedSkills.length > 0 && (
+                  <div className="mt-3">
+                    {archivedSkills.map(skill => (
+                      <Card key={skill.id} className="mb-2 border-secondary">
+                        <Card.Body className="d-flex justify-content-between align-items-center py-2">
+                          <div>
+                            <h6 className="mb-0" style={{ fontSize: '0.9rem' }}>{skill.icon} {skill.title}</h6>
+                          </div>
+                          <div className="d-flex gap-1">
+                            <Button
+                              variant="outline-success"
+                              size="sm"
+                              onClick={() => restoreSkill(skill)}
+                            >
+                              ↩
+                            </Button>
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
+                              onClick={() => setArchivedSkills(prev => prev.filter(s => s.id !== skill.id))}
+                            >
+                              🗑️
+                            </Button>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
 
       <Modal show={showSkillModal} onHide={() => setShowSkillModal(false)} size="lg">
         {selectedSkill && (
@@ -685,15 +708,20 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
       <Modal show={showSkillDetail} onHide={() => setShowSkillDetail(false)} size="xl" centered contentClassName="border-0 shadow-lg" dialogClassName="modal-90w">
         {detailSkill && (
           <>
-            <Modal.Header closeButton style={{ background: `linear-gradient(135deg, ${detailSkill.iconColor} 0%, ${detailSkill.iconColor}99 100%)`, color: 'white' }}>
-              <div className="d-flex align-items-center gap-3">
-                <span style={{ fontSize: '2.5rem' }}>{detailSkill.icon}</span>
-                <div>
-                  <Modal.Title className="fw-bold mb-0" style={{ fontSize: '1.5rem' }}>{detailSkill.title}</Modal.Title>
-                  <small className="text-white-50">{detailSkill.category}</small>
-                </div>
-              </div>
-            </Modal.Header>
+            {(() => {
+              const style = getCategoryStyle(detailSkill.category);
+              return (
+                <Modal.Header closeButton style={{ background: style.gradient, color: 'white' }}>
+                  <div className="d-flex align-items-center gap-3">
+                    <span style={{ fontSize: '2.5rem' }}>{detailSkill.icon}</span>
+                    <div>
+                      <Modal.Title className="fw-bold mb-0" style={{ fontSize: '1.5rem' }}>{detailSkill.title}</Modal.Title>
+                      <small className="text-white-50">{detailSkill.category}</small>
+                    </div>
+                  </div>
+                </Modal.Header>
+              );
+            })()}
             <Modal.Body className="p-0">
               <Row className="g-0">
                 <Col md={8} className="p-4 border-end">
@@ -702,11 +730,29 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                     <p className="lead" style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>{detailSkill.description}</p>
                   </div>
                   
+                  <div className="mb-4">
+                    <h6 className="fw-bold text-secondary mb-3">🎯 Co se naučíš</h6>
+                    <Row className="g-2">
+                      {detailSkill.modules.slice(0, 4).map((module, idx) => (
+                        <Col xs={6} key={idx}>
+                          <Card className="border-0 bg-light h-100">
+                            <Card.Body className="py-2 px-3">
+                              <div className="d-flex align-items-center gap-2">
+                                <span className="text-success">✓</span>
+                                <small>{module.title}</small>
+                              </div>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+
                   <Row className="g-3 mb-4">
                     <Col xs={6} md={3}>
                       <Card className="h-100 border-0 bg-success text-white text-center">
                         <Card.Body className="py-3">
-                          <div className="fs-3 fw-bold">{detailSkill.marketData?.salaryRange.junior || 0} Kč</div>
+                          <div className="fs-4 fw-bold">{detailSkill.marketData?.salaryRange.junior?.toLocaleString() || 0} Kč</div>
                           <small>Junior</small>
                         </Card.Body>
                       </Card>
@@ -714,15 +760,15 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                     <Col xs={6} md={3}>
                       <Card className="h-100 border-0 bg-info text-white text-center">
                         <Card.Body className="py-3">
-                          <div className="fs-3 fw-bold">{detailSkill.marketData?.salaryRange.senior || 0} Kč</div>
-                          <small>Senior</small>
+                          <div className="fs-4 fw-bold">{Math.round(((detailSkill.marketData?.salaryRange.junior || 0) + (detailSkill.marketData?.salaryRange.senior || 0)) / 2).toLocaleString()} Kč</div>
+                          <small>Průměr</small>
                         </Card.Body>
                       </Card>
                     </Col>
                     <Col xs={6} md={3}>
                       <Card className="h-100 border-0 bg-warning text-dark text-center">
                         <Card.Body className="py-3">
-                          <div className="fs-3 fw-bold">{detailSkill.difficulty}/5</div>
+                          <div className="fs-4 fw-bold">{detailSkill.difficulty}/5</div>
                           <small>Obtížnost</small>
                         </Card.Body>
                       </Card>
@@ -730,7 +776,7 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                     <Col xs={6} md={3}>
                       <Card className="h-100 border-0 bg-primary text-white text-center">
                         <Card.Body className="py-3">
-                          <div className="fs-3 fw-bold">{detailSkill.marketData?.demandIndex || 0}%</div>
+                          <div className="fs-4 fw-bold">{detailSkill.marketData?.demandIndex || 0}%</div>
                           <small>Poptávka</small>
                         </Card.Body>
                       </Card>
@@ -738,12 +784,13 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                   </Row>
 
                   <div className="mb-4">
-                    <h6 className="fw-bold text-secondary mb-3">🎯 Kariérní cesty</h6>
-                    <div className="d-flex flex-wrap gap-2">
-                      {detailSkill.careerPaths.map(path => (
-                        <Badge key={path} bg="dark" className="px-3 py-2" style={{ fontSize: '0.85rem' }}>
-                          {path}
-                        </Badge>
+                    <h6 className="fw-bold text-secondary mb-3">🎯 Kariérní postup</h6>
+                    <div className="d-flex flex-wrap gap-2 align-items-center">
+                      {detailSkill.careerPaths.map((path, idx) => (
+                        <React.Fragment key={path}>
+                          <Badge bg="dark" className="px-3 py-2" style={{ fontSize: '0.85rem' }}>{path}</Badge>
+                          {idx < detailSkill.careerPaths.length - 1 && <span className="text-muted">→</span>}
+                        </React.Fragment>
                       ))}
                     </div>
                   </div>
@@ -790,32 +837,53 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                 <Col md={4} className="bg-light p-4">
                   <Card className="border-0 shadow-sm mb-3">
                     <Card.Body>
-                      <h6 className="fw-bold text-secondary mb-3">📊 Statistiky</h6>
+                      <h6 className="fw-bold text-secondary mb-3">⚡ Rychlý přehled</h6>
+                      
+                      <div className="mb-3">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Celková XP</small>
+                          <small className="fw-bold text-success">{detailSkill.difficulty * 50} XP</small>
+                        </div>
+                        <ProgressBar now={Math.min(detailSkill.difficulty * 20, 100)} variant="success" style={{ height: '8px' }} />
+                      </div>
+                      
                       <div className="mb-3">
                         <div className="d-flex justify-content-between mb-1">
                           <small>Čas do zvládnutí</small>
                           <small className="fw-bold">{detailSkill.totalHours}h</small>
                         </div>
-                        <div className="progress" style={{ height: '8px' }}>
-                          <div className="progress-bar" style={{ width: `${detailSkill.difficulty * 20}%`, backgroundColor: detailSkill.iconColor }}></div>
-                        </div>
+                        <ProgressBar now={detailSkill.difficulty * 20} style={{ height: '8px', backgroundColor: getCategoryStyle(detailSkill.category).primary }} />
                       </div>
-                      <div className="mb-3">
-                        <div className="d-flex justify-content-between mb-1">
-                          <small>XP Odměna</small>
-                          <small className="fw-bold text-success">{detailSkill.difficulty * 50} XP</small>
-                        </div>
-                        <div className="progress" style={{ height: '8px' }}>
-                          <div className="progress-bar bg-success" style={{ width: `${Math.min(detailSkill.difficulty * 20, 100)}%` }}></div>
-                        </div>
-                      </div>
+                      
                       <div>
                         <div className="d-flex justify-content-between mb-1">
                           <small>Poptávka na trhu</small>
                           <small className="fw-bold">{detailSkill.marketData?.demandIndex || 0}%</small>
                         </div>
-                        <div className="progress" style={{ height: '8px' }}>
-                          <div className="progress-bar bg-info" style={{ width: `${detailSkill.marketData?.demandIndex || 0}%` }}></div>
+                        <ProgressBar now={detailSkill.marketData?.demandIndex || 0} variant="info" style={{ height: '8px' }} />
+                      </div>
+                    </Card.Body>
+                  </Card>
+
+                  <Card className="border-0 shadow-sm mb-3">
+                    <Card.Body>
+                      <h6 className="fw-bold text-secondary mb-3">✅ Co získáš</h6>
+                      <div className="d-flex flex-column gap-2">
+                        <div className="d-flex align-items-center gap-2">
+                          <span className="text-success">✓</span>
+                          <small>Skill badge pro profil</small>
+                        </div>
+                        <div className="d-flex align-items-center gap-2">
+                          <span className="text-success">✓</span>
+                          <small>+{detailSkill.difficulty * 50} XP</small>
+                        </div>
+                        <div className="d-flex align-items-center gap-2">
+                          <span className="text-success">✓</span>
+                          <small>Unlock navazujících skills</small>
+                        </div>
+                        <div className="d-flex align-items-center gap-2">
+                          <span className="text-success">✓</span>
+                          <small>Portfolio projekt</small>
                         </div>
                       </div>
                     </Card.Body>
@@ -823,29 +891,27 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
 
                   <Card className="border-0 shadow-sm mb-3">
                     <Card.Body>
-                      <h6 className="fw-bold text-secondary mb-3">🎓 Co se naučíš</h6>
-                      <ul className="mb-0 ps-3">
-                        {detailSkill.modules.slice(0, 5).map((module, idx) => (
-                          <li key={idx} className="mb-2">{module.title}</li>
-                        ))}
-                        {detailSkill.modules.length > 5 && (
-                          <li className="text-muted">+ {detailSkill.modules.length - 5} dalších modulů...</li>
-                        )}
-                      </ul>
-                    </Card.Body>
-                  </Card>
-
-                  <Card className="border-0 shadow-sm">
-                    <Card.Body>
-                      <h6 className="fw-bold text-secondary mb-3">💼 Průměrný plat</h6>
-                      {detailSkill.marketData && (
-                        <div className="text-center">
-                          <div className="display-6 fw-bold text-success">
-                            {Math.round((detailSkill.marketData.salaryRange.junior + detailSkill.marketData.salaryRange.senior) / 2).toLocaleString()} Kč
-                          </div>
-                          <small className="text-muted">průměrný měsíční plat</small>
+                      <h6 className="fw-bold text-secondary mb-3">💼 Platové rozmezí</h6>
+                      <div className="text-center">
+                        <div className="display-6 fw-bold text-success">
+                          {detailSkill.marketData ? Math.round((detailSkill.marketData.salaryRange.junior + detailSkill.marketData.salaryRange.senior) / 2).toLocaleString() : 0} Kč
                         </div>
-                      )}
+                        <small className="text-muted">průměrný měsíční plat</small>
+                      </div>
+                      <Row className="mt-3 g-2">
+                        <Col xs={6}>
+                          <div className="text-center p-2 bg-light rounded">
+                            <div className="fw-bold">{detailSkill.marketData?.salaryRange.junior?.toLocaleString() || 0}</div>
+                            <small className="text-muted">Junior</small>
+                          </div>
+                        </Col>
+                        <Col xs={6}>
+                          <div className="text-center p-2 bg-light rounded">
+                            <div className="fw-bold">{detailSkill.marketData?.salaryRange.senior?.toLocaleString() || 0}</div>
+                            <small className="text-muted">Senior</small>
+                          </div>
+                        </Col>
+                      </Row>
                     </Card.Body>
                   </Card>
                 </Col>
