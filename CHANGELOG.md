@@ -4,6 +4,144 @@ Všechny podstatné změny v projektu jsou zde zdokumentovány.
 
 ---
 
+## [v0.3.1] - 2026-01-15
+
+### 🎮 Rozšířený Gamifikace Systém
+
+#### Daily Quests Systém
+- **Typy** (`src/types/quests.ts`)
+  - DailyQuestTemplate, UserQuest, QuestPool, QuestRarity, QuestCategory
+  - 4 denní questy + bonus quest (25% šance)
+  - 14 typů algoritmů, learning, career, milestone, special questy
+
+- **Quest Data** (`src/data/quests/daily-quests.ts`)
+  - 30+ quest šablon s různou obtížností a rarity
+  - Procedurální generování questů podle data
+  - Rarity system: Common, Rare, Epic, Legendary
+  - XP a Gold odměny
+
+- **Quest Logika** (`src/lib/gamification/quest-system.ts`)
+  - generateDailyQuestPool(), createUserQuest()
+  - updateQuestProgress(), claimQuestReward()
+  - Expirace questů, grace period
+  - Denní progres tracking
+
+- **Quest UI** (`src/components/gamification/DailyQuestsWidget.tsx`)
+  - Widget s progres barem
+  - Claim modal s odměnami
+  - Animace pro dokončení
+  - Časovač do expirace
+
+#### Streak Protection (Freeze)
+- **Typy a logika** (`src/lib/gamification/streak-protection.ts`)
+  - StreakData, StreakFreeze
+  - 1 freezměsíčně + bonusy za levely
+  - 24hodinová ochrana streak
+  - Grace period 6 hodin
+  - Streak bonusy (+10-50% XP)
+
+- **Streak Widget** (`src/components/gamification/StreakWidget.tsx`)
+  - Vizualizace streak (fire emoji)
+  - Nejdelší streak, celkem aktivních dní
+  - Freeze modal s potvrzením
+  - Odpočet do dalšího resetu
+
+#### User Profile
+- **Typy** (`src/types/profile.ts`)
+  - UserProfile, UserStats, UserAchievement, UserBadge
+  - RANK_TIERS (8 úrovní od Nováčka po Legend)
+  - Activity heatmap data
+
+- **Profile UI** (`src/components/gamification/UserProfileCard.tsx`)
+  - Komplexní profil karta
+  - 4 záložky: Přehled, Achievementy, Pokrok, Aktivita
+  - Radar chart statistik
+  - Activity heatmap (52 týdnů)
+  - Denní/týdenní progres
+
+#### Leaderboards
+- **Typy** (`src/types/leaderboard.ts`)
+  - Leaderboard, LeaderboardEntry
+  - 6 typů: XP, Streak, Achievements, Projects, Learning, Weekly
+  - 4 timeframe: All, Monthly, Weekly, Daily
+  - Sezónní odměny pro top 100
+
+- **Leaderboard UI** (`src/components/gamification/LeaderboardWidget.tsx`)
+  - Tabulka s rank, username, level, score, změna
+  - Zlatý/stříbrný/bronzový rank indikátor
+  - Online status indikátor
+  - Vyhledávání uživatelů
+  - Sezónní odměny panel
+
+#### Rewards/Loot System
+- **Typy a logika** (`src/lib/gamification/rewards.ts`)
+  - Reward, LootBox, BoxContent
+  - 4 typy boxů: Basic (100g), Premium (25gems), Epic (50gems), Legendary (100gems)
+  - Drop rates pro rarity (Common → Mythic)
+  - XP, Gold, Gems, Badges, Titles, Consumables
+
+- **Loot Box Shop** (`src/components/gamification/LootBoxShop.tsx`)
+  - Shop s 4 boxy
+  - Preview modal s drop rates
+  - Opening animace s confetti
+  - Odměna reveal modal
+
+#### Achievement Popup Notifikace
+- **Typy** (`src/components/gamification/AchievementPopup.tsx`)
+  - AchievementPopup komponenta
+  - useNotificationQueue hook
+  - Automatické zavírání po 4s
+  - Animace achievement ikony
+  - Rarity barva a glow efekt
+
+#### Level-Up Celebrace
+- **Typy** (`src/components/gamification/LevelUpCelebration.tsx`)
+  - LevelUpCelebration modal
+  - LevelUpToast komponenta
+  - XP counting animace
+  - Confetti particle efekt
+  - Perks odhalení
+  - Velké levely (5, 10, 15, 20, 25, 30) mají speciální odměny
+
+### 📁 Nové Soubory
+
+| Soubor | Popis |
+|--------|-------|
+| `src/types/quests.ts` | Daily quest typy |
+| `src/types/profile.ts` | User profile typy |
+| `src/types/leaderboard.ts` | Leaderboard typy |
+| `src/data/quests/daily-quests.ts` | 30+ quest šablon |
+| `src/lib/gamification/quest-system.ts` | Quest logika |
+| `src/lib/gamification/streak-protection.ts` | Streak freeze systém |
+| `src/lib/gamification/rewards.ts` | Loot box a rewards |
+| `src/components/gamification/DailyQuestsWidget.tsx` | Quests widget |
+| `src/components/gamification/StreakWidget.tsx` | Streak widget |
+| `src/components/gamification/UserProfileCard.tsx` | Profile karta |
+| `src/components/gamification/LeaderboardWidget.tsx` | Leaderboard |
+| `src/components/gamification/LootBoxShop.tsx` | Loot box shop |
+| `src/components/gamification/AchievementPopup.tsx` | Achievement popup |
+| `src/components/gamification/LevelUpCelebration.tsx` | Level-up animace |
+
+### 🎮 v0.3.1 Feature List
+
+- ✅ Daily Quests (4 denně + bonus)
+- ✅ Streak Protection (freeze)
+- ✅ User Profile s heatmapou
+- ✅ Leaderboards (6 typů, 4 timeframe)
+- ✅ Rewards/Loot Boxes (4 boxy)
+- ✅ Achievement Popup notifikace
+- ✅ Level-Up celebrace s confetti
+
+### 📋 Další Plán (v0.3.2)
+
+- [ ] Social features (přátelé, guildy)
+- [ ] Team challenges
+- [ ] Achievement sharing
+- [ ] Custom badges creation
+- [ ] Mobile responsive vylepšení
+
+---
+
 ## [v0.3.0] - 2026-01-15
 
 ### 🚀 PROJEKTY Sekce (Nové Hlavní Nad téma)

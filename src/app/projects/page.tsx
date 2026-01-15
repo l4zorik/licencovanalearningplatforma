@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, ProgressBar, Dropdown, Modal, Form, ListGroup, Tabs, Tab } from 'react-bootstrap';
 import { INITIAL_PROJECTS, PROJECT_TEMPLATES, PROJECT_CATEGORIES, ALGORITHM_TYPE_ICONS, calculateProjectStats } from '@/data/projects/data';
-import { Project, AlgorithmType } from '@/types';
+import { Project, AlgorithmType, ProjectTemplate } from '@/types';
 import { calculateLevel, formatXP, getXPForAction } from '@/lib/gamification/xp-system';
 
 const ALGORITHM_TYPES: { id: AlgorithmType; label: string }[] = [
@@ -21,21 +21,57 @@ const ALGORITHM_TYPES: { id: AlgorithmType; label: string }[] = [
   { id: 'networking', label: '🌐 Sítě' },
   { id: 'automation', label: '⚙️ Automatizace' },
   { id: 'monitoring', label: '👁️ Monitoring' },
+  { id: 'planning', label: '📋 Plánování' },
+  { id: 'marketing', label: '📈 Marketing' },
 ];
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showNewAlgorithm, setShowNewAlgorithm] = useState(false);
   const [showNewProject, setShowNewProject] = useState(false);
   const [filter, setFilter] = useState<string>('all');
   const [showLevelUp, setShowLevelUp] = useState(false);
+  const [selectedTemplates, setSelectedTemplates] = useState<ProjectTemplate[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [userXP, setUserXP] = useState(0);
   const [dailyXP, setDailyXP] = useState(1250);
   const [streak, setStreak] = useState(7);
   const [todayAlgorithms, setTodayAlgorithms] = useState(5);
   const [level, setLevel] = useState({ level: 6, title: 'Schopný', color: '#FF5722', progress: 65 });
+
+  useEffect(() => {
+    const savedProjects = localStorage.getItem('projects');
+    if (savedProjects) {
+      try {
+        const parsed = JSON.parse(savedProjects) as ParsedProject[];
+        setProjects(parsed.map((p) => ({
+          ...p,
+          startDate: new Date(p.startDate),
+          milestones: p.milestones.map((m) => ({
+            ...m,
+            completedAt: m.completedAt ? new Date(m.completedAt) : undefined
+          })),
+          algorithms: p.algorithms.map((a) => ({
+            ...a,
+            timestamp: new Date(a.timestamp)
+          }))
+        })));
+      } catch {
+        setProjects(INITIAL_PROJECTS);
+      }
+    } else {
+      setProjects(INITIAL_PROJECTS);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }
+  }, [projects, isLoaded]);
 
   useEffect(() => {
     const newLevel = calculateLevel(userXP + dailyXP);
@@ -62,12 +98,124 @@ export default function ProjectsPage() {
   const dailyXPCap = 5000;
   const dailyProgress = Math.min(100, (dailyXP / dailyXPCap) * 100);
 
+  const handleSelectTemplate = (template: ProjectTemplate) => {
+    setSelectedTemplates(prev => {
+      const exists = prev.find(t => t.id === template.id);
+      if (exists) {
+        return prev.filter(t => t.id !== template.id);
+      }
+      return [...prev, template];
+    });
+  };
+
+  const handleSelectAllTemplates = () => {
+    if (selectedTemplates.length === PROJECT_TEMPLATES.length) {
+      setSelectedTemplates([]);
+    } else {
+      setSelectedTemplates([...PROJECT_TEMPLATES]);
+    }
+  };
+
+  const handleCreateProject = () => {
+    if (selectedTemplates.length === 0) return;
+
+    const templateIndex = projects.filter(p => selectedTemplates.some(t => t.id === p.id.replace(/^proj-\d+-/, ''))).length;
+    
+    const newProjects: Project[] = selectedTemplates.map((template, tIdx) => ({
+      id: `proj-${template.id}-${tIdx}`,
+      title: template.title,
+      description: template.description,
+      category: template.category,
+      status: 'active' as const,
+      priority: 'medium' as const,
+      goals: [...template.defaultGoals],
+      milestones: template.suggestedMilestones.map((m: string, idx: number) => ({
+        id: `m-${template.id}-${tIdx}-${idx}`,
+        title: m,
+        description: '',
+        isCompleted: false,
+        xpReward: 100,
+        order: idx + 1
+      })),
+      algorithms: [],
+      skills: [...template.skills],
+      technologies: [...template.technologies],
+      startDate: new Date(),
+      totalHours: 0,
+      xpReward: template.xpReward,
+      color: template.color,
+      icon: template.icon,
+      progress: 0,
+      streak: 0,
+    }));
+
+    setProjects(prev => [...prev, ...newProjects]);
+    setShowNewProject(false);
+    setSelectedTemplates([]);
+  };
+
+  interface ParsedProject {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    status: 'active' | 'completed' | 'paused' | 'archived';
+    priority: 'high' | 'medium' | 'low';
+    goals: string[];
+    milestones: Array<{
+      id: string;
+      title: string;
+      description: string;
+      isCompleted: boolean;
+      completedAt?: string;
+      xpReward: number;
+      order: number;
+    }>;
+    algorithms: Array<{
+      id: string;
+      projectId: string;
+      timestamp: string;
+      type: AlgorithmType;
+      title: string;
+      description: string;
+      duration: number;
+      outcome: 'success' | 'partial' | 'failure' | 'learning';
+      xpEarned: number;
+      tags: string[];
+    }>;
+    skills: string[];
+    technologies: string[];
+    startDate: string;
+    totalHours: number;
+    xpReward: number;
+    color: string;
+    icon: string;
+    progress: number;
+    streak: number;
+    linkedGoalId?: string;
+  }
+
+  const handleDeleteProject = (projectId: string) => {
+    setProjects(prev => prev.filter(p => p.id !== projectId));
+    if (selectedProject?.id === projectId) {
+      setSelectedProject(null);
+    }
+  };
+
+  const handleCloseNewProject = () => {
+    setShowNewProject(false);
+    setSelectedTemplates([]);
+  };
+
   return (
-    <div style={{ 
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-      padding: '20px'
-    }}>
+    <div 
+      style={{ 
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+        padding: '20px'
+      }}
+      suppressHydrationWarning
+    >
       <Container fluid>
         {/* 🎮 GAMIFICATION HEADER */}
         <Row className="mb-4">
@@ -156,33 +304,6 @@ export default function ProjectsPage() {
         </Row>
 
         {/* Header */}
-        <Row className="mb-4">
-          <Col>
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <h1 style={{ color: '#fff', marginBottom: '5px' }}>
-                  🔐 <span style={{ color: '#00d4ff' }}>Projekty</span>
-                </h1>
-                <p style={{ color: '#8892b0' }}>
-                  Logování algoritmů a sledování pokroku v reálném čase
-                </p>
-              </div>
-              <Button 
-                variant="primary" 
-                size="lg"
-                onClick={() => setShowNewProject(true)}
-                style={{ 
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  border: 'none'
-                }}
-              >
-                ➕ Nový Projekt
-              </Button>
-            </div>
-          </Col>
-        </Row>
-
-        {/* Stats Overview */}
         <Row className="mb-4">
           <Col>
             <div className="d-flex justify-content-between align-items-center">
@@ -305,9 +426,23 @@ export default function ProjectsPage() {
                     alignItems: 'center'
                   }}>
                     <span style={{ fontSize: '1.5rem' }}>{project.icon}</span>
-                    <Badge bg={project.priority === 'high' ? 'danger' : project.priority === 'medium' ? 'warning' : 'secondary'}>
-                      {project.priority}
-                    </Badge>
+                    <div className="d-flex align-items-center gap-2">
+                      <Badge bg={project.priority === 'high' ? 'danger' : project.priority === 'medium' ? 'warning' : 'secondary'}>
+                        {project.priority}
+                      </Badge>
+                      <Button 
+                        variant="outline-light" 
+                        size="sm"
+                        className="p-1"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteProject(project.id);
+                        }}
+                        style={{ border: 'none', background: 'transparent' }}
+                      >
+                        🗑️
+                      </Button>
+                    </div>
                   </Card.Header>
                   <Card.Body>
                     <Card.Title style={{ color: '#fff' }}>{project.title}</Card.Title>
@@ -657,44 +792,101 @@ export default function ProjectsPage() {
               </Form>
             </Tab>
             <Tab eventKey="templates" title={<span style={{ color: '#fff' }}>📋 Šablony</span>}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <Button 
+                  variant={selectedTemplates.length === PROJECT_TEMPLATES.length ? "outline-danger" : "outline-success"} 
+                  size="sm"
+                  onClick={handleSelectAllTemplates}
+                >
+                  {selectedTemplates.length === PROJECT_TEMPLATES.length 
+                    ? `❌ Zrušit výběr všech (${selectedTemplates.length})` 
+                    : `✅ Vybrat všechny (${selectedTemplates.length}/${PROJECT_TEMPLATES.length})`}
+                </Button>
+                {selectedTemplates.length > 0 && (
+                  <Badge bg="success" className="fs-6">
+                    Vybráno: {selectedTemplates.length} šablon
+                  </Badge>
+                )}
+              </div>
               <Row>
-                {PROJECT_TEMPLATES.map((template) => (
-                  <Col md={6} key={template.id} className="mb-3">
-                    <Card 
-                      style={{ 
-                        background: 'rgba(255,255,255,0.05)',
-                        cursor: 'pointer',
-                        border: '2px solid transparent'
-                      }}
-                      className="hover-card"
-                    >
-                      <Card.Body>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                          <span style={{ fontSize: '2rem' }}>{template.icon}</span>
-                          <Badge bg="info">{template.estimatedHours}h</Badge>
-                        </div>
-                        <Card.Title style={{ color: '#fff', fontSize: '1rem' }}>{template.title}</Card.Title>
-                        <Card.Text style={{ color: '#8892b0', fontSize: '0.85rem' }}>
-                          {template.description}
-                        </Card.Text>
-                        <div style={{ color: '#FFD700' }}>
-                          +{template.xpReward} XP
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
+                {PROJECT_TEMPLATES.map((template) => {
+                  const isSelected = selectedTemplates.some(t => t.id === template.id);
+                  return (
+                    <Col md={6} key={template.id} className="mb-3">
+                      <Card 
+                        style={{ 
+                          background: isSelected 
+                            ? `linear-gradient(145deg, ${template.color}40 0%, ${template.color}20 100%)`
+                            : 'rgba(255,255,255,0.05)',
+                          cursor: 'pointer',
+                          border: isSelected 
+                            ? `3px solid ${template.color}`
+                            : '2px solid transparent',
+                          transition: 'all 0.3s ease'
+                        }}
+                        className="hover-card"
+                        onClick={() => handleSelectTemplate(template)}
+                      >
+                        <Card.Body>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                            <span style={{ fontSize: '2rem' }}>{template.icon}</span>
+                            <div className="d-flex align-items-center gap-2">
+                              <Badge bg="info">{template.estimatedHours}h</Badge>
+                              <div 
+                                style={{ 
+                                  width: '24px', 
+                                  height: '24px', 
+                                  borderRadius: '50%', 
+                                  border: isSelected ? `2px solid ${template.color}` : '2px solid #667eea',
+                                  background: isSelected ? template.color : 'transparent',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '12px'
+                                }}
+                              >
+                                {isSelected && '✓'}
+                              </div>
+                            </div>
+                          </div>
+                          <Card.Title style={{ color: '#fff', fontSize: '1rem' }}>{template.title}</Card.Title>
+                          <Card.Text style={{ color: '#8892b0', fontSize: '0.85rem' }}>
+                            {template.description}
+                          </Card.Text>
+                          <div style={{ color: '#FFD700' }}>
+                            +{template.xpReward} XP
+                          </div>
+                          {isSelected && (
+                            <div className="text-center mt-2">
+                              <Badge bg="success" className="w-100">✅ Vybráno</Badge>
+                            </div>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                })}
               </Row>
             </Tab>
           </Tabs>
         </Modal.Body>
         <Modal.Footer style={{ background: '#1a1a2e' }}>
-          <Button variant="secondary" onClick={() => setShowNewProject(false)}>Zrušit</Button>
+          <Button variant="secondary" onClick={handleCloseNewProject}>Zrušit</Button>
           <Button 
             variant="primary"
-            style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+            disabled={selectedTemplates.length === 0}
+            onClick={handleCreateProject}
+            style={{ 
+              background: selectedTemplates.length > 0 
+                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+                : 'linear-gradient(135deg, #667eea40 0%, #764ba240 100%)',
+              border: 'none',
+              opacity: selectedTemplates.length > 0 ? 1 : 0.6
+            }}
           >
-            🚀 Vytvořit Projekt
+            {selectedTemplates.length > 0 
+              ? `🚀 Vytvořit ${selectedTemplates.length} projekt${selectedTemplates.length === 1 ? '' : selectedTemplates.length <= 4 ? 'y' : 'ů'}`
+              : '🚀 Vytvořit Projekt'}
           </Button>
         </Modal.Footer>
       </Modal>

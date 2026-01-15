@@ -41,6 +41,8 @@ export const XP_VALUES = {
     networking: 25,
     automation: 30,
     monitoring: 15,
+    planning: 20,
+    marketing: 25,
   },
   milestone: 100,
   project: 500,

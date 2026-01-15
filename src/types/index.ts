@@ -803,7 +803,9 @@ export type AlgorithmType =
   | 'security'
   | 'networking'
   | 'automation'
-  | 'monitoring';
+  | 'monitoring'
+  | 'planning'
+  | 'marketing';
 
 export type Project = {
   id: string;
@@ -878,4 +880,23 @@ export type ProjectTemplate = {
   xpReward: number;
   color: string;
   icon: string;
+};
+
+export const ALGORITHM_TYPE_ICONS: Record<AlgorithmType, string> = {
+  learning: '📖',
+  coding: '💻',
+  optimization: '⚡',
+  data_analysis: '📊',
+  research: '🔍',
+  design: '🎨',
+  debugging: '🐛',
+  testing: '✅',
+  documentation: '📝',
+  deployment: '🚀',
+  security: '🔐',
+  networking: '🌐',
+  automation: '⚙️',
+  monitoring: '👁️',
+  planning: '📋',
+  marketing: '📈',
 };

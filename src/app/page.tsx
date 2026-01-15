@@ -9,6 +9,8 @@ import { Course, Job } from '@/types';
 import { SKILL_TEMPLATES } from '@/components/EducationSection';
 import { JOB_TEMPLATES } from '@/components/WorkSection';
 import ThemeToggle from '@/components/ThemeToggle';
+import { Project } from '@/types';
+import { calculateProjectStats } from '@/data/projects/data';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -589,10 +591,11 @@ export default function Home() {
   const [goalQuantity, setGoalQuantity] = useState<number>(1);
   const [goalProgress, setGoalProgress] = useState<number>(0);
   const [showProgressModal, setShowProgressModal] = useState(false);
-  const [lifeGoals, setLifeGoals] = useState<LifeGoal[]>(DEFAULT_GOALS);
+  const [lifeGoals, setLifeGoals] = useState<LifeGoal[]>([]);
   const [isProjectsExpanded, setIsProjectsExpanded] = useState(true);
   const [isLifeOSExpanded, setIsLifeOSExpanded] = useState(false);
   const [showGoalsManager, setShowGoalsManager] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   // Load life goals from localStorage
   useEffect(() => {
@@ -610,6 +613,32 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('lifeGoals_2026', JSON.stringify(lifeGoals));
   }, [lifeGoals]);
+
+  // Load projects from localStorage
+  useEffect(() => {
+    const savedProjects = localStorage.getItem('projects');
+    if (savedProjects) {
+      try {
+        const parsed = JSON.parse(savedProjects);
+        setProjects(
+          parsed.map((p: any) => ({
+            ...p,
+            startDate: new Date(p.startDate),
+            milestones: p.milestones.map((m: any) => ({
+              ...m,
+              completedAt: m.completedAt ? new Date(m.completedAt) : undefined
+            })),
+            algorithms: p.algorithms.map((a: any) => ({
+              ...a,
+              timestamp: new Date(a.timestamp)
+            }))
+          }))
+        );
+      } catch (error) {
+        console.error('Failed to parse projects:', error);
+      }
+    }
+  }, []);
 
   // Update a single goal progress
   const updateGoalProgress = (goalId: string, increment: number) => {
@@ -928,7 +957,7 @@ export default function Home() {
                           🚀 Projekty
                         </h4>
                         <Badge bg="info" className="fs-6">
-                          2 Aktivní
+                          {projects.filter(p => p.status === 'active').length} Aktivní
                         </Badge>
                       </div>
                       <div className="d-flex align-items-center gap-3">
@@ -946,56 +975,83 @@ export default function Home() {
                   </Card.Header>
                   <Collapse in={isProjectsExpanded}>
                     <Card.Body className="p-3">
-                      <Row xs={1} md={2} lg={3} className="g-3">
-                        <Col>
-                          <Card style={{ background: 'rgba(33,150,243,0.15)', border: '1px solid rgba(33,150,243,0.3)' }}>
-                            <Card.Body>
-                              <div className="d-flex justify-content-between align-items-start mb-2">
-                                <span style={{ fontSize: '1.8rem' }}>🚀</span>
-                                <Badge bg="primary">Vývoj</Badge>
-                              </div>
-                              <h6 style={{ color: '#fff' }}>Learning Platform Vývoj</h6>
-                              <small style={{ color: '#aaa' }}>Hlavní vývojový projekt</small>
-                              <ProgressBar now={35} variant="primary" className="mt-2" />
-                              <div className="d-flex justify-content-between mt-2">
-                                <small style={{ color: '#888' }}>35% pokrok</small>
-                                <small style={{ color: '#FFD700' }}>+3,548 XP</small>
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col>
-                          <Card style={{ background: 'rgba(96,125,139,0.15)', border: '1px solid rgba(96,125,139,0.3)' }}>
-                            <Card.Body>
-                              <div className="d-flex justify-content-between align-items-start mb-2">
-                                <span style={{ fontSize: '1.8rem' }}>⚙️</span>
-                                <Badge bg="secondary">Učení</Badge>
-                              </div>
-                              <h6 style={{ color: '#fff' }}>CNC Dovednosti Mastery</h6>
-                              <small style={{ color: '#aaa' }}>CNC programování</small>
-                              <ProgressBar now={25} variant="secondary" className="mt-2" />
-                              <div className="d-flex justify-content-between mt-2">
-                                <small style={{ color: '#888' }}>25% pokrok</small>
-                                <small style={{ color: '#FFD700' }}>+1,235 XP</small>
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col>
-                          <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
-                            <Card.Body className="text-center">
-                              <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>➕</div>
-                              <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
-                              <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
-                              <Link href="/projects">
-                                <Button variant="outline-light" size="sm" className="mt-2 w-100">
-                                  Vytvořit Projekt
-                                </Button>
-                              </Link>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </Row>
+                      {projects.length === 0 ? (
+                        <Row>
+                          <Col md={4}>
+                            <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
+                              <Card.Body className="text-center">
+                                <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>➕</div>
+                                <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
+                                <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
+                                <Link href="/projects">
+                                  <Button variant="outline-light" size="sm" className="mt-2 w-100">
+                                    Vytvořit Projekt
+                                  </Button>
+                                </Link>
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        </Row>
+                      ) : (
+                        <>
+                          <Row xs={1} md={2} lg={3} className="g-3">
+                            {projects.map((project) => {
+                              const stats = calculateProjectStats(project);
+                              return (
+                                <Col key={project.id}>
+                                  <Card style={{ 
+                                    background: `${project.color}25`, 
+                                    border: `1px solid ${project.color}60` 
+                                  }}>
+                                    <Card.Body>
+                                      <div className="d-flex justify-content-between align-items-start mb-2">
+                                        <span style={{ fontSize: '1.8rem' }}>{project.icon}</span>
+                                        <Badge bg={project.priority === 'high' ? 'danger' : project.priority === 'medium' ? 'warning' : 'secondary'}>
+                                          {project.priority}
+                                        </Badge>
+                                      </div>
+                                      <h6 style={{ color: '#fff' }}>{project.title}</h6>
+                                      <small style={{ color: '#aaa' }}>{project.description.substring(0, 50)}...</small>
+                                      <ProgressBar now={stats.progress} style={{ height: '8px' }} className="mt-2" />
+                                      <div className="d-flex justify-content-between mt-2">
+                                        <small style={{ color: '#888' }}>{stats.progress}% pokrok</small>
+                                        <small style={{ color: '#FFD700' }}>+{stats.totalXp} XP</small>
+                                      </div>
+                                      <div className="d-flex gap-1 mt-2 flex-wrap">
+                                        {project.milestones.slice(0, 3).map((m, idx) => (
+                                          <Badge 
+                                            key={idx} 
+                                            bg={m.isCompleted ? 'success' : 'secondary'}
+                                            style={{ fontSize: '0.7rem' }}
+                                          >
+                                            {m.isCompleted ? '✅' : '⭕'} {m.title.substring(0, 15)}...
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                    </Card.Body>
+                                  </Card>
+                                </Col>
+                              );
+                            })}
+                          </Row>
+                          <Row className="mt-3">
+                            <Col>
+                              <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
+                                <Card.Body className="text-center">
+                                  <div style={{ fontSize: '2rem', marginBottom: '5px' }}>➕</div>
+                                  <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
+                                  <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
+                                  <Link href="/projects">
+                                    <Button variant="outline-light" size="sm" className="mt-2 w-100">
+                                      Vytvořit Projekt
+                                    </Button>
+                                  </Link>
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </>
+                      )}
                     </Card.Body>
                   </Collapse>
                 </Card>

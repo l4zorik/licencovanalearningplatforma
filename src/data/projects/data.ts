@@ -9,6 +9,11 @@ export const PROJECT_CATEGORIES = [
   { id: 'infrastructure', name: '🏗️ Infrastruktura', icon: '☁️', color: '#607D8B' },
   { id: 'research', name: '🔬 Výzkum', icon: '🔬', color: '#00BCD4' },
   { id: 'personal', name: '🌱 Osobní rozvoj', icon: '🌱', color: '#8BC34A' },
+  { id: 'health', name: '💪 Zdraví', icon: '💪', color: '#E91E63' },
+  { id: 'finance', name: '💰 Finance', icon: '💰', color: '#FFD700' },
+  { id: 'relationships', name: '💕 Vztahy', icon: '💕', color: '#FF69B4' },
+  { id: 'intellect', name: '🧠 Intelekt', icon: '🧠', color: '#00CED1' },
+  { id: 'lifestyle', name: '🏠 Bydlení', icon: '🏠', color: '#FF7F50' },
 ];
 
 export const ALGORITHM_TYPE_ICONS: Record<string, string> = {
@@ -26,6 +31,8 @@ export const ALGORITHM_TYPE_ICONS: Record<string, string> = {
   networking: '🌐',
   automation: '⚙️',
   monitoring: '👁️',
+  planning: '📋',
+  marketing: '📈',
 };
 
 export const PROJECT_TEMPLATES: ProjectTemplate[] = [
@@ -160,6 +167,248 @@ export const PROJECT_TEMPLATES: ProjectTemplate[] = [
     xpReward: 4500,
     color: '#FF9800',
     icon: '📊'
+  },
+  {
+    id: 'peaceful-sleep',
+    title: 'Klidný Spánek',
+    description: 'Dosáhnutí kvalitního a pravidelného spánku pro optimální regeneraci',
+    category: 'health',
+    defaultGoals: ['8h spánku denně', 'Usínání do 23:00', 'Bez probuzení v noci'],
+    suggestedMilestones: [
+      'Pravidelný spací režim',
+      'Eliminace modrého světla večer',
+      'Optimální teplota pokoje',
+      'Žádná kofein po 14:00',
+      'Meditace před spaním',
+      '100 dní kvalitního spánku'
+    ],
+    suggestedAlgorithms: ['learning', 'automation', 'monitoring'],
+    skills: ['Discipline', 'Time Management', 'Stress Management'],
+    technologies: ['Sleep Tracker', 'Meditation Apps', 'Smart Alarm'],
+    estimatedHours: 50,
+    xpReward: 2000,
+    color: '#6A5ACD',
+    icon: '🌙'
+  },
+  {
+    id: 'rent-money',
+    title: 'Peníze na Nájem',
+    description: 'Stabilní příjem pro pokrytí nájmu a bydlení',
+    category: 'finance',
+    defaultGoals: ['15 000 Kč měsíčně na nájem', '3 měsíční rezerva', 'Automatizace plateb'],
+    suggestedMilestones: [
+      'Stabilní příjem 15 000 Kč',
+      'Vytvoření rozpočtu',
+      'Automatické platby nájmu',
+      '3 měsíční rezerva',
+      'Růst příjmu o 20%',
+      'Investování přebytků'
+    ],
+    suggestedAlgorithms: ['data_analysis', 'automation', 'documentation'],
+    skills: ['Budgeting', 'Financial Planning', 'Income Diversification'],
+    technologies: ['Budget Apps', 'Banking Tools', 'Investment Platforms'],
+    estimatedHours: 30,
+    xpReward: 1500,
+    color: '#32CD32',
+    icon: '🏠'
+  },
+  {
+    id: 'food-money',
+    title: 'Peníze na Jídlo',
+    description: 'Zdravá a vyvážená strava bez finančního stresu',
+    category: 'lifestyle',
+    defaultGoals: ['3000 Kč měsíčně na jídlo', 'Vaření doma 80%', 'Žádné plýtvání'],
+    suggestedMilestones: [
+      'Týdenní plánování jídel',
+      'Nákupní seznam před nákupem',
+      'Vaření 5x týdně',
+      'Zdravé svačiny',
+      'Minimalizace eat-out',
+      'Úspora 1000 Kč měsíčně'
+    ],
+    suggestedAlgorithms: ['planning', 'automation', 'data_analysis'],
+    skills: ['Meal Planning', 'Cooking', 'Financial Discipline'],
+    technologies: ['Recipe Apps', 'Shopping Lists', 'Calorie Trackers'],
+    estimatedHours: 40,
+    xpReward: 1200,
+    color: '#FF6347',
+    icon: '🥗'
+  },
+  {
+    id: 'energy-money',
+    title: 'Peníze na Energie',
+    description: 'Pokrytí nákladů na elektřinu, plyn a vodu',
+    category: 'lifestyle',
+    defaultGoals: ['2000 Kč měsíčně na energie', 'Snížení spotřeby o 20%', 'Optimalizace nákladů'],
+    suggestedMilestones: [
+      'Monitoring spotřeby',
+      'Výměna žárovek za LED',
+      'Optimalizace vytápění',
+      'Efektivní spotřebiče',
+      'Solární panely',
+      'Roční úspora 5000 Kč'
+    ],
+    suggestedAlgorithms: ['optimization', 'monitoring', 'data_analysis'],
+    skills: ['Energy Efficiency', 'Home Maintenance', 'Cost Optimization'],
+    technologies: ['Smart Meters', 'Energy Monitors', 'Smart Home'],
+    estimatedHours: 25,
+    xpReward: 1000,
+    color: '#1E90FF',
+    icon: '⚡'
+  },
+  {
+    id: 'car-money',
+    title: 'Auto & Řidičák',
+    description: 'Provoz auta, řidičský průkaz a potřeby do auta',
+    category: 'lifestyle',
+    defaultGoals: ['5000 Kč měsíčně na auto', 'Řidičák skupiny B', 'Bezpečné auto'],
+    suggestedMilestones: [
+      'Získání řidičáku',
+      'Nákup spolehlivého auta',
+      'Povinné ručení a havarijní pojištění',
+      'Pravidelný servis',
+      'Tankování efektivně',
+      'Roční rozpočet 60 000 Kč'
+    ],
+    suggestedAlgorithms: ['planning', 'documentation', 'monitoring'],
+    skills: ['Driving', 'Car Maintenance', 'Financial Planning'],
+    technologies: ['GPS Navigation', 'Fuel Trackers', 'Service Reminders'],
+    estimatedHours: 60,
+    xpReward: 2500,
+    color: '#DC143C',
+    icon: '🚗'
+  },
+  {
+    id: 'business-template',
+    title: 'Business Šablona',
+    description: 'Založení a rozvoj vlastního podnikání nebo side projectu',
+    category: 'finance',
+    defaultGoals: ['První zákazník', '1000 Kč měsíčně profit', 'Systematický růst'],
+    suggestedMilestones: [
+      'Nápad a validace',
+      'Vytvoření MVP',
+      'První zákazník',
+      'Profesionální web',
+      'Marketing strategy',
+      'Stabilní měsíční příjem'
+    ],
+    suggestedAlgorithms: ['coding', 'design', 'networking', 'documentation', 'marketing'],
+    skills: ['Entrepreneurship', 'Marketing', 'Sales', 'Product Development'],
+    technologies: ['Website', 'CRM', 'Social Media', 'Payment Gateway'],
+    estimatedHours: 200,
+    xpReward: 8000,
+    color: '#FFD700',
+    icon: '🚀'
+  },
+  {
+    id: 'super-intelligence',
+    title: 'Super Inteligence',
+    description: 'Rozvoj kognitivních schopností a intelektu',
+    category: 'intellect',
+    defaultGoals: ['Čtení 12 knih ročně', 'Daily learning 1h', 'Nové dovednosti'],
+    suggestedMilestones: [
+      'Denní čtení 30 minut',
+      'Denní učení 1 hodina',
+      '12 knih za rok',
+      'Nový kurz každý měsíc',
+      'Meditace a mozek',
+      'Polyglot úroveň'
+    ],
+    suggestedAlgorithms: ['learning', 'research', 'documentation', 'optimization'],
+    skills: ['Critical Thinking', 'Memory', 'Creativity', 'Problem Solving'],
+    technologies: ['Learning Platforms', 'Brain Training', 'Language Apps'],
+    estimatedHours: 300,
+    xpReward: 10000,
+    color: '#00CED1',
+    icon: '🧠'
+  },
+  {
+    id: 'strength-endurance',
+    title: 'Velká Síla a Výdrž',
+    description: 'Fyzická kondice, síla a vytrvalost',
+    category: 'health',
+    defaultGoals: ['Trénink 3x týdně', '100 kg bench press', '10 km běh'],
+    suggestedMilestones: [
+      'Pravidelný tréninkový režim',
+      'Základní síla (50kg bench)',
+      'Intermediate síla (80kg bench)',
+      'První 5km běh',
+      '10km běh pod 60 minut',
+      'Pokročilá síla (100kg bench)'
+    ],
+    suggestedAlgorithms: ['learning', 'optimization', 'monitoring'],
+    skills: ['Strength Training', 'Cardio', 'Flexibility', 'Nutrition'],
+    technologies: ['Workout Apps', 'Fitness Trackers', 'Nutrition Plans'],
+    estimatedHours: 150,
+    xpReward: 5000,
+    color: '#FF4500',
+    icon: '💪'
+  },
+  {
+    id: 'happy-family',
+    title: 'Šťastná Rodina',
+    description: 'Budování šťastné a zdravé rodinné atmosféry',
+    category: 'relationships',
+    defaultGoals: ['Kvalitní čas s rodinou 2x týdně', 'Pravidelná komunikace', 'Společné aktivity'],
+    suggestedMilestones: [
+      'Rodinné večeře',
+      'Společné víkendové aktivity',
+      'Pravidelná komunikace',
+      'Rodinné tradice',
+      'Podpora a respekt',
+      'Harmonická domácnost'
+    ],
+    suggestedAlgorithms: ['planning', 'documentation', 'automation'],
+    skills: ['Communication', 'Empathy', 'Conflict Resolution', 'Time Management'],
+    technologies: ['Family Calendars', 'Photo Sharing', 'Communication Apps'],
+    estimatedHours: 100,
+    xpReward: 3000,
+    color: '#FF69B4',
+    icon: '👨‍👩‍👧‍👦'
+  },
+  {
+    id: 'happy-girlfriend',
+    title: 'Šťastná Holka',
+    description: 'Budování zdravého a šťastného vztahu',
+    category: 'relationships',
+    defaultGoals: ['Kvalitní čas spolu', 'Otevřená komunikace', 'Vzájemná podpora'],
+    suggestedMilestones: [
+      'Pravidelná rande',
+      'Denní komunikace',
+      'Společné koníčky',
+      'Podpora cílů partnera',
+      'Řešení konfliktů zdravě',
+      'Plánování společné budoucnosti'
+    ],
+    suggestedAlgorithms: ['planning', 'documentation', 'networking'],
+    skills: ['Communication', 'Empathy', 'Active Listening', 'Conflict Resolution'],
+    technologies: ['Date Planning Apps', 'Relationship Trackers', 'Communication Tools'],
+    estimatedHours: 80,
+    xpReward: 2500,
+    color: '#FF1493',
+    icon: '💕'
+  },
+  {
+    id: 'financial-cushion',
+    title: 'Finanční Pošťáček',
+    description: 'Finanční rezerva pro nečekané výdaje a klid mysli',
+    category: 'finance',
+    defaultGoals: ['30 000 Kč rezerva', '6 měsíčních výdajů', 'Automatické spoření'],
+    suggestedMilestones: [
+      'První 10 000 Kč rezerva',
+      '30 000 Kč rezerva',
+      '3 měsíční výdaje',
+      '6 měsíčních výdajů',
+      'Automatické měsíční spoření',
+      'Investování rezervy'
+    ],
+    suggestedAlgorithms: ['data_analysis', 'automation', 'documentation'],
+    skills: ['Saving', 'Financial Discipline', 'Investment Basics'],
+    technologies: ['Savings Accounts', 'Budget Apps', 'Investment Platforms'],
+    estimatedHours: 20,
+    xpReward: 1500,
+    color: '#228B22',
+    icon: '🐷'
   }
 ];
 

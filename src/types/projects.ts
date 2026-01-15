@@ -16,7 +16,9 @@ export type AlgorithmType =
   | 'security'
   | 'networking'
   | 'automation'
-  | 'monitoring';
+  | 'monitoring'
+  | 'planning'
+  | 'marketing';
 
 export type Project = {
   id: string;
@@ -119,4 +121,6 @@ export const ALGORITHM_TYPE_ICONS: Record<AlgorithmType, string> = {
   networking: '🌐',
   automation: '⚙️',
   monitoring: '👁️',
+  planning: '📋',
+  marketing: '📈',
 };
