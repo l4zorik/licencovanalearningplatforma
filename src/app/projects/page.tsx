@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, ProgressBar, Dropdown, Modal, Form, ListGroup, Tabs, Tab } from 'react-bootstrap';
 import { INITIAL_PROJECTS, PROJECT_TEMPLATES, PROJECT_CATEGORIES, ALGORITHM_TYPE_ICONS, calculateProjectStats } from '@/data/projects/data';
 import { Project, AlgorithmType } from '@/types';
+import { calculateLevel, formatXP, getXPForAction } from '@/lib/gamification/xp-system';
 
 const ALGORITHM_TYPES: { id: AlgorithmType; label: string }[] = [
   { id: 'learning', label: '📖 Učení' },
   { id: 'coding', label: '💻 Kódování' },
   { id: 'optimization', label: '⚡ Optimalizace' },
-  { id: 'data_analysis', label: '📊 Datová analýza' },
+  { id: 'data_analysis', label: '📊 Datová Analýza' },
   { id: 'research', label: '🔬 Výzkum' },
   { id: 'design', label: '🎨 Design' },
   { id: 'debugging', label: '🐛 Debugování' },
@@ -28,6 +29,21 @@ export default function ProjectsPage() {
   const [showNewAlgorithm, setShowNewAlgorithm] = useState(false);
   const [showNewProject, setShowNewProject] = useState(false);
   const [filter, setFilter] = useState<string>('all');
+  const [showLevelUp, setShowLevelUp] = useState(false);
+
+  const [userXP, setUserXP] = useState(0);
+  const [dailyXP, setDailyXP] = useState(1250);
+  const [streak, setStreak] = useState(7);
+  const [todayAlgorithms, setTodayAlgorithms] = useState(5);
+  const [level, setLevel] = useState({ level: 6, title: 'Schopný', color: '#FF5722', progress: 65 });
+
+  useEffect(() => {
+    const newLevel = calculateLevel(userXP + dailyXP);
+    if (newLevel.level > level.level) {
+      setShowLevelUp(true);
+      setLevel(newLevel);
+    }
+  }, [userXP, dailyXP]);
 
   const filteredProjects = filter === 'all' 
     ? projects 
@@ -42,6 +58,10 @@ export default function ProjectsPage() {
     totalXp: projects.reduce((sum, p) => sum + calculateProjectStats(p).totalXp, 0),
   };
 
+  const comboBonus = todayAlgorithms >= 5 ? Math.min((todayAlgorithms - 4) * 5, 30) : 0;
+  const dailyXPCap = 5000;
+  const dailyProgress = Math.min(100, (dailyXP / dailyXPCap) * 100);
+
   return (
     <div style={{ 
       minHeight: '100vh',
@@ -49,7 +69,120 @@ export default function ProjectsPage() {
       padding: '20px'
     }}>
       <Container fluid>
+        {/* 🎮 GAMIFICATION HEADER */}
+        <Row className="mb-4">
+          <Col>
+            <Card style={{ 
+              background: 'linear-gradient(135deg, rgba(102,126,234,0.3) 0%, rgba(118,75,162,0.3) 100%)',
+              border: '2px solid rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <Card.Body>
+                <Row className="align-items-center">
+                  {/* Level Display */}
+                  <Col md={2} className="text-center">
+                    <div style={{ 
+                      width: '80px', 
+                      height: '80px', 
+                      borderRadius: '50%', 
+                      background: `linear-gradient(135deg, ${level.color}, #667eea)`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto',
+                      boxShadow: `0 0 30px ${level.color}80`
+                    }}>
+                      <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>
+                        {level.level}
+                      </span>
+                    </div>
+                    <div style={{ color: '#fff', fontWeight: 'bold', marginTop: '5px' }}>
+                      {level.title}
+                    </div>
+                  </Col>
+
+                  {/* XP Progress */}
+                  <Col md={4}>
+                    <div className="d-flex justify-content-between mb-1">
+                      <span style={{ color: '#fff' }}>XP Progress</span>
+                      <span style={{ color: '#FFD700' }}>{formatXP(dailyXP)} / 5,000 XP</span>
+                    </div>
+                    <ProgressBar 
+                      now={dailyProgress} 
+                      style={{ height: '20px' }}
+                      variant="warning"
+                      animated
+                    />
+                    <small style={{ color: '#8892b0' }}>
+                      {level.progress}% do dalšího levelu
+                    </small>
+                  </Col>
+
+                  {/* Streak Display */}
+                  <Col md={2} className="text-center">
+                    <div style={{ fontSize: '2.5rem' }}>🔥</div>
+                    <div style={{ color: '#fff', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                      {streak}
+                    </div>
+                    <small style={{ color: '#8892b0' }}>Denní Streak</small>
+                  </Col>
+
+                  {/* Combo Meter */}
+                  <Col md={2} className="text-center">
+                    <div style={{ fontSize: '2rem' }}>⚡</div>
+                    <div style={{ color: comboBonus > 0 ? '#FFD700' : '#fff', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                      +{comboBonus}%
+                    </div>
+                    <small style={{ color: '#8892b0' }}>Combo Bonus</small>
+                    <ProgressBar 
+                      now={Math.min(100, (todayAlgorithms / 10) * 100)} 
+                      variant="info"
+                      style={{ height: '6px', marginTop: '5px' }}
+                    />
+                    <small style={{ color: '#667eea' }}>{todayAlgorithms}/10 algoritmů</small>
+                  </Col>
+
+                  {/* Total Stats */}
+                  <Col md={2} className="text-center">
+                    <div style={{ fontSize: '1.5rem', color: '#FFD700', fontWeight: 'bold' }}>
+                      {formatXP(totalStats.totalXp)}
+                    </div>
+                    <small style={{ color: '#8892b0' }}>Celkem XP</small>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
         {/* Header */}
+        <Row className="mb-4">
+          <Col>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <h1 style={{ color: '#fff', marginBottom: '5px' }}>
+                  🔐 <span style={{ color: '#00d4ff' }}>Projekty</span>
+                </h1>
+                <p style={{ color: '#8892b0' }}>
+                  Logování algoritmů a sledování pokroku v reálném čase
+                </p>
+              </div>
+              <Button 
+                variant="primary" 
+                size="lg"
+                onClick={() => setShowNewProject(true)}
+                style={{ 
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  border: 'none'
+                }}
+              >
+                ➕ Nový Projekt
+              </Button>
+            </div>
+          </Col>
+        </Row>
+
+        {/* Stats Overview */}
         <Row className="mb-4">
           <Col>
             <div className="d-flex justify-content-between align-items-center">
