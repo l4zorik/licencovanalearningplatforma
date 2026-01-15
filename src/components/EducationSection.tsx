@@ -103,24 +103,30 @@ const CNCSkillsWithFacts = ({
   const cncSkills = SKILL_TEMPLATES.filter(s => s.category === 'CNC & Engineering');
   const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
   const [isPressed, setIsPressed] = useState(false);
+  const [pendingSkill, setPendingSkill] = useState<DisplaySkill | null>(null);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (skill: DisplaySkill) => {
     setIsPressed(true);
+    setPendingSkill(skill);
     const timer = setTimeout(() => {
       setIsPressed(false);
+      if (pendingSkill) {
+        onShowDetail(pendingSkill);
+      }
     }, 500);
     setPressTimer(timer);
   };
 
-  const handleMouseUp = (skill: DisplaySkill) => {
+  const handleMouseUp = () => {
     if (pressTimer) {
       clearTimeout(pressTimer);
       setPressTimer(null);
     }
-    if (isPressed) {
-      onAddSkill(skill);
-      setIsPressed(false);
+    if (isPressed && pendingSkill && pressTimer) {
+      onAddSkill(pendingSkill);
     }
+    setIsPressed(false);
+    setPendingSkill(null);
   };
 
   const handleMouseLeave = () => {
@@ -129,29 +135,23 @@ const CNCSkillsWithFacts = ({
       setPressTimer(null);
     }
     setIsPressed(false);
-  };
-
-  const handleClick = (skill: DisplaySkill) => {
-    if (!isPressed) {
-      onShowDetail(skill);
-    }
+    setPendingSkill(null);
   };
 
   const renderSkill = (skill: DisplaySkill) => (
     <Card 
-      className={`h-100 border-0 shadow-sm hover-shadow cursor-pointer ${isPressed ? 'scale-95' : ''}`}
+      className={`h-100 border-0 shadow-sm hover-shadow ${isPressed && pendingSkill?.id === skill.id ? 'scale-95' : ''}`}
       style={{ 
-        transition: 'all 0.2s', 
+        transition: 'all 0.15s', 
         cursor: 'pointer', 
         flex: '1 1 200px', 
         minWidth: '200px',
-        transform: isPressed ? 'scale(0.98)' : 'scale(1)',
-        opacity: isPressed ? 0.8 : 1
+        transform: isPressed && pendingSkill?.id === skill.id ? 'scale(0.95)' : 'scale(1)',
+        opacity: isPressed && pendingSkill?.id === skill.id ? 0.7 : 1
       }}
-      onMouseDown={handleMouseDown}
-      onMouseUp={() => handleMouseUp(skill)}
+      onMouseDown={() => handleMouseDown(skill)}
+      onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
-      onClick={() => handleClick(skill)}
     >
       <div style={{ height: '6px', backgroundColor: skill.iconColor }}></div>
       <Card.Body className="d-flex flex-column p-3">
@@ -681,77 +681,183 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showSkillDetail} onHide={() => setShowSkillDetail(false)} size="lg" centered>
+      <Modal show={showSkillDetail} onHide={() => setShowSkillDetail(false)} size="xl" centered contentClassName="border-0 shadow-lg" dialogClassName="modal-90w">
         {detailSkill && (
           <>
-            <Modal.Header closeButton style={{ backgroundColor: detailSkill.iconColor, color: 'white' }}>
-              <Modal.Title>{detailSkill.icon} {detailSkill.title}</Modal.Title>
+            <Modal.Header closeButton style={{ background: `linear-gradient(135deg, ${detailSkill.iconColor} 0%, ${detailSkill.iconColor}99 100%)`, color: 'white' }}>
+              <div className="d-flex align-items-center gap-3">
+                <span style={{ fontSize: '2.5rem' }}>{detailSkill.icon}</span>
+                <div>
+                  <Modal.Title className="fw-bold mb-0" style={{ fontSize: '1.5rem' }}>{detailSkill.title}</Modal.Title>
+                  <small className="text-white-50">{detailSkill.category}</small>
+                </div>
+              </div>
             </Modal.Header>
-            <Modal.Body>
-              <Row>
-                <Col md={8}>
-                  <h5>Popis</h5>
-                  <p>{detailSkill.description}</p>
-                  <h5 className="mt-3">💰 Platové rozmezí</h5>
-                  {detailSkill.marketData && (
-                    <Row className="g-2">
-                      <Col md={4}>
-                        <Card bg="success" text="white">
-                          <Card.Body className="text-center py-2">
-                            <h6>{detailSkill.marketData.salaryRange.junior}-{detailSkill.marketData.salaryRange.senior} Kč</h6>
-                            <small>Měsíčně</small>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      <Col md={4}>
-                        <Card bg="info" text="white">
-                          <Card.Body className="text-center py-2">
-                            <h6>{detailSkill.marketData.demandIndex}%</h6>
-                            <small>Poptávka</small>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      <Col md={4}>
-                        <Card bg="warning" text="dark">
-                          <Card.Body className="text-center py-2">
-                            <h6>{detailSkill.difficulty}/5</h6>
-                            <small>Obtížnost</small>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
-                  )}
-                  <h5 className="mt-3">🎯 Kariérní cesty</h5>
-                  <div className="d-flex flex-wrap gap-2">
-                    {detailSkill.careerPaths.map(path => (
-                      <Badge key={path} bg="primary" className="">{path}</Badge>
-                    ))}
+            <Modal.Body className="p-0">
+              <Row className="g-0">
+                <Col md={8} className="p-4 border-end">
+                  <div className="mb-4">
+                    <h5 className="fw-bold text-primary mb-3">📖 Popis skillu</h5>
+                    <p className="lead" style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>{detailSkill.description}</p>
+                  </div>
+                  
+                  <Row className="g-3 mb-4">
+                    <Col xs={6} md={3}>
+                      <Card className="h-100 border-0 bg-success text-white text-center">
+                        <Card.Body className="py-3">
+                          <div className="fs-3 fw-bold">{detailSkill.marketData?.salaryRange.junior || 0} Kč</div>
+                          <small>Junior</small>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col xs={6} md={3}>
+                      <Card className="h-100 border-0 bg-info text-white text-center">
+                        <Card.Body className="py-3">
+                          <div className="fs-3 fw-bold">{detailSkill.marketData?.salaryRange.senior || 0} Kč</div>
+                          <small>Senior</small>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col xs={6} md={3}>
+                      <Card className="h-100 border-0 bg-warning text-dark text-center">
+                        <Card.Body className="py-3">
+                          <div className="fs-3 fw-bold">{detailSkill.difficulty}/5</div>
+                          <small>Obtížnost</small>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col xs={6} md={3}>
+                      <Card className="h-100 border-0 bg-primary text-white text-center">
+                        <Card.Body className="py-3">
+                          <div className="fs-3 fw-bold">{detailSkill.marketData?.demandIndex || 0}%</div>
+                          <small>Poptávka</small>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+
+                  <div className="mb-4">
+                    <h6 className="fw-bold text-secondary mb-3">🎯 Kariérní cesty</h6>
+                    <div className="d-flex flex-wrap gap-2">
+                      {detailSkill.careerPaths.map(path => (
+                        <Badge key={path} bg="dark" className="px-3 py-2" style={{ fontSize: '0.85rem' }}>
+                          {path}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <h6 className="fw-bold text-secondary mb-3">🏷️ Související tagy</h6>
+                    <div className="d-flex flex-wrap gap-2">
+                      {detailSkill.tags.map(tag => (
+                        <Badge key={tag} bg="secondary" className="px-2 py-1">{tag}</Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h6 className="fw-bold text-secondary mb-3">📚 Doporučené zdroje</h6>
+                    <ListGroup variant="flush">
+                      {detailSkill.resources.length > 0 ? (
+                        detailSkill.resources.map((resource, idx) => (
+                          <ListGroup.Item key={idx} action href={resource.url} target="_blank" className="d-flex align-items-center gap-2">
+                            <Badge bg="primary" className="text-uppercase" style={{ fontSize: '0.65rem' }}>{resource.type}</Badge>
+                            <span>{resource.name}</span>
+                          </ListGroup.Item>
+                        ))
+                      ) : (
+                        <>
+                          <ListGroup.Item action className="d-flex align-items-center gap-2">
+                            <Badge bg="primary" className="text-uppercase" style={{ fontSize: '0.65rem' }}>📖</Badge>
+                            <span>{detailSkill.title} Official Documentation</span>
+                          </ListGroup.Item>
+                          <ListGroup.Item action className="d-flex align-items-center gap-2">
+                            <Badge bg="primary" className="text-uppercase" style={{ fontSize: '0.65rem' }}>🎓</Badge>
+                            <span>Online kurzy (Udemy, Coursera)</span>
+                          </ListGroup.Item>
+                          <ListGroup.Item action className="d-flex align-items-center gap-2">
+                            <Badge bg="primary" className="text-uppercase" style={{ fontSize: '0.65rem' }}>📺</Badge>
+                            <span>YouTube tutoriály</span>
+                          </ListGroup.Item>
+                        </>
+                      )}
+                    </ListGroup>
                   </div>
                 </Col>
-                <Col md={4}>
-                  <h6>🏷️ Tags</h6>
-                  <div className="mb-3 d-flex flex-wrap gap-1">
-                    {detailSkill.tags.map(tag => (
-                      <Badge key={tag} bg="secondary">{tag}</Badge>
-                    ))}
-                  </div>
-                  <h6 className="mt-3">📚 Zdroje</h6>
-                  <ListGroup className="mb-3">
-                    {detailSkill.resources.map((resource, idx) => (
-                      <ListGroup.Item key={idx} href={resource.url} target="_blank" style={{ cursor: 'pointer' }}>
-                        {resource.name}
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
+
+                <Col md={4} className="bg-light p-4">
+                  <Card className="border-0 shadow-sm mb-3">
+                    <Card.Body>
+                      <h6 className="fw-bold text-secondary mb-3">📊 Statistiky</h6>
+                      <div className="mb-3">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Čas do zvládnutí</small>
+                          <small className="fw-bold">{detailSkill.totalHours}h</small>
+                        </div>
+                        <div className="progress" style={{ height: '8px' }}>
+                          <div className="progress-bar" style={{ width: `${detailSkill.difficulty * 20}%`, backgroundColor: detailSkill.iconColor }}></div>
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>XP Odměna</small>
+                          <small className="fw-bold text-success">{detailSkill.difficulty * 50} XP</small>
+                        </div>
+                        <div className="progress" style={{ height: '8px' }}>
+                          <div className="progress-bar bg-success" style={{ width: `${Math.min(detailSkill.difficulty * 20, 100)}%` }}></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Poptávka na trhu</small>
+                          <small className="fw-bold">{detailSkill.marketData?.demandIndex || 0}%</small>
+                        </div>
+                        <div className="progress" style={{ height: '8px' }}>
+                          <div className="progress-bar bg-info" style={{ width: `${detailSkill.marketData?.demandIndex || 0}%` }}></div>
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+
+                  <Card className="border-0 shadow-sm mb-3">
+                    <Card.Body>
+                      <h6 className="fw-bold text-secondary mb-3">🎓 Co se naučíš</h6>
+                      <ul className="mb-0 ps-3">
+                        {detailSkill.modules.slice(0, 5).map((module, idx) => (
+                          <li key={idx} className="mb-2">{module.title}</li>
+                        ))}
+                        {detailSkill.modules.length > 5 && (
+                          <li className="text-muted">+ {detailSkill.modules.length - 5} dalších modulů...</li>
+                        )}
+                      </ul>
+                    </Card.Body>
+                  </Card>
+
+                  <Card className="border-0 shadow-sm">
+                    <Card.Body>
+                      <h6 className="fw-bold text-secondary mb-3">💼 Průměrný plat</h6>
+                      {detailSkill.marketData && (
+                        <div className="text-center">
+                          <div className="display-6 fw-bold text-success">
+                            {Math.round((detailSkill.marketData.salaryRange.junior + detailSkill.marketData.salaryRange.senior) / 2).toLocaleString()} Kč
+                          </div>
+                          <small className="text-muted">průměrný měsíční plat</small>
+                        </div>
+                      )}
+                    </Card.Body>
+                  </Card>
                 </Col>
               </Row>
             </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowSkillDetail(false)}>
+            <Modal.Footer className="bg-light">
+              <Button variant="outline-secondary" onClick={() => setShowSkillDetail(false)}>
                 Zavřít
               </Button>
               <Button 
                 variant="primary" 
+                size="lg"
+                className="px-4"
                 onClick={() => { handleAddSkill(detailSkill); setShowSkillDetail(false); }}
               >
                 + Přidat na nástěnku
