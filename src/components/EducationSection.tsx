@@ -93,14 +93,65 @@ interface Props {
   setCourses?: React.Dispatch<React.SetStateAction<Course[]>>;
 }
 
-const CNCSkillsWithFacts = ({ onAddSkill }: { onAddSkill: (skill: DisplaySkill) => void }) => {
+const CNCSkillsWithFacts = ({ 
+  onAddSkill, 
+  onShowDetail 
+}: { 
+  onAddSkill: (skill: DisplaySkill) => void;
+  onShowDetail: (skill: DisplaySkill) => void;
+}) => {
   const cncSkills = SKILL_TEMPLATES.filter(s => s.category === 'CNC & Engineering');
-  
+  const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handleMouseDown = () => {
+    setIsPressed(true);
+    const timer = setTimeout(() => {
+      setIsPressed(false);
+    }, 500);
+    setPressTimer(timer);
+  };
+
+  const handleMouseUp = (skill: DisplaySkill) => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+    if (isPressed) {
+      onAddSkill(skill);
+      setIsPressed(false);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+    setIsPressed(false);
+  };
+
+  const handleClick = (skill: DisplaySkill) => {
+    if (!isPressed) {
+      onShowDetail(skill);
+    }
+  };
+
   const renderSkill = (skill: DisplaySkill) => (
     <Card 
-      className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
-      style={{ transition: '0.2s', cursor: 'pointer', flex: '1 1 200px', minWidth: '200px' }}
-      onClick={() => onAddSkill(skill)}
+      className={`h-100 border-0 shadow-sm hover-shadow cursor-pointer ${isPressed ? 'scale-95' : ''}`}
+      style={{ 
+        transition: 'all 0.2s', 
+        cursor: 'pointer', 
+        flex: '1 1 200px', 
+        minWidth: '200px',
+        transform: isPressed ? 'scale(0.98)' : 'scale(1)',
+        opacity: isPressed ? 0.8 : 1
+      }}
+      onMouseDown={handleMouseDown}
+      onMouseUp={() => handleMouseUp(skill)}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => handleClick(skill)}
     >
       <div style={{ height: '6px', backgroundColor: skill.iconColor }}></div>
       <Card.Body className="d-flex flex-column p-3">
@@ -191,6 +242,8 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
   const [selectedSkill, setSelectedSkill] = useState<DisplaySkill | null>(null);
   const [showSkillModal, setShowSkillModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSkillDetail, setShowSkillDetail] = useState(false);
+  const [detailSkill, setDetailSkill] = useState<DisplaySkill | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'success' | 'warning' | 'info'>('success');
@@ -582,7 +635,10 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                 key={category}
               >
                 {category === 'CNC & Engineering' ? (
-                  <CNCSkillsWithFacts onAddSkill={handleAddSkill} />
+                  <CNCSkillsWithFacts 
+                    onAddSkill={handleAddSkill} 
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
                 ) : (
                   <>
                     <Row className="g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
@@ -623,6 +679,86 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
             ))}
           </Tabs>
         </Modal.Body>
+      </Modal>
+
+      <Modal show={showSkillDetail} onHide={() => setShowSkillDetail(false)} size="lg" centered>
+        {detailSkill && (
+          <>
+            <Modal.Header closeButton style={{ backgroundColor: detailSkill.iconColor, color: 'white' }}>
+              <Modal.Title>{detailSkill.icon} {detailSkill.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col md={8}>
+                  <h5>Popis</h5>
+                  <p>{detailSkill.description}</p>
+                  <h5 className="mt-3">💰 Platové rozmezí</h5>
+                  {detailSkill.marketData && (
+                    <Row className="g-2">
+                      <Col md={4}>
+                        <Card bg="success" text="white">
+                          <Card.Body className="text-center py-2">
+                            <h6>{detailSkill.marketData.salaryRange.junior}-{detailSkill.marketData.salaryRange.senior} Kč</h6>
+                            <small>Měsíčně</small>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                      <Col md={4}>
+                        <Card bg="info" text="white">
+                          <Card.Body className="text-center py-2">
+                            <h6>{detailSkill.marketData.demandIndex}%</h6>
+                            <small>Poptávka</small>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                      <Col md={4}>
+                        <Card bg="warning" text="dark">
+                          <Card.Body className="text-center py-2">
+                            <h6>{detailSkill.difficulty}/5</h6>
+                            <small>Obtížnost</small>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                  )}
+                  <h5 className="mt-3">🎯 Kariérní cesty</h5>
+                  <div className="d-flex flex-wrap gap-2">
+                    {detailSkill.careerPaths.map(path => (
+                      <Badge key={path} bg="primary" className="">{path}</Badge>
+                    ))}
+                  </div>
+                </Col>
+                <Col md={4}>
+                  <h6>🏷️ Tags</h6>
+                  <div className="mb-3 d-flex flex-wrap gap-1">
+                    {detailSkill.tags.map(tag => (
+                      <Badge key={tag} bg="secondary">{tag}</Badge>
+                    ))}
+                  </div>
+                  <h6 className="mt-3">📚 Zdroje</h6>
+                  <ListGroup className="mb-3">
+                    {detailSkill.resources.map((resource, idx) => (
+                      <ListGroup.Item key={idx} href={resource.url} target="_blank" style={{ cursor: 'pointer' }}>
+                        {resource.name}
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowSkillDetail(false)}>
+                Zavřít
+              </Button>
+              <Button 
+                variant="primary" 
+                onClick={() => { handleAddSkill(detailSkill); setShowSkillDetail(false); }}
+              >
+                + Přidat na nástěnku
+              </Button>
+            </Modal.Footer>
+          </>
+        )}
       </Modal>
 
       <ToastContainer position="bottom-end" className="mb-3 me-3">
