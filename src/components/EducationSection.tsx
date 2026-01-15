@@ -97,69 +97,53 @@ const CNCSkillsWithFacts = ({ onAddSkill }: { onAddSkill: (skill: DisplaySkill) 
   const cncSkills = SKILL_TEMPLATES.filter(s => s.category === 'CNC & Engineering');
   
   const renderSkill = (skill: DisplaySkill) => (
-    <Col key={skill.id} xs={6} md={4} lg={3} xl={2}>
-      <Card 
-        className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
-        style={{ transition: '0.2s', cursor: 'pointer' }}
-        onClick={() => onAddSkill(skill)}
-      >
-        <div style={{ height: '6px', backgroundColor: skill.iconColor }}></div>
-        <Card.Body className="d-flex flex-column p-3">
-          <div className="d-flex justify-content-between align-items-start mb-2">
-            <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.75rem' }}>{skill.difficulty}/5</Badge>
-            {skill.marketData && (
-              <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} className="shadow-sm" style={{ fontSize: '0.75rem' }}>
-                {skill.marketData.demandIndex}%
-              </Badge>
-            )}
-          </div>
-          <h6 className="card-title fw-bold mb-0 text-truncate" title={skill.title} style={{ fontSize: '0.95rem' }}>
-            {skill.icon} {skill.title}
-          </h6>
-        </Card.Body>
-      </Card>
-    </Col>
+    <Card 
+      className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
+      style={{ transition: '0.2s', cursor: 'pointer', flex: '1 1 200px', minWidth: '200px' }}
+      onClick={() => onAddSkill(skill)}
+    >
+      <div style={{ height: '6px', backgroundColor: skill.iconColor }}></div>
+      <Card.Body className="d-flex flex-column p-3">
+        <div className="d-flex justify-content-between align-items-start mb-2">
+          <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.75rem' }}>{skill.difficulty}/5</Badge>
+          {skill.marketData && (
+            <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} className="shadow-sm" style={{ fontSize: '0.75rem' }}>
+              {skill.marketData.demandIndex}%
+            </Badge>
+          )}
+        </div>
+        <h6 className="card-title fw-bold mb-0 text-truncate" title={skill.title} style={{ fontSize: '0.95rem' }}>
+          {skill.icon} {skill.title}
+        </h6>
+      </Card.Body>
+    </Card>
   );
 
   const renderFact = (fact: typeof CNC_FACTS[0]) => (
-    <Col xs={12}>
-      <Card className="border-0 shadow-sm" style={{ background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)' }}>
-        <Card.Body className="py-3 px-4">
-          <p className="mb-0 text-center fw-bold text-white" style={{ fontSize: '1rem' }}>{fact.text}</p>
-        </Card.Body>
-      </Card>
-    </Col>
+    <Card className="border-0 shadow-sm w-100" style={{ background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)' }}>
+      <Card.Body className="py-3 px-4">
+        <p className="mb-0 text-center fw-bold text-white" style={{ fontSize: '1rem' }}>{fact.text}</p>
+      </Card.Body>
+    </Card>
+  );
+
+  const renderSkillRow = (skills: DisplaySkill[]) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+      {skills.map((skill) => renderSkill(skill))}
+    </div>
   );
 
   return (
     <div>
-      <Row className="g-3">
-        {cncSkills.slice(0, 5).map((skill, idx) => renderSkill(skill))}
-      </Row>
-      <Row className="g-3 mt-2">
-        {renderFact(CNC_FACTS[0])}
-      </Row>
-      <Row className="g-3 mt-2">
-        {cncSkills.slice(5, 10).map((skill, idx) => renderSkill(skill))}
-      </Row>
-      <Row className="g-3 mt-2">
-        {renderFact(CNC_FACTS[1])}
-      </Row>
-      <Row className="g-3 mt-2">
-        {cncSkills.slice(10, 15).map((skill, idx) => renderSkill(skill))}
-      </Row>
-      <Row className="g-3 mt-2">
-        {renderFact(CNC_FACTS[2])}
-      </Row>
-      <Row className="g-3 mt-2">
-        {cncSkills.slice(15, 20).map((skill, idx) => renderSkill(skill))}
-      </Row>
-      <Row className="g-3 mt-2">
-        {renderFact(CNC_FACTS[3])}
-      </Row>
-      <Row className="g-3 mt-2">
-        {cncSkills.slice(20, 25).map((skill, idx) => renderSkill(skill))}
-      </Row>
+      {renderSkillRow(cncSkills.slice(0, 5))}
+      <div className="my-3">{renderFact(CNC_FACTS[0])}</div>
+      {renderSkillRow(cncSkills.slice(5, 10))}
+      <div className="my-3">{renderFact(CNC_FACTS[1])}</div>
+      {renderSkillRow(cncSkills.slice(10, 15))}
+      <div className="my-3">{renderFact(CNC_FACTS[2])}</div>
+      {renderSkillRow(cncSkills.slice(15, 20))}
+      <div className="my-3">{renderFact(CNC_FACTS[3])}</div>
+      {renderSkillRow(cncSkills.slice(20, 25))}
       <div className="text-center mt-3">
         <small className="text-muted">⚙️ CNC & Engineering: {cncSkills.length} skills</small>
       </div>
