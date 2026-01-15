@@ -110,9 +110,7 @@ const CNCSkillsWithFacts = ({
     setPendingSkill(skill);
     const timer = setTimeout(() => {
       setIsPressed(false);
-      if (pendingSkill) {
-        onShowDetail(pendingSkill);
-      }
+      onShowDetail(skill);
     }, 500);
     setPressTimer(timer);
   };
