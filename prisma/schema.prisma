@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courses     Course[]
+  jobs        Job[]
+  missions    UserMission[]
+  achievements Achievement[]
+}
+
+model Course {
+  id           Int      @id @default(autoincrement())
+  title        String
+  platform     String
+  instructor   String?
+  totalHours   Int
+  spentHours   Int      @default(0)
+  priority     String   @default("Medium") // High, Medium, Low
+  deadline     DateTime?
+  tags         String   // JSON array of skills
+  description  String
+  resources    String   // JSON array of Resource objects
+  notes        String   @default("")
+  category     String?
+  icon         String?
+  iconColor    String?
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  modules      Module[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Module {
+  id        Int     @id @default(autoincrement())
+  title     String
+  isCompleted Boolean @default(false)
+  courseId  Int
+  course    Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id             Int      @id @default(autoincrement())
+  title          String
+  company        String
+  salaryRange    String?
+  location       String
+  status         String   @default("To Apply") // To Apply, Applied, Interview, Offer, Rejected
+  requiredSkills String   // JSON array
+  notes          String   @default("")
+  perks          String   // JSON array
+  difficulty     Int?
+  category       String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Mission {
+  id          String   @id
+  title       String
+  category    String
+  difficulty  String
+  xp          Int
+  tags        String
+  description String
+  briefing    String
+  objectives  String   // JSON array of objectives
+  assets      String   // JSON array of assets
+  deliverables String   // JSON array
+  timeLimit   Int?
+  prerequisites String   // JSON array
+  status      String   @default("Available")
+  progress    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userMissions UserMission[]
+}
+
+model UserMission {
+  id        String   @id @default(cuid())
+  userId    String
+  missionId String
+  status    String   @default("Available")
+  progress  Int      @default(0)
+  startedAt DateTime?
+  completedAt DateTime?
+  feedback  String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mission   Mission  @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, missionId])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String
+  xpReward    Int
+  unlockedAt  DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
