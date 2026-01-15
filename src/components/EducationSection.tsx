@@ -122,7 +122,7 @@ const CNCSkillsWithFacts = ({
       clearTimeout(pressTimer);
       setPressTimer(null);
     }
-    if (isPressed && pendingSkill && pressTimer) {
+    if (isPressed && pendingSkill) {
       onAddSkill(pendingSkill);
     }
     setIsPressed(false);
@@ -140,6 +140,7 @@ const CNCSkillsWithFacts = ({
 
   const renderSkill = (skill: DisplaySkill) => (
     <Card 
+      key={skill.id}
       className={`h-100 border-0 shadow-sm hover-shadow ${isPressed && pendingSkill?.id === skill.id ? 'scale-95' : ''}`}
       style={{ 
         transition: 'all 0.15s', 
