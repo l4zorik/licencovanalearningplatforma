@@ -6,13 +6,20 @@ Moderní webová aplikace pro sledování kariérního rozvoje, skill management
 
 ## 🎯 Klíčové Funkce
 
+### 🚀 Projekty (Nové - Hlavní Nad téma)
+- **Algoritmy Logování**: 14 typů algoritmů (učení, kódování, debugging, deployment, atd.)
+- **XP Systém**: Gamifikace s levely, streak, combo meter
+- **Projekty Dashboard**: Level progress, streak flame, combo bonus
+- **Goal-Project Linking**: Projekty propojené s Cíli
+- **Daily Progress**: Trakování denní aktivity
+
 ### 👤 Osobní Rozvoj
 - **Skill Tracking**: Sledování pokroku ve vzdělávání
 - **XP Systém**: Gamifikace s levely a achievementy
 - **Kurzy a Lekce**: Strukturované vzdělávací moduly
 - **Milestony**: Dlouhodobé cíle s odměnami
 - **Roadmap**: Vizuální postup kariérní cestou
-- **Life OS 2026**: Komplexní life goal tracking
+- **🎯 Cíle**: Komplexní life goal tracking (dříve Life OS 2026)
   - Zatahovací karta s animací
   - Goals Manager modal
   - Přidávání/odstraňování cílů
@@ -20,9 +27,11 @@ Moderní webová aplikace pro sledování kariérního rozvoje, skill management
   - 13 životních kategorií
 
 ### 🎮 Gamifikace
-- **30 Levelů**: Od Nováčka po Neohroženého
-- **50+ Achievementů**: Common, Rare, Epic, Legendary, Mythic
+- **30 Levelů**: Od Nováčka po Ultimate
+- **35+ Achievementů**: Common, Rare, Epic, Legendary, Mythic
 - **Milestony**: 30+ sledovaných cílů s odměnami
+- **Streaky**: Denní streak tracking s bonusy
+- **Combo Meter**: Bonus za 5+ algoritmů/den
 - **Kariérní Roadmap**: 5 fází od Základů po Expert
 - **8 Kariérních cest**: Frontend, Backend, Full Stack, Data Science, Security, DevOps, Mobile, AI/ML
 
@@ -79,22 +88,25 @@ Moderní webová aplikace pro sledování kariérního rozvoje, skill management
 ```
 src/
 ├── app/                    # Next.js App Router
+│   ├── projects/           # Projekty a algoritmy stránka [NOVÉ]
 │   ├── achievements/       # Achievementy a milestones stránka
 │   ├── roadmap/           # Kariérní roadmap stránka
+│   ├── journey/           # User journey vizualizace
 │   ├── analytics/         # Analytics stránka
 │   ├── articles/          # Články o IT & AI
 │   ├── auth/              # Authentication
 │   ├── career-report/     # Kariérní přehled
 │   ├── courses/           # Online kurzy
+│   ├── quick-courses/     # Rychlokurzy
 │   ├── missions/          # Mise a úkoly
-│   ├── training/          # Vzdělávací moduly
 │   └── page.tsx           # Hlavní dashboard
 ├── components/            # React komponenty
 │   ├── gamification/      # Gamifikace komponenty
 │   │   ├── AchievementsGallery.tsx
 │   │   ├── UserProgressCard.tsx
 │   │   ├── MilestonesTracker.tsx
-│   │   └── RoadmapDisplay.tsx
+│   │   ├── RoadmapDisplay.tsx
+│   │   └── UserJourneyRoadmap.tsx
 │   ├── AkizeGuide.tsx     # AI chat průvodce
 │   ├── EducationSection.tsx  # Skill management
 │   ├── WorkSection.tsx        # Job board s drag & drop
@@ -233,6 +245,15 @@ npm run build
 ## 🤝 Contributing
 
 Projekt je open-source s cílem pomoci lidem v kariérním rozvoji.
+
+## 📚 Dokumentace
+
+| Dokument | Popis |
+|----------|-------|
+| [DEVELOPMENT.md](DEVELOPMENT.md) | Kompletní vývojová dokumentace |
+| [CHANGELOG.md](CHANGELOG.md) | Historie změn a verzí |
+| [AGENTS.md](AGENTS.md) | AI Agent guidelines |
+| [LICENSE](LICENSE) | GNU GPLv3 License |
 
 ## 📞 Kontakt
 
