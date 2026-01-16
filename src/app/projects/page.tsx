@@ -838,16 +838,18 @@ export default function ProjectsPage() {
               </Form>
             </Tab>
             <Tab eventKey="templates" title={<span style={{ color: '#fff' }}>📋 Šablony</span>}>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <Button 
-                  variant={selectedTemplates.length === PROJECT_TEMPLATES.length ? "outline-danger" : "outline-success"} 
-                  size="sm"
-                  onClick={handleSelectAllTemplates}
-                >
-                  {selectedTemplates.length === PROJECT_TEMPLATES.length 
-                    ? `❌ Zrušit výběr všech (${selectedTemplates.length})` 
-                    : `✅ Vybrat všechny (${selectedTemplates.length}/${PROJECT_TEMPLATES.length})`}
-                </Button>
+              <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <div className="d-flex gap-2">
+                  <Button 
+                    variant={selectedTemplates.length === PROJECT_TEMPLATES.length ? "outline-danger" : "outline-success"} 
+                    size="sm"
+                    onClick={handleSelectAllTemplates}
+                  >
+                    {selectedTemplates.length === PROJECT_TEMPLATES.length 
+                      ? `❌ Zrušit vše (${selectedTemplates.length})` 
+                      : `✅ Vybrat všechny (${selectedTemplates.length}/${PROJECT_TEMPLATES.length})`}
+                  </Button>
+                </div>
                 {selectedTemplates.length > 0 && (
                   <Badge bg="success" className="fs-6">
                     Vybráno: {selectedTemplates.length} šablon
@@ -867,36 +869,29 @@ export default function ProjectsPage() {
                           background: isSelected 
                             ? `linear-gradient(145deg, ${template.color}40 0%, ${template.color}20 100%)`
                             : 'rgba(255,255,255,0.05)',
-                          cursor: 'pointer',
                           border: isSelected 
                             ? `3px solid ${template.color}`
                             : '2px solid transparent',
                           transition: 'all 0.3s ease'
                         }}
                         className="hover-card"
-                        onClick={() => handleSelectTemplate(template)}
-                        onDoubleClick={() => handleTemplateDetail(template)}
                       >
                         <Card.Body>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
                             <span style={{ fontSize: '2rem' }}>{template.icon}</span>
                             <div className="d-flex align-items-center gap-2">
                               <Badge bg="info">{template.estimatedHours}h</Badge>
-                              <div 
-                                style={{ 
-                                  width: '24px', 
-                                  height: '24px', 
-                                  borderRadius: '50%', 
-                                  border: isSelected ? `2px solid ${template.color}` : '2px solid #667eea',
-                                  background: isSelected ? template.color : 'transparent',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  fontSize: '12px'
+                              <Button 
+                                variant="outline-light" 
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleTemplateDetail(template);
                                 }}
+                                style={{ padding: '2px 8px' }}
                               >
-                                {isSelected && '✓'}
-                              </div>
+                                👁️
+                              </Button>
                             </div>
                           </div>
                           <Card.Title style={{ color: '#fff', fontSize: '1rem' }}>{template.title}</Card.Title>
@@ -929,11 +924,30 @@ export default function ProjectsPage() {
                               </Badge>
                             ))}
                           </div>
-                          {isSelected && (
-                            <div className="text-center mt-2">
-                              <Badge bg="success" className="w-100">✅ Vybráno</Badge>
-                            </div>
-                          )}
+                          <div className="d-flex gap-2 mt-3">
+                            <Button 
+                              variant={isSelected ? "outline-danger" : "outline-success"} 
+                              size="sm"
+                              className="flex-grow-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSelectTemplate(template);
+                              }}
+                            >
+                              {isSelected ? '❌ Odznačit' : '✅ Vybrat'}
+                            </Button>
+                            <Button 
+                              variant="outline-info" 
+                              size="sm"
+                              className="flex-grow-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTemplateDetail(template);
+                              }}
+                            >
+                              📋 Checklist
+                            </Button>
+                          </div>
                         </Card.Body>
                       </Card>
                     </Col>
