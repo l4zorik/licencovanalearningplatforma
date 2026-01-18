@@ -9,7 +9,7 @@ interface LifeGoalsSectionProps {
 }
 
 export default function LifeGoalsSection({ projects }: LifeGoalsSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<LifeCategory | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingGoal, setEditingGoal] = useState<LifeGoal | null>(null);
