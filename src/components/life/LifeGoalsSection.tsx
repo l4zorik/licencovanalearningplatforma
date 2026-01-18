@@ -18,7 +18,7 @@ export default function LifeGoalsSection({ projects }: LifeGoalsSectionProps) {
   function initializeGoals(): LifeGoal[] {
     return LIFE_CATEGORIES.map(cat => ({
       id: `goal_${cat.key}`,
-      title: cat.label.replace(/[^\w\s]/g, '').trim(),
+      title: cat.label.replace(/^[^\s]+\s*/, '').trim(),
       category: cat.key,
       milestones: cat.defaultMilestones.map((title, idx) => ({
         id: `milestone_${cat.key}_${idx}`,
