@@ -11,6 +11,7 @@ import { JOB_TEMPLATES } from '@/components/WorkSection';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Project, ProjectTemplate } from '@/types';
 import { calculateProjectStats, PROJECT_TEMPLATES } from '@/data/projects/data';
+import FocusedProjectCard from '@/components/projects/FocusedProjectCard';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -1028,110 +1029,18 @@ export default function Home() {
                     </div>
                   </Card.Header>
                       <Collapse in={isProjectsExpanded}>
-                        <Card.Body className="p-3">
-                          {getFocusedProject() ? (
-                            <Card style={{ 
-                              background: `linear-gradient(135deg, ${getFocusedProject()?.color}40 0%, ${getFocusedProject()?.color}20 100%)`,
-                              border: `3px solid ${getFocusedProject()?.color}`
-                            }}>
-                              <Card.Header style={{ background: getFocusedProject()?.color || '#667eea', color: '#fff' }}>
-                                <div className="d-flex justify-content-between align-items-center">
-                                  <div className="d-flex align-items-center gap-3">
-                                    <span style={{ fontSize: '2.5rem' }}>{getFocusedProject()?.icon}</span>
-                                    <div>
-                                      <h4 className="mb-0">{getFocusedProject()?.title}</h4>
-                                      <small>{getFocusedProject()?.description}</small>
-                                    </div>
-                                  </div>
-                                  <Button variant="outline-light" size="sm" onClick={() => setFocusedProjectId(null)}>
-                                    ❌ Zavřít Focus
-                                  </Button>
-                                </div>
-                              </Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col md={8}>
-                                    <h6 style={{ color: '#fff' }}>Milníky</h6>
-                                    <ListGroup variant="flush">
-                                      {getFocusedProject()?.milestones.map((milestone, idx) => (
-                                        <ListGroup.Item 
-                                          key={idx}
-                                          style={{ background: 'transparent', border: 'none', color: '#ccc' }}
-                                          action
-                                          onClick={() => {
-                                            const currentFocused = getFocusedProject();
-                                            if (!currentFocused) return;
-                                            setProjects(prev => prev.map(p => {
-                                              if (p.id === currentFocused.id) {
-                                                const newMilestones = [...p.milestones];
-                                                newMilestones[idx] = { ...newMilestones[idx], isCompleted: !newMilestones[idx].isCompleted };
-                                                return { ...p, milestones: newMilestones };
-                                              }
-                                              return p;
-                                            }));
-                                          }}
-                                        >
-                                          <div className="d-flex align-items-center gap-2">
-                                            <span>{milestone.isCompleted ? '✅' : '⭕'}</span>
-                                            <span style={{ textDecoration: milestone.isCompleted ? 'line-through' : 'none', opacity: milestone.isCompleted ? 0.6 : 1 }}>
-                                              {milestone.title}
-                                            </span>
-                                            <Badge bg="warning" className="ms-auto">+{milestone.xpReward} XP</Badge>
-                                          </div>
-                                        </ListGroup.Item>
-                                      ))}
-                                    </ListGroup>
-                                    
-                                    <h6 className="mt-4" style={{ color: '#fff' }}>Algoritmy ({getFocusedProject()?.algorithms.length})</h6>
-                                    {getFocusedProject()?.algorithms.length === 0 ? (
-                                      <p style={{ color: '#888' }}>Zatím žádné algoritmy</p>
-                                    ) : (
-                                      <div className="d-flex gap-1 flex-wrap">
-                                        {getFocusedProject()?.algorithms.map((alg) => (
-                                          <Badge key={alg.id} bg="info" style={{ fontSize: '0.8rem' }}>
-                                            {alg.type}: {alg.title}
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    )}
-                                  </Col>
-                                  <Col md={4}>
-                                    <Card style={{ background: 'rgba(0,0,0,0.3)' }}>
-                                      <Card.Body>
-                                        <h6 style={{ color: '#fff' }}>Statistiky</h6>
-                                        {getFocusedProject() && (
-                                          <>
-                                            <div className="d-flex justify-content-between mb-2">
-                                              <small style={{ color: '#888' }}>Pokrok</small>
-                                              <span style={{ color: '#fff' }}>{calculateProjectStats(getFocusedProject()!).progress}%</span>
-                                            </div>
-                                            <ProgressBar now={calculateProjectStats(getFocusedProject()!).progress} variant="success" style={{ height: '8px' }} />
-                                            <div className="d-flex justify-content-between mb-2 mt-2">
-                                              <small style={{ color: '#888' }}>Dokončeno</small>
-                                              <span style={{ color: '#fff' }}>{calculateProjectStats(getFocusedProject()!).completedMilestones}/{calculateProjectStats(getFocusedProject()!).totalMilestones}</span>
-                                            </div>
-                                            <div className="d-flex justify-content-between mb-2">
-                                              <small style={{ color: '#888' }}>Algoritmy</small>
-                                              <span style={{ color: '#fff' }}>{getFocusedProject()!.algorithms.length}</span>
-                                            </div>
-                                            <div className="d-flex justify-content-between mb-2">
-                                              <small style={{ color: '#888' }}>Hodiny</small>
-                                              <span style={{ color: '#fff' }}>{getFocusedProject()!.totalHours}h</span>
-                                            </div>
-                                            <hr style={{ borderColor: 'rgba(255,255,255,0.2)' }} />
-                                            <div className="d-flex justify-content-between">
-                                              <small style={{ color: '#888' }}>Celkem XP</small>
-                                              <span style={{ color: '#FFD700', fontWeight: 'bold' }}>+{calculateProjectStats(getFocusedProject()!).totalXp}</span>
-                                            </div>
-                                          </>
-                                        )}
-                                      </Card.Body>
-                                    </Card>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            </Card>
-                          ) : projects.length === 0 ? (
+                          <Card.Body className="p-3">
+                            {getFocusedProject() ? (
+                              <FocusedProjectCard
+                                project={getFocusedProject()!}
+                                onClose={() => setFocusedProjectId(null)}
+                                onUpdate={(updatedProject) => {
+                                  setProjects(prev => prev.map(p =>
+                                    p.id === updatedProject.id ? updatedProject : p
+                                  ));
+                                }}
+                              />
+                            ) : projects.length === 0 ? (
                         <Row>
                           <Col md={4}>
                             <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
