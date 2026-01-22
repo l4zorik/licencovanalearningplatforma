@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button, ProgressBar, Badge, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, ProgressBar, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ProjectMilestone, TimerSettings, DEFAULT_TIMER_SETTINGS } from '@/types/projects';
-import { formatHours, calculateMilestoneProgress, getUrgencyLevel, getUrgencyBadgeVariant } from '@/lib/timers/time-utils';
+import { calculateMilestoneProgress, getUrgencyLevel, getUrgencyBadgeVariant } from '@/lib/timers/time-utils';
 
 interface MilestoneTimerProps {
   milestone: ProjectMilestone;
@@ -12,27 +12,59 @@ interface MilestoneTimerProps {
   isEditing: boolean;
 }
 
+interface TimeRemaining {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  total: number;
+  percentage: number;
+  isOverdue: boolean;
+}
+
 export default function MilestoneTimer({ milestone, settings, onUpdate, isEditing }: MilestoneTimerProps) {
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [remainingTime, setRemainingTime] = useState<TimeRemaining | null>(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [editHours, setEditHours] = useState(milestone.targetHours?.toString() || settings.defaultMilestoneHours.toString());
+  const [targetWhenStarted, setTargetWhenStarted] = useState<number>(0);
 
+  const targetMinutes = (milestone.targetHours || settings.defaultMilestoneHours) * 60;
+  
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (milestone.timerActive && !milestone.isCompleted) {
-      interval = setInterval(() => {
-        setElapsedTime(prev => prev + 1);
-      }, 60000);
+    if (!milestone.timerActive || milestone.isCompleted) {
+      setRemainingTime(null);
+      setIsTimerRunning(false);
+      return;
     }
-    return () => clearInterval(interval);
-  }, [milestone.timerActive, milestone.isCompleted]);
 
-  useEffect(() => {
-    setElapsedTime(milestone.timeSpent);
-    setEditHours(milestone.targetHours?.toString() || settings.defaultMilestoneHours.toString());
-  }, [milestone, settings.defaultMilestoneHours]);
+    const updateTime = () => {
+      const target = targetWhenStarted || targetMinutes;
+      const now = Date.now();
+      const startTime = milestone.timerStartedAt ? new Date(milestone.timerStartedAt).getTime() : now;
+      const elapsed = Math.floor((now - startTime) / 1000);
+      const remaining = Math.max(0, target * 60 - elapsed);
+      
+      const totalMinutes = Math.floor(remaining / 60);
+      const percentage = target > 0 ? (remaining / (target * 60)) * 100 : 100;
+
+      setRemainingTime({
+        days: Math.floor(totalMinutes / 1440),
+        hours: Math.floor((totalMinutes % 1440) / 60),
+        minutes: totalMinutes % 60,
+        seconds: Math.floor(remaining % 60),
+        total: remaining,
+        percentage: Math.max(0, Math.min(100, percentage)),
+        isOverdue: remaining <= 0,
+      });
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, [milestone.timerActive, milestone.timerStartedAt, milestone.isCompleted, targetMinutes, targetWhenStarted]);
 
   const handleStartTimer = () => {
+    setTargetWhenStarted(targetMinutes);
     onUpdate({
       ...milestone,
       timerActive: true,
@@ -42,17 +74,11 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
   };
 
   const handlePauseTimer = () => {
-    const newTimeSpent = milestone.timeSpent + (milestone.timerStartedAt 
-      ? Math.floor((Date.now() - new Date(milestone.timerStartedAt).getTime()) / 60000)
-      : elapsedTime);
-    
     onUpdate({
       ...milestone,
       timerActive: false,
-      timeSpent: newTimeSpent,
     });
     setIsTimerRunning(false);
-    setElapsedTime(newTimeSpent);
   };
 
   const handleResetTimer = () => {
@@ -62,120 +88,140 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
       timeSpent: 0,
       timerStartedAt: undefined,
     });
-    setElapsedTime(0);
     setIsTimerRunning(false);
+    setRemainingTime(null);
   };
 
   const handleUpdateTargetHours = () => {
-    const targetHours = parseFloat(editHours) || settings.defaultMilestoneHours;
-    onUpdate({ ...milestone, targetHours });
+    const targetH = parseFloat(editHours) || settings.defaultMilestoneHours;
+    onUpdate({ ...milestone, targetHours: targetH });
   };
 
-  const targetMinutes = (milestone.targetHours || settings.defaultMilestoneHours) * 60;
   const progress = calculateMilestoneProgress(milestone.timeSpent, milestone.targetHours || settings.defaultMilestoneHours);
   const urgencyLevel = getUrgencyLevel(100 - progress, settings.urgencyThresholds);
   const urgencyVariant = getUrgencyBadgeVariant(urgencyLevel);
 
-  const formatMinutes = (mins: number): string => {
-    if (!mins || isNaN(mins)) return '0h';
-    if (mins < 60) return `${mins}m`;
-    const hours = Math.floor(mins / 60);
-    const remainingMins = mins % 60;
-    return remainingMins > 0 ? `${hours}h ${remainingMins}m` : `${hours}h`;
+  const formatTime = (t: TimeRemaining | null): string => {
+    if (!t) return '--:--:--:--';
+    if (t.isOverdue) return `+${Math.abs(t.days)}d ${Math.abs(t.hours)}h`;
+    return `${String(t.days).padStart(2, '0')}:${String(t.hours).padStart(2, '0')}:${String(t.minutes).padStart(2, '0')}:${String(t.seconds).padStart(2, '0')}`;
   };
 
-  const timeDisplay = milestone.isCompleted 
-    ? `✅ ${formatMinutes(milestone.timeSpent)}`
-    : isTimerRunning 
-      ? `⏱️ ${formatMinutes(elapsedTime)} / ${formatMinutes(targetMinutes)}`
-      : `⏱️ ${formatMinutes(milestone.timeSpent)} / ${formatMinutes(targetMinutes)}`;
+  const getTimerColor = () => {
+    if (!remainingTime) return '#4CAF50';
+    if (remainingTime.isOverdue) return '#ff4444';
+    if (urgencyLevel === 'critical') return '#ff4444';
+    if (urgencyLevel === 'warning') return '#ff8800';
+    if (urgencyLevel === 'caution') return '#ffbb33';
+    return '#4CAF50';
+  };
+
+  const currentTime = remainingTime || { 
+    days: 0, hours: 0, minutes: 0, seconds: 0, 
+    total: targetMinutes * 60, 
+    percentage: 100, 
+    isOverdue: false 
+  };
+
+  const timerWidth = isEditing ? '100px' : '80px';
+
+  if (milestone.isCompleted) {
+    return (
+      <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2">
+        <span style={{ fontSize: '0.8rem', color: '#4CAF50' }}>✅ Hotovo</span>
+        {milestone.timeSpent > 0 && (
+          <span style={{ fontSize: '0.8rem', color: '#888' }}>
+            Celkem: {Math.floor(milestone.timeSpent / 60)}h {milestone.timeSpent % 60}m
+          </span>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2">
-      <OverlayTrigger
-        placement="top"
-        overlay={<Tooltip>{isTimerRunning ? 'Timer běží' : 'Timer pozastaven'}</Tooltip>}
-      >
-        <span style={{ 
-          fontSize: '0.8rem',
-          color: milestone.timerActive && !milestone.isCompleted ? '#4CAF50' : '#888'
-        }}>
-          {milestone.timerActive && !milestone.isCompleted ? '🔴' : '⏱️'}
-        </span>
-      </OverlayTrigger>
-
-      <span style={{ fontSize: '0.8rem', color: '#ccc' }}>
-        {timeDisplay}
+      <span style={{ 
+        fontSize: '0.9rem', 
+        fontFamily: 'monospace',
+        fontWeight: 'bold',
+        color: getTimerColor()
+      }}>
+        ⏱️ {formatTime(currentTime)}
       </span>
 
       <ProgressBar
-        now={progress}
+        now={currentTime.percentage}
         variant={urgencyVariant}
-        style={{ width: '80px', height: '6px' }}
-        className="mx-1"
+        style={{ width: timerWidth, height: '6px' }}
+        animated={isTimerRunning && urgencyLevel === 'critical'}
       />
 
-      {!milestone.isCompleted && (
-        <div className="d-flex gap-1">
-          {!isTimerRunning ? (
-            <Button
-              variant="outline-success"
-              size="sm"
-              onClick={handleStartTimer}
-              disabled={milestone.isCompleted}
-              title="Spustit timer"
-            >
-              ▶️
-            </Button>
-          ) : (
-            <Button
-              variant="outline-warning"
-              size="sm"
-              onClick={handlePauseTimer}
-              title="Pozastavit timer"
-            >
-              ⏸️
-            </Button>
-          )}
-          
+      <div className="d-flex gap-1">
+        {!isTimerRunning ? (
           <Button
-            variant="outline-secondary"
+            variant="outline-success"
             size="sm"
-            onClick={handleResetTimer}
-            disabled={milestone.timeSpent === 0 && !isTimerRunning}
-            title="Resetovat timer"
+            onClick={handleStartTimer}
+            title="Spustit countdown"
           >
-            🔄
+            ▶️
           </Button>
-        </div>
-      )}
+        ) : (
+          <Button
+            variant="outline-warning"
+            size="sm"
+            onClick={handlePauseTimer}
+            title="Pozastavit"
+          >
+            ⏸️
+          </Button>
+        )}
+        
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={handleResetTimer}
+          disabled={!isTimerRunning && milestone.timeSpent === 0}
+          title="Resetovat"
+        >
+          🔄
+        </Button>
+      </div>
 
       {isEditing && (
-        <InputGroup size="sm" style={{ width: '100px' }}>
-          <Form.Control
+        <div style={{ width: '80px' }}>
+          <input
             type="number"
+            step="0.5"
             value={editHours}
             onChange={(e) => setEditHours(e.target.value)}
             onBlur={handleUpdateTargetHours}
-            placeholder="Hodin"
-            step="0.5"
-            min="0"
+            className="form-control form-control-sm"
             style={{ 
               background: 'rgba(255,255,255,0.1)', 
               border: '1px solid rgba(255,255,255,0.2)', 
               color: '#fff',
-              fontSize: '0.75rem'
+              fontSize: '0.75rem',
+              width: '100%'
             }}
           />
-          <InputGroup.Text style={{ background: 'rgba(255,255,255,0.1)', color: '#ccc', fontSize: '0.75rem' }}>
-            h
-          </InputGroup.Text>
-        </InputGroup>
+        </div>
       )}
 
-      {progress >= 100 && !milestone.isCompleted && (
-        <Badge bg="warning" text="dark" style={{ fontSize: '0.7rem' }}>
-          ⏰ Překročeno!
+      {isTimerRunning && (
+        <OverlayTrigger
+          placement="top"
+          overlay={<Tooltip>Target: {targetMinutes}m | Elapsed: {Math.floor((Date.now() - new Date(milestone.timerStartedAt!).getTime()) / 60000)}m</Tooltip>}
+        >
+          <Badge bg={urgencyVariant} style={{ fontSize: '0.7rem' }}>
+            ⏳
+          </Badge>
+        </OverlayTrigger>
+      )}
+
+      {currentTime.isOverdue && (
+        <Badge bg="danger" style={{ fontSize: '0.7rem' }}>
+          🔴 Čas vypršel!
         </Badge>
       )}
     </div>
