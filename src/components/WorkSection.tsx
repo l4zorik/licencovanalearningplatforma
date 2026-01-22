@@ -1342,7 +1342,287 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
         salaryRange: "50k - 95k CZK",
         difficulty: 2,
         perks: ["AI Technology", "Global Projects", "Remote Work"]
-      }
+      },
+
+    // --- DATA ENGINEERING ---
+    {
+      title: "Data Engineer",
+      company: "DataTech Solutions",
+      category: "Data Engineering",
+      requiredSkills: ["Python", "SQL", "Apache Spark", "Airflow", "dbt", "Data Modeling"],
+      location: "Prague / Hybrid",
+      salaryRange: "90k - 140k CZK",
+      difficulty: 4,
+      perks: ["Modern Stack", "Data Team", "Learning Budget"]
+    },
+    {
+      title: "Senior Data Engineer",
+      company: "BigData Corp",
+      category: "Data Engineering",
+      requiredSkills: ["Python", "SQL", "Spark", "Kafka", "Snowflake", "Delta Lake"],
+      location: "Remote",
+      salaryRange: "120k - 180k CZK",
+      difficulty: 5,
+      perks: ["High Impact", "Stock Options", "Conference Budget"]
+    },
+    {
+      title: "Data Architect",
+      company: "Enterprise Solutions",
+      category: "Data Engineering",
+      requiredSkills: ["Data Modeling", "Cloud Data Platforms", "ETL/ELT", "Data Warehouse", "Data Lake"],
+      location: "Prague",
+      salaryRange: "130k - 200k CZK",
+      difficulty: 5,
+      perks: ["Architecture", "Leadership", "Competitive Salary"]
+    },
+    {
+      title: "ETL Developer",
+      company: "Data Integration Ltd.",
+      category: "Data Engineering",
+      requiredSkills: ["SQL", "Python", "Informatica", "Talend", "Apache NiFi", "DataStage"],
+      location: "Brno / Hybrid",
+      salaryRange: "70k - 110k CZK",
+      difficulty: 3,
+      perks: ["Stable Projects", "Team Environment", "Training"]
+    },
+    {
+      title: "Real-time Data Engineer",
+      company: "Streaming Platform",
+      category: "Data Engineering",
+      requiredSkills: ["Kafka", "Flink", "Spark Streaming", "Python", "Java", "Kubernetes"],
+      location: "Remote (EU)",
+      salaryRange: "110k - 170k CZK",
+      difficulty: 5,
+      perks: ["Streaming Tech", "Modern Stack", "Remote First"]
+    },
+    {
+      title: "MLOps Engineer",
+      company: "AI/ML Startup",
+      category: "Data Engineering",
+      requiredSkills: ["Python", "MLflow", "Kubernetes", "Docker", "TensorFlow", "SageMaker"],
+      location: "Prague / Remote",
+      salaryRange: "100k - 160k CZK",
+      difficulty: 4,
+      perks: ["ML Focus", "Innovation", "Equity"]
+    },
+
+    // --- NETWORK ENGINEERING ---
+    {
+      title: "Network Engineer",
+      company: "Telecom Corp",
+      category: "Network Engineering",
+      requiredSkills: ["Cisco", "Juniper", "Routing", "Switching", "BGP", "OSPF"],
+      location: "Prague",
+      salaryRange: "70k - 120k CZK",
+      difficulty: 3,
+      perks: ["Stable Company", "Certification Support", "Team"]
+    },
+    {
+      title: "Network Security Engineer",
+      company: "Security Solutions",
+      category: "Network Engineering",
+      requiredSkills: ["Firewalls", "IDS/IPS", "VPN", "Palo Alto", "Fortinet", "Network Security"],
+      location: "Brno",
+      salaryRange: "85k - 140k CZK",
+      difficulty: 4,
+      perks: ["Security Focus", "Training", "Clearance"]
+    },
+    {
+      title: "Cloud Network Engineer",
+      company: "Cloud Provider",
+      category: "Network Engineering",
+      requiredSkills: ["AWS VPC", "Azure Virtual Network", "GCP Networking", "Load Balancing", "DNS", "VPN"],
+      location: "Remote",
+      salaryRange: "90k - 140k CZK",
+      difficulty: 4,
+      perks: ["Cloud Focus", "Modern Tech", "Remote Work"]
+    },
+    {
+      title: "Wireless Network Engineer",
+      company: "Telecommunications",
+      category: "Network Engineering",
+      requiredSkills: ["Wi-Fi", "5G", "RF Planning", "Cisco Wireless", " Aruba", "Network Design"],
+      location: "Prague",
+      salaryRange: "75k - 125k CZK",
+      difficulty: 4,
+      perks: ["Telecom Industry", "Hardware", "Innovation"]
+    },
+    {
+      title: "SDN Engineer",
+      company: "Network Innovation",
+      category: "Network Engineering",
+      requiredSkills: ["SDN", "Cisco ACI", "VMware NSX", "Python", "Automation", "Network Orchestration"],
+      location: "Remote",
+      salaryRange: "100k - 160k CZK",
+      difficulty: 5,
+      perks: ["Automation", "Cutting Edge", "Remote"]
+    },
+
+    // --- DEVOPS & CLOUD (Expanded) ---
+    {
+      title: "Platform Engineer",
+      company: "Tech Platform",
+      category: "Cloud & DevOps",
+      requiredSkills: ["Kubernetes", "Terraform", "Docker", "AWS", "Golang", "CI/CD"],
+      location: "Prague / Remote",
+      salaryRange: "120k - 180k CZK",
+      difficulty: 5,
+      perks: ["Platform Focus", "Modern Stack", "Impact"]
+    },
+    {
+      title: "SRE Engineer",
+      company: "Reliability Team",
+      category: "Cloud & DevOps",
+      requiredSkills: ["Linux", "Prometheus", "Grafana", "Kubernetes", "Python", "Incident Response"],
+      location: "Remote",
+      salaryRange: "110k - 170k CZK",
+      difficulty: 4,
+      perks: ["SRE Culture", "On-call Bonus", "Automation"]
+    },
+    {
+      title: "Infrastructure Engineer",
+      company: "Enterprise IT",
+      category: "Cloud & DevOps",
+      requiredSkills: ["AWS", "Azure", "Terraform", "Ansible", "Python", "Infrastructure as Code"],
+      location: "Prague",
+      salaryRange: "100k - 150k CZK",
+      difficulty: 4,
+      perks: ["Enterprise", "Stable", "Benefits"]
+    },
+    {
+      title: "GitOps Engineer",
+      company: "DevOps Solutions",
+      category: "Cloud & DevOps",
+      requiredSkills: ["ArgoCD", "Flux", "Kubernetes", "GitHub Actions", "Terraform", "Helm"],
+      location: "Remote",
+      salaryRange: "95k - 150k CZK",
+      difficulty: 4,
+      perks: ["GitOps Focus", "Remote", "Modern Tools"]
+    },
+    {
+      title: "Observability Engineer",
+      company: "Monitoring Platform",
+      category: "Cloud & DevOps",
+      requiredSkills: ["Prometheus", "Grafana", "Jaeger", "Elasticsearch", "Kubernetes", "SLO/SLI"],
+      location: "Brno / Remote",
+      salaryRange: "90k - 140k CZK",
+      difficulty: 4,
+      perks: ["Monitoring", "Data", "Innovation"]
+    },
+    {
+      title: "Database Reliability Engineer",
+      company: "Data Platform",
+      category: "Cloud & DevOps",
+      requiredSkills: ["PostgreSQL", "MySQL", "Redis", "MongoDB", "Automation", "Performance Tuning"],
+      location: "Prague",
+      salaryRange: "95k - 145k CZK",
+      difficulty: 4,
+      perks: ["Database Focus", "Stable", "Team"]
+    },
+
+    // --- CYBERSECURITY (Expanded) ---
+    {
+      title: "Security Operations Analyst",
+      company: "SOC Team",
+      category: "Cybersecurity",
+      requiredSkills: ["SIEM", "Log Analysis", "Incident Response", "Splunk", "QRadar", "Threat Detection"],
+      location: "Prague",
+      salaryRange: "60k - 100k CZK",
+      difficulty: 3,
+      perks: ["24/7 Operations", "Shift Allowance", "Career Path"]
+    },
+    {
+      title: "Application Security Engineer",
+      company: "AppSec Company",
+      category: "Cybersecurity",
+      requiredSkills: ["SAST", "DAST", "OWASP", "Burp Suite", "Secure Coding", "Code Review"],
+      location: "Remote",
+      salaryRange: "85k - 140k CZK",
+      difficulty: 4,
+      perks: ["AppSec", "Modern Stack", "Research"]
+    },
+    {
+      title: "Identity and Access Management Engineer",
+      company: "Enterprise Security",
+      category: "Cybersecurity",
+      requiredSkills: ["IAM", "Okta", "Azure AD", "SAML", "OAuth", "Privileged Access"],
+      location: "Prague",
+      salaryRange: "80k - 130k CZK",
+      difficulty: 4,
+      perks: ["IAM Focus", "Enterprise", "Compliance"]
+    },
+    {
+      title: "Governance Risk Compliance Analyst",
+      company: "GRC Team",
+      category: "Cybersecurity",
+      requiredSkills: ["Risk Assessment", "Compliance", "NIST", "ISO 27001", "Audit", "Documentation"],
+      location: "Brno / Hybrid",
+      salaryRange: "65k - 105k CZK",
+      difficulty: 3,
+      perks: ["GRC Focus", "Stable", "Process"]
+    },
+    {
+      title: "Threat Intelligence Analyst",
+      company: "Threat Intel Corp",
+      category: "Cybersecurity",
+      requiredSkills: ["OSINT", "Threat Intelligence", "Python", "Malware Analysis", "Reporting", "MISP"],
+      location: "Remote",
+      salaryRange: "75k - 120k CZK",
+      difficulty: 4,
+      perks: ["Research", "Global View", "Impact"]
+    },
+
+    // --- ADDITIONAL TECHNICAL ROLES ---
+    {
+      title: "Technical Product Manager",
+      company: "Tech Product",
+      category: "Programming",
+      requiredSkills: ["Product Management", "Technical Background", "Agile", "User Stories", "API", "Technical Writing"],
+      location: "Prague",
+      salaryRange: "90k - 140k CZK",
+      difficulty: 4,
+      perks: ["Product", "Leadership", "Equity"]
+    },
+    {
+      title: "Site Reliability Architect",
+      company: "Enterprise Tech",
+      category: "Cloud & DevOps",
+      requiredSkills: ["Cloud Architecture", "Kubernetes", "SRE", "Terraform", "AWS/Azure", "High Availability"],
+      location: "Prague / Hybrid",
+      salaryRange: "150k - 220k CZK",
+      difficulty: 5,
+      perks: ["Architecture", "Leadership", "Top Salary"]
+    },
+    {
+      title: "Security Automation Engineer",
+      company: "SecOps Automation",
+      category: "Cybersecurity",
+      requiredSkills: ["Python", "Automation", "SIEM Integration", "SOAR", "Docker", "Security Tools"],
+      location: "Remote",
+      salaryRange: "85k - 135k CZK",
+      difficulty: 4,
+      perks: ["Automation", "Security", "Remote"]
+    },
+    {
+      title: "Database Developer",
+      company: "Data Solutions",
+      category: "Data Engineering",
+      requiredSkills: ["SQL", "PostgreSQL", "Oracle", "Performance Tuning", "Database Design", "PL/SQL"],
+      location: "Brno",
+      salaryRange: "75k - 120k CZK",
+      difficulty: 4,
+      perks: ["Database Focus", "Stable", "Team"]
+    },
+    {
+      title: "APM Engineer",
+      company: "Monitoring Solutions",
+      category: "Cloud & DevOps",
+      requiredSkills: ["APM Tools", "Dynatrace", "AppDynamics", "Performance Monitoring", "Java/Node.js", "Diagnostics"],
+      location: "Remote",
+      salaryRange: "80k - 130k CZK",
+      difficulty: 4,
+      perks: ["APM Focus", "Remote", "Innovation"]
+    }
     ];
 
   export default function WorkSection({ myCourses, setCourses }: Props) {
@@ -1869,10 +2149,12 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
                 <p>Najdi si novou výzvu kliknutím na + Find Quest.</p>
              </div>
           )}
-        </div>
-      </div>
+         </div>
+       </div>
 
-      {/* --- ADD JOB MODAL (JOB HUNTER - WIDE) --- */}
+
+
+       {/* --- ADD JOB MODAL (JOB HUNTER - WIDE) --- */}
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)} size="xl" centered contentClassName="border-0 shadow-lg" dialogClassName="modal-90w">
         <Modal.Header closeButton className="bg-warning text-dark border-0 py-3">
             <div>

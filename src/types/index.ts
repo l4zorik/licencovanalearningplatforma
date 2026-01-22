@@ -10,7 +10,7 @@ export type Resource = {
   type: 'repo' | 'doc' | 'video' | 'design' | 'book';
 };
 
-export type SkillCategory = 'Programming' | '3D & GameDev' | 'CNC & Engineering' | 'Automechanic' | 'Automotive' | 'Data Science & AI' | '3D Tisk' | 'Cybersecurity' | 'Music Production' | 'Art & Creativity' | 'Fitness & Health' | 'Reselling & Business' | 'Science & Education' | 'Elektrikářství' | 'Manufacturing & Production' | 'Design & Fashion' | 'Modeling' | 'Sports Betting' | 'Investing' | 'Gardening' | 'Cooking & Preserving' | 'Animal Care' | 'Tree Care' | 'AI Tools' | 'Web Design' | 'Management & Leadership' | 'Healthcare & Medical' | 'Green & Sustainability' | 'Business & Finance' | 'Legal & Compliance' | 'Creative & Media' | 'Science & Research' | 'Education & Training' | 'Construction & Trades' | 'Agriculture & Environment' | 'Hospitality & Tourism' | 'Retail & Sales' | 'Transportation & Logistics' | 'Human Resources' | 'Marketing & PR' | 'Customer Service' | 'Quality Assurance' | 'Project Management' | 'Data & Analytics' | 'Cloud & DevOps' | 'Security & Safety' | 'Writing & Content';
+export type SkillCategory = 'Programming' | '3D & GameDev' | 'CNC & Engineering' | 'Automechanic' | 'Automotive' | 'Data Science & AI' | '3D Tisk' | 'Cybersecurity' | 'Music Production' | 'Art & Creativity' | 'Fitness & Health' | 'Reselling & Business' | 'Science & Education' | 'Elektrikářství' | 'Manufacturing & Production' | 'Design & Fashion' | 'Modeling' | 'Sports Betting' | 'Investing' | 'Gardening' | 'Cooking & Preserving' | 'Animal Care' | 'Tree Care' | 'AI Tools' | 'Web Design' | 'Management & Leadership' | 'Healthcare & Medical' | 'Green & Sustainability' | 'Business & Finance' | 'Legal & Compliance' | 'Creative & Media' | 'Science & Research' | 'Education & Training' | 'Construction & Trades' | 'Agriculture & Environment' | 'Hospitality & Tourism' | 'Retail & Sales' | 'Transportation & Logistics' | 'Human Resources' | 'Marketing & PR' | 'Customer Service' | 'Quality Assurance' | 'Project Management' | 'Data & Analytics' | 'Cloud & DevOps' | 'Security & Safety' | 'Writing & Content' | 'Data Engineering' | 'Network Engineering';
 
 export type SoftSkillCategory = 'Communication' | 'Leadership' | 'Business' | 'Personal Development' | 'Creative' | 'Analytical';
 
@@ -28,7 +28,41 @@ export type InterviewType = 'phone' | 'video' | 'technical' | 'system_design' | 
 
 export type JobStatus = 'To Apply' | 'Applied' | 'Interview' | 'Offer' | 'Rejected';
 
-export type JobCategory = 'Programming' | '3D & GameDev' | 'CNC & Engineering' | 'Automechanic' | 'Automotive' | 'Data Science & AI' | '3D Tisk' | 'Cybersecurity' | 'Music Production' | 'Art & Creativity' | 'Fitness & Health' | 'Reselling & Business' | 'Science & Education' | 'Elektrikářství' | 'Manufacturing & Production' | 'Design & Fashion' | 'Modeling' | 'Sports Betting' | 'Investing' | 'Gardening' | 'Cooking & Preserving' | 'Animal Care' | 'Tree Care' | 'AI Tools' | 'Web Design' | 'Management & Leadership' | 'Healthcare & Medical' | 'Green & Sustainability' | 'Business & Finance' | 'Legal & Compliance' | 'Creative & Media' | 'Science & Research' | 'Education & Training' | 'Construction & Trades' | 'Agriculture & Environment' | 'Hospitality & Tourism' | 'Retail & Sales' | 'Transportation & Logistics' | 'Human Resources' | 'Marketing & PR' | 'Customer Service' | 'Quality Assurance' | 'Project Management' | 'Data & Analytics' | 'Cloud & DevOps' | 'Security & Safety' | 'Writing & Content';
+export type CertificationStatus = 'Not Started' | 'In Progress' | 'Scheduled' | 'Passed' | 'Failed' | 'Expired';
+
+export type UserCertification = {
+  id: string;
+  certificationId: string;
+  name: string;
+  provider: string;
+  category: string;
+  status: CertificationStatus;
+  obtainedAt?: Date;
+  expiresAt?: Date;
+  score?: number;
+  attemptCount: number;
+  notes: string;
+  resources: string[];
+  difficulty: DifficultyRating;
+  cost: number;
+  validityMonths: number;
+  careerImpact: string;
+};
+
+export type CertificationCategory = 
+  | 'Cloud'
+  | 'Security'
+  | 'Data & AI'
+  | 'Development'
+  | 'Microsoft'
+  | 'Project Management'
+  | 'DevOps'
+  | 'Database'
+  | 'Networking'
+  | 'General IT'
+  | 'Compliance';
+
+export type JobCategory = 'Programming' | '3D & GameDev' | 'CNC & Engineering' | 'Automechanic' | 'Automotive' | 'Data Science & AI' | '3D Tisk' | 'Cybersecurity' | 'Music Production' | 'Art & Creativity' | 'Fitness & Health' | 'Reselling & Business' | 'Science & Education' | 'Elektrikářství' | 'Manufacturing & Production' | 'Design & Fashion' | 'Modeling' | 'Sports Betting' | 'Investing' | 'Gardening' | 'Cooking & Preserving' | 'Animal Care' | 'Tree Care' | 'AI Tools' | 'Web Design' | 'Management & Leadership' | 'Healthcare & Medical' | 'Green & Sustainability' | 'Business & Finance' | 'Legal & Compliance' | 'Creative & Media' | 'Science & Research' | 'Education & Training' | 'Construction & Trades' | 'Agriculture & Environment' | 'Hospitality & Tourism' | 'Retail & Sales' | 'Transportation & Logistics' | 'Human Resources' | 'Marketing & PR' | 'Customer Service' | 'Quality Assurance' | 'Project Management' | 'Data & Analytics' | 'Cloud & DevOps' | 'Security & Safety' | 'Writing & Content' | 'Data Engineering' | 'Network Engineering';
 
 export type CompetitionLevel = 'low' | 'medium' | 'high' | 'very_high';
 
@@ -88,6 +122,7 @@ export type Certification = {
   id: string;
   name: string;
   provider: string;
+  category?: CertificationCategory;
   difficulty: DifficultyRating;
   cost: number;
   duration: string;

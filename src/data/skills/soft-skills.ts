@@ -420,6 +420,27 @@ export const SOFT_SKILLS: SoftSkill[] = [
     relatedHardSkills: ['Leadership', 'Communication', 'Teaching'],
     examples: ['Onboarding new team members', 'Supporting junior developers', 'Sharing knowledge through documentation and talks'],
     interviewQuestions: ['Describe your experience mentoring others.', 'How do you approach helping someone who is struggling?']
+  },
+  {
+    id: 'career-counseling',
+    name: 'Kariérové poradenství',
+    category: 'Personal Development' as SoftSkillCategory,
+    description: 'Schopnost pomáhat ostatním s kariérním rozhodováním, sebepoznáním a profesním rozvojem.',
+    importance: 80,
+    careerImpact: 'Cenná dovednost pro HR, management, a každého, kdo chce podporovat růst ostatních.',
+    assessment: {
+      type: 'simulation',
+      questions: 8,
+      description: 'Simulace kariérního poradenství s hodnocením technik naslouchání, kladení otázek a poskytování rad.'
+    },
+    development: {
+      methods: ['Koučink kurzy', 'Aktivní naslouchání', '职业生涯规划培训', 'Mentoring praxe'],
+      resources: ['Kariérní poradenství kursy', 'ICF koučink certifikace', 'Psychologie práce', 'Personální management'],
+      timeline: '6-12 měsíců pro významný rozvoj'
+    },
+    relatedHardSkills: ['Koučink', 'Komunikace', 'Psychologie', 'Vzdělávání dospělých'],
+    examples: ['Pomoc kolegům s kariérním směřováním', 'Vedeníworkshopů o kariéře', 'Individuální koučink'],
+    interviewQuestions: ['Jak přistupujete k kariérnímu poradenství?', 'Popište situaci, kdy jste pomohli někomu s kariérním rozhodnutím.']
   }
 ];
 

@@ -1,6 +1,6 @@
 export type AchievementRarity = 'Common' | 'Rare' | 'Epic' | 'Legendary' | 'Mythic';
 
-export type AchievementCategory = 
+export type AchievementCategory =
   | 'progress'
   | 'learning'
   | 'career'
@@ -8,7 +8,13 @@ export type AchievementCategory =
   | 'streak'
   | 'skill'
   | 'mission'
-  | 'special';
+  | 'special'
+  | 'electrician'
+  | 'mechanic'
+  | 'welder'
+  | 'entrepreneur'
+  | 'programmer'
+  | 'cnc';
 
 export type Achievement = {
   id: string;
@@ -358,7 +364,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     condition: { type: 'tasks_completed', value: 100 },
     secret: false
   },
-  {
+   {
     id: 'hidden_gem',
     title: 'Skrytý klenot',
     description: 'Odemkni secret achievement',
@@ -368,6 +374,348 @@ export const ACHIEVEMENTS: Achievement[] = [
     xpReward: 300,
     condition: { type: 'secret_achievements', value: 3 },
     secret: true
+  },
+
+  // Elektrikář - Electrician
+  {
+    id: 'electrician_beginner',
+    title: 'Začínající Elektrikář',
+    description: 'Dokonč kurz základů elektrotechniky',
+    icon: '⚡',
+    category: 'electrician',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_electrician', value: 1 },
+    secret: false
+  },
+  {
+    id: 'electrician_basic_tools',
+    title: 'Základní Nástroje',
+    description: 'Ovládni základní elektrické nástroje',
+    icon: '🔧',
+    category: 'electrician',
+    rarity: 'Common',
+    xpReward: 75,
+    condition: { type: 'skills_electrician', value: 3 },
+    secret: false
+  },
+  {
+    id: 'electrician_first_installation',
+    title: 'První Instalace',
+    description: 'Proveď svou první elektrickou instalaci',
+    icon: '💡',
+    category: 'electrician',
+    rarity: 'Rare',
+    xpReward: 150,
+    condition: { type: 'projects_electrician', value: 1 },
+    secret: false
+  },
+  {
+    id: 'electrician_safety_certified',
+    title: 'Bezpečnostní Certifikát',
+    description: 'Získej certifikát bezpečnosti práce',
+    icon: '🛡️',
+    category: 'electrician',
+    rarity: 'Rare',
+    xpReward: 200,
+    condition: { type: 'certificates_electrician', value: 1 },
+    secret: false
+  },
+  {
+    id: 'electrician_advanced_circuits',
+    title: 'Pokročilé Obvody',
+    description: 'Nauč se navrhovat pokročilé elektrické obvody',
+    icon: '🔌',
+    category: 'electrician',
+    rarity: 'Epic',
+    xpReward: 300,
+    condition: { type: 'advanced_skills_electrician', value: 5 },
+    secret: false
+  },
+  {
+    id: 'electrician_master_electrician',
+    title: 'Mistr Elektrikář',
+    description: 'Staň se certifikovaným mistrem elektrikářem',
+    icon: '👑',
+    category: 'electrician',
+    rarity: 'Legendary',
+    xpReward: 500,
+    condition: { type: 'master_certification_electrician', value: 1 },
+    secret: false
+  },
+
+  // Automechanik - Mechanic
+  {
+    id: 'mechanic_beginner',
+    title: 'Začínající Mechanik',
+    description: 'Dokonč kurz základů automechaniky',
+    icon: '🔩',
+    category: 'mechanic',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_mechanic', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_oil_change',
+    title: 'Výměna Oleje',
+    description: 'Proveď svou první výměnu motorového oleje',
+    icon: '🛢️',
+    category: 'mechanic',
+    rarity: 'Common',
+    xpReward: 75,
+    condition: { type: 'repairs_mechanic', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_engine_repair',
+    title: 'Oprava Motoru',
+    description: 'Oprav svůj první motor',
+    icon: '🚗',
+    category: 'mechanic',
+    rarity: 'Rare',
+    xpReward: 200,
+    condition: { type: 'engine_repairs_mechanic', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_diagnostic_expert',
+    title: 'Diagnostický Expert',
+    description: 'Získej certifikát diagnostiky vozidel',
+    icon: '🔍',
+    category: 'mechanic',
+    rarity: 'Epic',
+    xpReward: 350,
+    condition: { type: 'diagnostic_certification_mechanic', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_electric_vehicles',
+    title: 'Elektromobily',
+    description: 'Specializuj se na opravu elektromobilů',
+    icon: '🔋',
+    category: 'mechanic',
+    rarity: 'Legendary',
+    xpReward: 500,
+    condition: { type: 'ev_specialization_mechanic', value: 1 },
+    secret: false
+  },
+
+  // Svářeč - Welder
+  {
+    id: 'welder_beginner',
+    title: 'Začínající Svářeč',
+    description: 'Dokonč kurz základů svařování',
+    icon: '🔥',
+    category: 'welder',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_welder', value: 1 },
+    secret: false
+  },
+  {
+    id: 'welder_first_weld',
+    title: 'První Svař',
+    description: 'Proveď svůj první úspěšný svař',
+    icon: '⚡',
+    category: 'welder',
+    rarity: 'Common',
+    xpReward: 75,
+    condition: { type: 'successful_welds_welder', value: 1 },
+    secret: false
+  },
+  {
+    id: 'welder_mig_tig',
+    title: 'MIG/TIG Specialista',
+    description: 'Ovládni MIG a TIG svařování',
+    icon: '🔧',
+    category: 'welder',
+    rarity: 'Rare',
+    xpReward: 200,
+    condition: { type: 'welding_techniques_welder', value: 2 },
+    secret: false
+  },
+  {
+    id: 'welder_certified',
+    title: 'Certifikovaný Svářeč',
+    description: 'Získej certifikát svařování',
+    icon: '📜',
+    category: 'welder',
+    rarity: 'Epic',
+    xpReward: 350,
+    condition: { type: 'certification_welder', value: 1 },
+    secret: false
+  },
+  {
+    id: 'welder_artisan',
+    title: 'Umělecký Svářeč',
+    description: 'Vytvoř umělecké svařované dílo',
+    icon: '🎨',
+    category: 'welder',
+    rarity: 'Legendary',
+    xpReward: 500,
+    condition: { type: 'artistic_projects_welder', value: 1 },
+    secret: false
+  },
+
+  // Podnikatel - Entrepreneur
+  {
+    id: 'entrepreneur_beginner',
+    title: 'Začínající Podnikatel',
+    description: 'Dokonč kurz základů podnikání',
+    icon: '💼',
+    category: 'entrepreneur',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_entrepreneur', value: 1 },
+    secret: false
+  },
+  {
+    id: 'entrepreneur_first_business',
+    title: 'První Podnik',
+    description: 'Založ svůj první malý podnik',
+    icon: '🏪',
+    category: 'entrepreneur',
+    rarity: 'Rare',
+    xpReward: 200,
+    condition: { type: 'business_started_entrepreneur', value: 1 },
+    secret: false
+  },
+  {
+    id: 'entrepreneur_marketing',
+    title: 'Marketing Guru',
+    description: 'Ovládni digitální marketing',
+    icon: '📈',
+    category: 'entrepreneur',
+    rarity: 'Epic',
+    xpReward: 350,
+    condition: { type: 'marketing_skills_entrepreneur', value: 5 },
+    secret: false
+  },
+  {
+    id: 'entrepreneur_scalable',
+    title: 'Škálovatelný Podnik',
+    description: 'Vybuduj škálovatelný business model',
+    icon: '📊',
+    category: 'entrepreneur',
+    rarity: 'Legendary',
+    xpReward: 500,
+    condition: { type: 'scalable_business_entrepreneur', value: 1 },
+    secret: false
+  },
+
+  // Programátor - Programmer
+  {
+    id: 'programmer_beginner',
+    title: 'Začínající Programátor',
+    description: 'Dokonč kurz základů programování',
+    icon: '💻',
+    category: 'programmer',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_programmer', value: 1 },
+    secret: false
+  },
+  {
+    id: 'programmer_first_code',
+    title: 'První Kód',
+    description: 'Napiš svůj první program',
+    icon: '👨‍💻',
+    category: 'programmer',
+    rarity: 'Common',
+    xpReward: 75,
+    condition: { type: 'programs_written_programmer', value: 1 },
+    secret: false
+  },
+  {
+    id: 'programmer_web_developer',
+    title: 'Web Developer',
+    description: 'Vytvoř svou první webovou aplikaci',
+    icon: '🌐',
+    category: 'programmer',
+    rarity: 'Rare',
+    xpReward: 200,
+    condition: { type: 'web_apps_programmer', value: 1 },
+    secret: false
+  },
+  {
+    id: 'programmer_fullstack',
+    title: 'Full Stack Developer',
+    description: 'Ovládni frontend i backend',
+    icon: '⚛️',
+    category: 'programmer',
+    rarity: 'Epic',
+    xpReward: 350,
+    condition: { type: 'fullstack_projects_programmer', value: 3 },
+    secret: false
+  },
+  {
+    id: 'programmer_ai_engineer',
+    title: 'AI Inženýr',
+    description: 'Vyvíjej AI aplikace',
+    icon: '🤖',
+    category: 'programmer',
+    rarity: 'Legendary',
+    xpReward: 500,
+    condition: { type: 'ai_projects_programmer', value: 1 },
+    secret: false
+  },
+
+  // CNC Obráběč - CNC Machinist
+  {
+    id: 'cnc_beginner',
+    title: 'Začínající CNC Obráběč',
+    description: 'Dokonč kurz základů CNC obrábění',
+    icon: '⚙️',
+    category: 'cnc',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_cnc', value: 1 },
+    secret: false
+  },
+  {
+    id: 'cnc_first_program',
+    title: 'První CNC Program',
+    description: 'Naprogramuj svůj první CNC stroj',
+    icon: '📐',
+    category: 'cnc',
+    rarity: 'Common',
+    xpReward: 75,
+    condition: { type: 'cnc_programs_cnc', value: 1 },
+    secret: false
+  },
+  {
+    id: 'cnc_precision_machining',
+    title: 'Přesné Obrábění',
+    description: 'Ovládni přesné CNC obrábění',
+    icon: '🔬',
+    category: 'cnc',
+    rarity: 'Rare',
+    xpReward: 200,
+    condition: { type: 'precision_projects_cnc', value: 5 },
+    secret: false
+  },
+  {
+    id: 'cnc_5axis_expert',
+    title: '5-Axis Expert',
+    description: 'Ovládni 5-osé CNC obrábění',
+    icon: '🎯',
+    category: 'cnc',
+    rarity: 'Epic',
+    xpReward: 350,
+    condition: { type: '5axis_projects_cnc', value: 3 },
+    secret: false
+  },
+  {
+    id: 'cnc_master_craftsman',
+    title: 'Mistr Řemeslník',
+    description: 'Staň se mistrem CNC obrábění',
+    icon: '🏆',
+    category: 'cnc',
+    rarity: 'Legendary',
+    xpReward: 500,
+    condition: { type: 'master_certification_cnc', value: 1 },
+    secret: false
   }
 ];
 
@@ -403,6 +751,12 @@ export function getCategoryIcon(category: AchievementCategory): string {
     case 'skill': return '🛠️';
     case 'mission': return '🎯';
     case 'special': return '⭐';
+    case 'electrician': return '⚡';
+    case 'mechanic': return '🔧';
+    case 'welder': return '🔥';
+    case 'entrepreneur': return '💼';
+    case 'programmer': return '💻';
+    case 'cnc': return '⚙️';
     default: return '🏅';
   }
 }

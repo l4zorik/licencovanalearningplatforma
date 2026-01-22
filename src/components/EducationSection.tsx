@@ -4,6 +4,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
 import { Course, SkillCategory } from '@/types';
 import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS } from '@/data/skills/comprehensive-skills';
+import AchievementRoadmap from '@/components/gamification/AchievementRoadmap';
 
 type DisplaySkill = {
   id: string;
@@ -527,10 +528,34 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
               </Card.Body>
             </Card>
           </Col>
-        </Row>
-      )}
+         </Row>
+       )}
 
-      <Modal show={showSkillModal} onHide={() => setShowSkillModal(false)} size="lg">
+       {/* Achievement Roadmap */}
+       <Row className="mt-5">
+         <Col>
+           <AchievementRoadmap
+             unlockedIds={['first_step', 'first_job', 'mission_starter', 'xp_collector_100', 'level_5']}
+             userProgress={{
+               first_step: 100,
+               first_job: 100,
+               mission_starter: 100,
+               xp_collector_100: 75,
+               level_5: 100,
+               learning_hero: 10,
+               streak_week: 42,
+               job_hunter: 10,
+               mission_master: 0,
+               skill_builder: 15,
+               xp_collector_1000: 7,
+               xp_collector_5000: 1
+             }}
+             currentLevel={5}
+           />
+         </Col>
+       </Row>
+
+       <Modal show={showSkillModal} onHide={() => setShowSkillModal(false)} size="lg">
         {selectedSkill && (
           <>
             <Modal.Header closeButton style={{ backgroundColor: selectedSkill.iconColor, color: 'white' }}>

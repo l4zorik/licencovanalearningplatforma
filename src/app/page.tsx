@@ -8,11 +8,14 @@ import dynamic from 'next/dynamic';
 import { Course, Job } from '@/types';
 import { SKILL_TEMPLATES } from '@/components/EducationSection';
 import { JOB_TEMPLATES } from '@/components/WorkSection';
+import { CERTIFICATION_TEMPLATES } from '@/components/CertificationSection';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Project, ProjectTemplate } from '@/types';
 import { calculateProjectStats, PROJECT_TEMPLATES } from '@/data/projects/data';
 import FocusedProjectCard from '@/components/projects/FocusedProjectCard';
 import LifeGoalsSection from '@/components/life/LifeGoalsSection';
+import CareerAdviceSection from '@/components/CareerAdviceSection';
+import RecipesSection from '@/components/RecipesSection';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -322,6 +325,9 @@ const EducationSection = dynamic(() => import('@/components/EducationSection'), 
   ssr: false
 });
 const WorkSection = dynamic(() => import('@/components/WorkSection'), {
+  ssr: false
+});
+const CertificationSection = dynamic(() => import('@/components/CertificationSection'), {
   ssr: false
 });
 const AkizeGuide = dynamic(() => import('@/components/AkizeGuide'), {
@@ -792,26 +798,36 @@ export default function Home() {
                           🏢 AGENTURY
                         </Button>
                       </Link>
-                    <Link href="/colleagues" className="text-decoration-none">
-                        <Button variant="outline-info" size="sm" className="fw-bold">
-                          👥 KOLEGOVÉ
-                        </Button>
-                      </Link>
-                      <Link href="/achievements" className="text-decoration-none">
-                        <Button variant="outline-warning" size="sm" className="fw-bold">
-                          🏆 ACHIEVEMENTS
-                        </Button>
-                      </Link>
-                       <Link href="/roadmap" className="text-decoration-none">
-                         <Button variant="outline-success" size="sm" className="fw-bold">
-                           🗺️ ROADMAP
+                      <Link href="/colleagues" className="text-decoration-none">
+                         <Button variant="outline-info" size="sm" className="fw-bold">
+                           👥 KOLEGOVÉ
                          </Button>
                        </Link>
-                       <Link href="/journey" className="text-decoration-none">
-                         <Button variant="outline-primary" size="sm" className="fw-bold">
-                           🎯 JOURNEY
+                       <Link href="/achievements" className="text-decoration-none">
+                         <Button variant="outline-warning" size="sm" className="fw-bold">
+                           🏆 ACHIEVEMENTS
                          </Button>
                        </Link>
+                        <Link href="/roadmap" className="text-decoration-none">
+                          <Button variant="outline-success" size="sm" className="fw-bold">
+                            🗺️ ROADMAP
+                          </Button>
+                        </Link>
+                        <Link href="/journey" className="text-decoration-none">
+                          <Button variant="outline-primary" size="sm" className="fw-bold">
+                            🎯 JOURNEY
+                          </Button>
+                        </Link>
+                        <Link href="/career-advice" className="text-decoration-none">
+                          <Button variant="outline-warning" size="sm" className="fw-bold">
+                            💡 RADY
+                          </Button>
+                        </Link>
+                        <Link href="/recipes" className="text-decoration-none">
+                          <Button variant="outline-success" size="sm" className="fw-bold">
+                            👨‍🍳 RECEPTY
+                          </Button>
+                        </Link>
                        <Button
                       variant="outline-info"
                       size="sm"
@@ -1079,24 +1095,36 @@ export default function Home() {
 
 <LifeGoalsSection projects={projects} />
 
+            {/* 💡 Career Advice & 👨‍🍳 Recipes Sections */}
+            <Row className="mb-4">
+              <Col md={6} className="mb-4">
+                <CareerAdviceSection />
+              </Col>
+              <Col md={6} className="mb-4">
+                <RecipesSection />
+              </Col>
+            </Row>
+
             {/* Top Banner Ad */}
             <AdBanner position="top" size="large" />
 
-            <Row>
+<Row>
               {/* Left Side: Education */}
-              <Col md={6} className="mb-4">
+              <Col md={4} className="mb-4">
                 <EducationSection
                   myCourses={courses}
                   setCourses={setCourses}
                 />
               </Col>
 
-               {/* Right Side: Work */}
-               <Col md={6} className="mb-4">
-                 <WorkSection myCourses={courses} setCourses={setCourses} />
+              {/* Middle Side: Certifications */}
+              <Col md={4} className="mb-4">
+                <CertificationSection myCourses={courses} />
+              </Col>
 
-                {/* Sidebar Ad */}
-                <AdBanner position="sidebar" size="medium" />
+              {/* Right Side: Work */}
+              <Col md={4} className="mb-4">
+                <WorkSection myCourses={courses} setCourses={setCourses} />
               </Col>
             </Row>
         </Container>

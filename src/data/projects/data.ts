@@ -322,6 +322,28 @@ export const PROJECT_TEMPLATES: ProjectTemplate[] = [
     color: '#00CED1',
     icon: '🧠'
   },
+   {
+    id: 'gym-routine',
+    title: 'Posilovna Rutina',
+    description: 'Pravidelné tréninky v posilovně pro budování svalů a síly',
+    category: 'health',
+    defaultGoals: ['Trénink 4x týdně', 'Zvětšení svalů o 5kg', 'Osvojení správné techniky'],
+    suggestedMilestones: [
+      'Registrace do posilovny',
+      'Základní tréninkový plán',
+      'Osvojení techniky cviků',
+      'Pravidelnost 4x týdně',
+      'Pokrok v hmotnostech',
+      'Estetické výsledky'
+    ],
+    suggestedAlgorithms: ['learning', 'optimization', 'monitoring', 'documentation'],
+    skills: ['Weight Training', 'Exercise Technique', 'Nutrition', 'Recovery'],
+    technologies: ['Gym Equipment', 'Workout Apps', 'Progress Tracking', 'Nutrition Apps'],
+    estimatedHours: 120,
+    xpReward: 4000,
+    color: '#DC143C',
+    icon: '🏋️'
+  },
   {
     id: 'strength-endurance',
     title: 'Velká Síla a Výdrž',
@@ -387,6 +409,50 @@ export const PROJECT_TEMPLATES: ProjectTemplate[] = [
     xpReward: 2500,
     color: '#FF1493',
     icon: '💕'
+  },
+   {
+    id: 'professional-development',
+    title: 'Profesní Rozvoj',
+    description: 'Rozvoj pracovních dovedností a kariérního růstu',
+    category: 'personal',
+    defaultGoals: ['Naučit 3 nové dovednosti', 'Získat certifikaci', 'Zvýšit mzdu o 20%'],
+    suggestedMilestones: [
+      'Analýza současných dovedností',
+      'Stanovení kariérních cílů',
+      'Kurz nebo školení',
+      'Praktické aplikace',
+      'Certifikace',
+      'Povýšení nebo zvýšení mzdy'
+    ],
+    suggestedAlgorithms: ['learning', 'documentation', 'networking', 'planning'],
+    skills: ['Time Management', 'Communication', 'Leadership', 'Project Management'],
+    technologies: ['LinkedIn', 'Learning Platforms', 'Project Management Tools'],
+    estimatedHours: 150,
+    xpReward: 6000,
+    color: '#3F51B5',
+    icon: '💼'
+  },
+   {
+    id: 'spiritual-growth',
+    title: 'Duchovní Práce',
+    description: 'Rozvoj duchovní stránky života, meditace a vnitřní mír',
+    category: 'personal',
+    defaultGoals: ['Meditace 20 min denně', 'Čtení duchovní literatury', 'Větší vnitřní klid'],
+    suggestedMilestones: [
+      'Denní meditace 10 minut',
+      'Základní meditace techniky',
+      'Meditace 20 minut denně',
+      'Duchovní literatura',
+      'Mindfulness v každodenním životě',
+      'Pokročilé duchovní praktiky'
+    ],
+    suggestedAlgorithms: ['learning', 'documentation', 'monitoring', 'optimization'],
+    skills: ['Meditation', 'Mindfulness', 'Self-Awareness', 'Emotional Intelligence'],
+    technologies: ['Meditation Apps', 'Journaling Apps', 'Spiritual Books', 'Mindfulness Guides'],
+    estimatedHours: 60,
+    xpReward: 2500,
+    color: '#8A2BE2',
+    icon: '🧘'
   },
   {
     id: 'financial-cushion',
