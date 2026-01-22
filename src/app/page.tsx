@@ -81,16 +81,86 @@ const CAREER_PATHS_BY_INDUSTRY = {
         goal.includes("CNC") || goal.includes("Manufacturing") || goal.includes("Production") ||
         goal.includes("Quality") || goal.includes("Control")
       ),
-      "Automotive & Mechanics": existing.filter(goal =>
-        goal.includes("Auto") || goal.includes("Mechanic") || goal.includes("Car") ||
-        goal.includes("Vehicle") || goal.includes("Technician")
-      ),
       "Data Science & AI": existing.filter(goal =>
         goal.includes("Data") || goal.includes("AI") || goal.includes("Machine Learning") ||
         goal.includes("Analytics") || goal.includes("Scientist")
       )
     };
   })(),
+
+  // Automotive & Mobility - Comprehensive career paths
+  "Automotive & Mobility": [
+    // Service & Maintenance
+    "Auto Mechanic", "Master Technician", "Service Advisor", "Service Manager",
+    "Quick Lube Technician", "Express Service Technician", "Fleet Service Technician",
+    "Maintenance Technician", "Pre-Delivery Inspector", "Used Car Inspector",
+
+    // Technical Specializations
+    "Brake Specialist", "Transmission Technician", "Engine Builder", "Diesel Mechanic",
+    "Electrical Specialist", "HVAC Technician", "Suspension & Steering Tech",
+    "Tire Technician", "Alignment Specialist", "Wheel & Tire Manager",
+
+    // Diagnostics & Repair
+    "Diagnostic Technician", "Technical Service Representative", "Shop Foreman",
+    "Warranty Administrator", "Quality Control Inspector", "Technical Trainer",
+    "ASE Certified Technician", "Master Auto Technician", "Line Technician",
+
+    // Body & Paint
+    "Body Technician", "Collision Repair Technician", "Frame Specialist",
+    "Auto Body Painter", "Paint Technician", "Detailer", "Glass Technician",
+    "ADCalibration Specialist", "Dent Removal Specialist", "Body Shop Manager",
+
+    // Performance & Customization
+    "Performance Tuner", "Engine Tuner", "Dyno Operator", "Turbo Installer",
+    "Exhaust Specialist", "Suspension Tuning Specialist", "Car Audio Installer",
+    "Custom Shop Technician", "Race Car Mechanic", "Motorsports Technician",
+
+    // Electric & Hybrid Vehicles
+    "EV Technician", "Hybrid Vehicle Specialist", "High Voltage Technician",
+    "Battery System Specialist", "Charging Station Installer", "EV Shop Manager",
+    "Battery Engineer", "Electric Motor Specialist", "EV Diagnostic Technician",
+
+    // Dealership & Sales
+    "Automotive Salesperson", "Sales Manager", "Finance Manager", "Leasing Consultant",
+    "Vehicle Inventory Manager", "Sales Director", "Fleet Sales Representative",
+    "Parts Advisor", "Parts Manager", "Parts Counterperson",
+
+    // Management & Operations
+    "Service Director", "Parts Director", "General Manager", "Dealer Principal",
+    "Operations Manager", "Business Development Manager", "Customer Relations Manager",
+    "Fixed Operations Director", "Aftermarket Sales Manager",
+
+    // Engineering & Design
+    "Automotive Engineer", "Design Engineer", "Test Engineer", "Validation Engineer",
+    "Manufacturing Engineer", "Quality Engineer", "Reliability Engineer",
+    "Powertrain Engineer", "Chassis Engineer", "NVH Engineer",
+
+    // Research & Development
+    "R&D Engineer", "Product Development Engineer", "Research Scientist",
+    "Materials Engineer", "Aerodynamics Engineer", "Thermal Engineer",
+    "Systems Integration Engineer", "Controls Engineer", "Software Engineer (Automotive)",
+
+    // Emerging Technology
+    "Autonomous Vehicle Engineer", "ADAS Calibration Specialist", "Sensor Engineer",
+    "Connected Car Engineer", "Automotive Cybersecurity Specialist", "Machine Learning Engineer",
+    "Vehicle-to-Everything (V2X) Engineer", "Fleet Management Specialist",
+    "Telematics Engineer", "Automotive UI/UX Designer",
+
+    // Commercial Vehicles & Heavy Equipment
+    "Truck Mechanic", "Heavy Equipment Mechanic", "Diesel Technician",
+    "Fleet Maintenance Manager", "Equipment Manager", "Transportation Manager",
+    "Logistics Coordinator", "Yard Manager", "Trailer Technician",
+
+    // Motorcycle & Powersports
+    "Motorcycle Mechanic", "ATV Technician", "Snowmobile Mechanic",
+    "Powersports Sales", "Motorcycle Detailer", "Motorcycle Customizer",
+    "Riding Instructor", "Motocross Mechanic", "Scooter Technician",
+
+    // Other Automotive
+    "Recycling Specialist", "Scrap Yard Operator", "Vehicle Appraiser",
+    "Classic Car Restorer", "Collector Car Specialist", "Automotive Journalist",
+    "Motorsports Engineer", "Race Engineer", "Data Acquisition Specialist"
+  ],
 
   // Healthcare & Medical
   "Healthcare & Medical": [
@@ -705,7 +775,6 @@ export default function Home() {
     localStorage.setItem('currentGoal', currentGoal);
   }, [currentGoal]);
 
-  // Show loading or redirect if not authenticated
   if (status === 'loading' || isLoading) {
     return <div className="d-flex justify-content-center align-items-center min-vh-100">Loading...</div>;
   }
