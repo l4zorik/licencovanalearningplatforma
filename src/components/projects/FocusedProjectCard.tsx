@@ -563,6 +563,9 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                 <option value="exercise">🏋️ Cvičení</option>
                 <option value="job-search">💼 Hledání práce</option>
                 <option value="finance">💰 Finance</option>
+                <option value="food">🍽️ Jídlo & Pití</option>
+                <option value="housing">🏠 Bydlení</option>
+                <option value="sleep">😴 Spánek</option>
                 <option value="other">📝 Ostatní</option>
               </Form.Select>
             </Form.Group>

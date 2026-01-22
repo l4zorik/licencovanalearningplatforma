@@ -108,6 +108,149 @@ const DEFAULT_TEMPLATES: AlgorithmTemplate[] = [
     outcome: 'success',
     tags: ['organization', 'cleaning', 'productivity']
   },
+  {
+    id: 'tpl-food-1',
+    title: 'Zdravé vaření',
+    type: 'food',
+    description: 'Příprava zdravého jídla',
+    notes: 'Domácí strava je nejlepší',
+    duration: 45,
+    xpEarned: 20,
+    outcome: 'success',
+    tags: ['cooking', 'healthy', 'food', 'nutrition']
+  },
+  {
+    id: 'tpl-food-2',
+    title: 'Plánování jídelníčku',
+    type: 'food',
+    description: 'Naplánování jídel na týden',
+    notes: 'Nákupní seznam a recepty',
+    duration: 30,
+    xpEarned: 15,
+    outcome: 'success',
+    tags: ['meal-planning', 'food', 'organization']
+  },
+  {
+    id: 'tpl-food-3',
+    title: 'Pitný režim',
+    type: 'food',
+    description: 'Sledování pití vody',
+    notes: 'Min. 2l denně',
+    duration: 5,
+    xpEarned: 5,
+    outcome: 'success',
+    tags: ['hydration', 'health', 'water']
+  },
+  {
+    id: 'tpl-food-4',
+    title: 'Příprava svačiny',
+    type: 'food',
+    description: 'Zdravá svačina na zítra',
+    notes: 'Ovoce, zelenina, ořechy',
+    duration: 15,
+    xpEarned: 10,
+    outcome: 'success',
+    tags: ['snack', 'healthy', 'food']
+  },
+  {
+    id: 'tpl-home-1',
+    title: 'Úklid pokoje',
+    type: 'housing',
+    description: 'Úklid a organizace pokoje',
+    notes: 'Postel, stůl, podlaha',
+    duration: 30,
+    xpEarned: 15,
+    outcome: 'success',
+    tags: ['cleaning', 'organization', 'housing']
+  },
+  {
+    id: 'tpl-home-2',
+    title: 'Praní a skládání',
+    type: 'housing',
+    description: 'Praní, sušení, skládání oblečení',
+    notes: 'Všechno na své místo',
+    duration: 60,
+    xpEarned: 20,
+    outcome: 'success',
+    tags: ['laundry', 'clothes', 'housing']
+  },
+  {
+    id: 'tpl-home-3',
+    title: 'Platby a účty',
+    type: 'housing',
+    description: 'Placení nájmu, energií, služeb',
+    notes: 'Vše včas a online',
+    duration: 20,
+    xpEarned: 10,
+    outcome: 'success',
+    tags: ['bills', 'housing', 'finance', 'responsibility']
+  },
+  {
+    id: 'tpl-home-4',
+    title: 'Oprava a údržba',
+    type: 'housing',
+    description: 'Domácí opravy a údržba',
+    notes: 'Menší opravy v bytě',
+    duration: 45,
+    xpEarned: 20,
+    outcome: 'partial',
+    tags: ['repairs', 'maintenance', 'housing', 'diy']
+  },
+  {
+    id: 'tpl-sleep-1',
+    title: 'Večerní routine',
+    type: 'sleep',
+    description: 'Příprava na klidný spánek',
+    notes: 'Žádná obrazovka 1h před spaním',
+    duration: 30,
+    xpEarned: 20,
+    outcome: 'success',
+    tags: ['sleep', 'routine', 'relaxation', 'evening']
+  },
+  {
+    id: 'tpl-sleep-2',
+    title: 'Meditace před spaním',
+    type: 'sleep',
+    description: 'Relaxace a meditace před usnutím',
+    notes: 'Klidná mysl = kvalitní spánek',
+    duration: 15,
+    xpEarned: 15,
+    outcome: 'success',
+    tags: ['sleep', 'meditation', 'relaxation', 'mindfulness']
+  },
+  {
+    id: 'tpl-sleep-3',
+    title: 'Příprava postele',
+    type: 'sleep',
+    description: 'Čisté povlečení, správná teplota',
+    notes: 'Optimální podmínky pro spánek',
+    duration: 15,
+    xpEarned: 10,
+    outcome: 'success',
+    tags: ['bed', 'sleep', 'comfort', 'cleaning']
+  },
+  {
+    id: 'tpl-sleep-4',
+    title: 'Žádná kofein po 14:00',
+    type: 'sleep',
+    description: 'Dodržování pravidla bez kofeinu',
+    notes: 'Lepší usínání a kvalita spánku',
+    duration: 0,
+    xpEarned: 10,
+    outcome: 'success',
+    tags: ['caffeine', 'sleep', 'health', 'discipline']
+  },
+  {
+    id: 'tpl-sleep-5',
+    title: 'Kvalitní 8h spánku',
+    type: 'sleep',
+    description: 'Dostat se do postele včas',
+    notes: 'Cíl: 8 hodin spánku',
+    duration: 480,
+    xpEarned: 25,
+    outcome: 'success',
+    tags: ['sleep', 'health', 'rest', 'discipline']
+  },
 ];
 
 export default function AlgorithmTemplatesModal({ show, onClose, onSelectTemplate }: AlgorithmTemplatesModalProps) {
@@ -217,10 +360,21 @@ export default function AlgorithmTemplatesModal({ show, onClose, onSelectTemplat
                 >
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
-                      <div className="d-flex align-items-center gap-2">
-                        <Badge bg="info" style={{ fontSize: '0.7rem' }}>{template.type}</Badge>
-                        <span style={{ color: '#fff', fontWeight: '500' }}>{template.title}</span>
-                      </div>
+                  <div className="d-flex align-items-center gap-2">
+                      <Badge bg="info" style={{ fontSize: '0.7rem' }}>
+                        {template.type === 'food' ? '🍽️' : 
+                         template.type === 'housing' ? '🏠' : 
+                         template.type === 'sleep' ? '😴' : 
+                         template.type === 'learning' ? '📖' :
+                         template.type === 'coding' ? '💻' :
+                         template.type === 'exercise' ? '🏋️' :
+                         template.type === 'job-search' ? '💼' :
+                         template.type === 'finance' ? '💰' :
+                         template.type === 'research' ? '🔬' :
+                         template.type === 'planning' ? '📋' : '📝'} {template.type}
+                      </Badge>
+                      <span style={{ color: '#fff', fontWeight: '500' }}>{template.title}</span>
+                    </div>
                       {template.description && (
                         <small style={{ color: '#aaa', display: 'block', marginTop: '4px' }}>
                           {template.description.substring(0, 60)}...
@@ -278,6 +432,9 @@ export default function AlgorithmTemplatesModal({ show, onClose, onSelectTemplat
                       <option value="exercise">🏋️ Cvičení</option>
                       <option value="job-search">💼 Hledání práce</option>
                       <option value="finance">💰 Finance</option>
+                      <option value="food">🍽️ Jídlo & Pití</option>
+                      <option value="housing">🏠 Bydlení</option>
+                      <option value="sleep">😴 Spánek</option>
                       <option value="research">🔬 Výzkum</option>
                       <option value="planning">📋 Plánování</option>
                       <option value="other">📝 Ostatní</option>
