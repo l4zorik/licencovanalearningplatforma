@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npx prisma generate && npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "env": {
+    "NEXTAUTH_SECRET": "@nextauth-secret"
+  }
+}
