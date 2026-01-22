@@ -586,12 +586,26 @@ export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [templateMilestonesProgress, setTemplateMilestonesProgress] = useState<Record<string, string[]>>({});
   const [selectedTemplateDetail, setSelectedTemplateDetail] = useState<ProjectTemplate | null>(null);
-  const [focusedProjectId, setFocusedProjectId] = useState<string | null>(null);
+  const [focusedProjectId, setFocusedProjectId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('focusedProjectId');
+    }
+    return null;
+  });
   
   const getFocusedProject = () => {
     if (!focusedProjectId) return null;
     return projects.find(p => p.id === focusedProjectId) || null;
   };
+
+  // Save focusedProjectId to localStorage
+  useEffect(() => {
+    if (focusedProjectId) {
+      localStorage.setItem('focusedProjectId', focusedProjectId);
+    } else {
+      localStorage.removeItem('focusedProjectId');
+    }
+  }, [focusedProjectId]);
 
   // Load projects from localStorage
   useEffect(() => {
@@ -602,9 +616,11 @@ export default function Home() {
         const processedProjects = parsed.map((p: any) => ({
           ...p,
           startDate: new Date(p.startDate),
+          deadline: p.deadline ? new Date(p.deadline) : undefined,
           milestones: p.milestones.map((m: any) => ({
             ...m,
-            completedAt: m.completedAt ? new Date(m.completedAt) : undefined
+            completedAt: m.completedAt ? new Date(m.completedAt) : undefined,
+            timerStartedAt: m.timerStartedAt ? new Date(m.timerStartedAt) : undefined
           })),
           algorithms: p.algorithms.map((a: any) => ({
             ...a,
@@ -634,6 +650,13 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('templateMilestonesProgress', JSON.stringify(templateMilestonesProgress));
   }, [templateMilestonesProgress]);
+
+  // Save projects to localStorage whenever they change
+  useEffect(() => {
+    if (projects.length > 0) {
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }
+  }, [projects]);
 
   // Toggle template milestone
   const handleToggleTemplateMilestone = (templateId: string, milestoneTitle: string) => {
