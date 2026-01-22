@@ -2,7 +2,25 @@ export type ProjectStatus = 'active' | 'completed' | 'paused' | 'archived';
 
 export type ProjectPriority = 'high' | 'medium' | 'low';
 
-export type AlgorithmType = 
+export type TimerSettings = {
+  enabled: boolean;
+  showUrgency: boolean;
+  urgencyThresholds: number[];
+  defaultMilestoneHours: number;
+  autoStartTimer: boolean;
+};
+
+export const DEFAULT_TIMER_SETTINGS: TimerSettings = {
+  enabled: true,
+  showUrgency: true,
+  urgencyThresholds: [75, 50, 25],
+  defaultMilestoneHours: 2,
+  autoStartTimer: false,
+};
+
+export type UrgencyLevel = 'normal' | 'caution' | 'warning' | 'critical';
+
+export type AlgorithmType =  
   | 'learning'
   | 'coding'
   | 'optimization'
@@ -42,6 +60,8 @@ export type Project = {
   progress: number;
   streak: number;
   linkedGoalId?: string;
+  deadline?: Date;
+  timerSettings?: TimerSettings;
 };
 
 export type ProjectMilestone = {
@@ -52,6 +72,10 @@ export type ProjectMilestone = {
   completedAt?: Date;
   xpReward: number;
   order: number;
+  targetHours?: number;
+  timeSpent: number;
+  timerActive: boolean;
+  timerStartedAt?: Date;
 };
 
 export type AlgorithmLog = {

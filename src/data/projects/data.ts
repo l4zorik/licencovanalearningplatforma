@@ -488,10 +488,10 @@ export const INITIAL_PROJECTS: Project[] = [
     priority: 'high',
     goals: ['Dokončit core funkce', 'Přidat gamifikaci', 'Nasadit na produkci'],
     milestones: [
-      { id: 'm1', title: 'Základní architektura', description: 'Postavit Next.js app s Prisma', isCompleted: true, completedAt: new Date('2025-01-01'), xpReward: 500, order: 1 },
-      { id: 'm2', title: 'Skills Board', description: 'Implementovat skills board', isCompleted: true, completedAt: new Date('2025-01-10'), xpReward: 800, order: 2 },
-      { id: 'm3', title: 'Job Board', description: 'Přidat job board s filtrací', isCompleted: false, xpReward: 1000, order: 3 },
-      { id: 'm4', title: 'Gamifikace', description: 'XP, achievements, milestones', isCompleted: false, xpReward: 1200, order: 4 },
+      { id: 'm1', title: 'Základní architektura', description: 'Postavit Next.js app s Prisma', isCompleted: true, completedAt: new Date('2025-01-01'), xpReward: 500, order: 1, targetHours: 4, timeSpent: 300, timerActive: false },
+      { id: 'm2', title: 'Skills Board', description: 'Implementovat skills board', isCompleted: true, completedAt: new Date('2025-01-10'), xpReward: 800, order: 2, targetHours: 6, timeSpent: 420, timerActive: false },
+      { id: 'm3', title: 'Job Board', description: 'Přidat job board s filtrací', isCompleted: false, xpReward: 1000, order: 3, targetHours: 8, timeSpent: 120, timerActive: false },
+      { id: 'm4', title: 'Gamifikace', description: 'XP, achievements, milestones', isCompleted: false, xpReward: 1200, order: 4, targetHours: 10, timeSpent: 0, timerActive: false },
     ],
     algorithms: [
       {
@@ -529,7 +529,14 @@ export const INITIAL_PROJECTS: Project[] = [
     icon: '🚀',
     progress: 35,
     streak: 5,
-    linkedGoalId: 'career-growth'
+    linkedGoalId: 'career-growth',
+    timerSettings: {
+      enabled: true,
+      showUrgency: true,
+      urgencyThresholds: [75, 50, 25],
+      defaultMilestoneHours: 4,
+      autoStartTimer: false,
+    }
   },
   {
     id: 'proj-2',
@@ -540,9 +547,9 @@ export const INITIAL_PROJECTS: Project[] = [
     priority: 'medium',
     goals: ['Naučit G-Code', 'Získat Fanuc certifikaci'],
     milestones: [
-      { id: 'm1', title: 'Základy soustružení', description: 'Teoretické základy', isCompleted: true, xpReward: 300, order: 1 },
-      { id: 'm2', title: 'CNC Programování', description: 'G-Code mastery', isCompleted: false, xpReward: 500, order: 2 },
-      { id: 'm3', title: 'CAM Systémy', description: 'Mastercam základy', isCompleted: false, xpReward: 600, order: 3 },
+      { id: 'm1', title: 'Základy soustružení', description: 'Teoretické základy', isCompleted: true, xpReward: 300, order: 1, targetHours: 3, timeSpent: 180, timerActive: false },
+      { id: 'm2', title: 'CNC Programování', description: 'G-Code mastery', isCompleted: false, xpReward: 500, order: 2, targetHours: 5, timeSpent: 60, timerActive: false },
+      { id: 'm3', title: 'CAM Systémy', description: 'Mastercam základy', isCompleted: false, xpReward: 600, order: 3, targetHours: 6, timeSpent: 0, timerActive: false },
     ],
     algorithms: [
       {
@@ -567,7 +574,14 @@ export const INITIAL_PROJECTS: Project[] = [
     icon: '⚙️',
     progress: 25,
     streak: 3,
-    linkedGoalId: 'cnc-skills'
+    linkedGoalId: 'cnc-skills',
+    timerSettings: {
+      enabled: true,
+      showUrgency: true,
+      urgencyThresholds: [75, 50, 25],
+      defaultMilestoneHours: 3,
+      autoStartTimer: false,
+    }
   }
 ];
 

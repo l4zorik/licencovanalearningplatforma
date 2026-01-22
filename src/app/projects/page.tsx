@@ -53,12 +53,14 @@ export default function ProjectsPage() {
           startDate: new Date(p.startDate),
           milestones: p.milestones.map((m) => ({
             ...m,
-            completedAt: m.completedAt ? new Date(m.completedAt) : undefined
+            completedAt: m.completedAt ? new Date(m.completedAt) : undefined,
+            timerStartedAt: m.timerStartedAt ? new Date(m.timerStartedAt) : undefined
           })),
           algorithms: p.algorithms.map((a) => ({
             ...a,
             timestamp: new Date(a.timestamp)
-          }))
+          })),
+          deadline: p.deadline ? new Date(p.deadline) : undefined
         })));
       } catch {
         setProjects(INITIAL_PROJECTS);
@@ -181,7 +183,10 @@ export default function ProjectsPage() {
         description: '',
         isCompleted: false,
         xpReward: 100,
-        order: idx + 1
+        order: idx + 1,
+        targetHours: 2,
+        timeSpent: 0,
+        timerActive: false,
       })),
       algorithms: [],
       skills: [...template.skills],
@@ -193,6 +198,13 @@ export default function ProjectsPage() {
       icon: template.icon,
       progress: 0,
       streak: 0,
+      timerSettings: {
+        enabled: true,
+        showUrgency: true,
+        urgencyThresholds: [75, 50, 25],
+        defaultMilestoneHours: 2,
+        autoStartTimer: false,
+      }
     }));
 
     setProjects(prev => [...prev, ...newProjects]);
@@ -216,6 +228,10 @@ export default function ProjectsPage() {
       completedAt?: string;
       xpReward: number;
       order: number;
+      targetHours?: number;
+      timeSpent: number;
+      timerActive: boolean;
+      timerStartedAt?: string;
     }>;
     algorithms: Array<{
       id: string;
@@ -239,6 +255,14 @@ export default function ProjectsPage() {
     progress: number;
     streak: number;
     linkedGoalId?: string;
+    deadline?: string;
+    timerSettings?: {
+      enabled: boolean;
+      showUrgency: boolean;
+      urgencyThresholds: number[];
+      defaultMilestoneHours: number;
+      autoStartTimer: boolean;
+    };
   }
 
   const handleDeleteProject = (projectId: string) => {

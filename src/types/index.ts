@@ -842,6 +842,20 @@ export type AlgorithmType =
   | 'planning'
   | 'marketing';
 
+export type ProjectMilestone = {
+  id: string;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+  completedAt?: Date;
+  xpReward: number;
+  order: number;
+  targetHours?: number;
+  timeSpent: number;
+  timerActive: boolean;
+  timerStartedAt?: Date;
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -864,16 +878,14 @@ export type Project = {
   progress: number;
   streak: number;
   linkedGoalId?: string;
-};
-
-export type ProjectMilestone = {
-  id: string;
-  title: string;
-  description: string;
-  isCompleted: boolean;
-  completedAt?: Date;
-  xpReward: number;
-  order: number;
+  deadline?: Date;
+  timerSettings?: {
+    enabled: boolean;
+    showUrgency: boolean;
+    urgencyThresholds: number[];
+    defaultMilestoneHours: number;
+    autoStartTimer: boolean;
+  };
 };
 
 export type AlgorithmLog = {

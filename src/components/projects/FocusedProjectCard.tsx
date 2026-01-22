@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Button, Badge, ListGroup, ProgressBar, Row, Col, Form, Modal } from 'react-bootstrap';
-import { Project, ProjectMilestone } from '@/types/projects';
+import { Project, ProjectMilestone, DEFAULT_TIMER_SETTINGS } from '@/types/projects';
 import { calculateProjectStats } from '@/data/projects/data';
+import ProjectDeadlineTimer from '@/components/timers/ProjectDeadlineTimer';
+import MilestoneTimer from '@/components/timers/MilestoneTimer';
 
 interface FocusedProjectCardProps {
   project: Project;
@@ -70,6 +72,10 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
       isCompleted: false,
       xpReward: parseInt(formData.get('xpReward') as string) || 100,
       order: project.milestones.length,
+      targetHours: parseFloat(formData.get('targetHours') as string) || (project.timerSettings?.defaultMilestoneHours || DEFAULT_TIMER_SETTINGS.defaultMilestoneHours),
+      timeSpent: 0,
+      timerActive: false,
+      timerStartedAt: undefined,
     };
     onUpdate({ ...project, milestones: [...project.milestones, newMilestone] });
     setShowAddModal(false);
@@ -116,6 +122,12 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
         </div>
         
         <Row className="mt-3">
+          <Col md={12} className="mb-2">
+            <ProjectDeadlineTimer project={project} onUpdate={onUpdate} />
+          </Col>
+        </Row>
+        
+        <Row className="mt-2">
           <Col md={8}>
             <div className="d-flex align-items-center gap-3">
               <span style={{ color: '#fff', fontSize: '0.9rem' }}>Pokrok: {stats.progress}%</span>
@@ -194,84 +206,111 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                             onChange={e => setEditForm({ ...editForm, description: e.target.value })}
                             rows={2}
                           />
-                          <Form.Control
-                            size="sm"
-                            type="number"
-                            className="mb-2"
-                            placeholder="XP"
-                            value={editForm.xpReward || 100}
-                            onChange={e => setEditForm({ ...editForm, xpReward: parseInt(e.target.value) || 0 })}
-                            style={{ width: '80px' }}
-                          />
-                          <div className="d-flex gap-1">
+                          <Row>
+                            <Col xs={6}>
+                              <Form.Control
+                                size="sm"
+                                type="number"
+                                placeholder="XP"
+                                value={editForm.xpReward || 100}
+                                onChange={e => setEditForm({ ...editForm, xpReward: parseInt(e.target.value) || 0 })}
+                                style={{ width: '100%' }}
+                              />
+                            </Col>
+                            <Col xs={6}>
+                              <Form.Control
+                                size="sm"
+                                type="number"
+                                step="0.5"
+                                placeholder="Hodin"
+                                value={milestone.targetHours || project.timerSettings?.defaultMilestoneHours || 2}
+                                onChange={e => setEditForm({ ...editForm, targetHours: parseFloat(e.target.value) || 2 })}
+                                style={{ width: '100%' }}
+                              />
+                            </Col>
+                          </Row>
+                          <div className="d-flex gap-1 mt-2">
                             <Button size="sm" variant="success" onClick={handleSaveEdit}>💾</Button>
                             <Button size="sm" variant="secondary" onClick={() => setEditingMilestoneId(null)}>❌</Button>
                           </div>
                         </div>
                       ) : (
-                        <div className="d-flex align-items-center">
-                          <div className="flex-grow-1">
-                            <div className="d-flex align-items-center gap-2">
-                              <span
-                                style={{
-                                  textDecoration: milestone.isCompleted ? 'line-through' : 'none',
-                                  opacity: milestone.isCompleted ? 0.6 : 1,
-                                  color: '#fff',
-                                  fontWeight: '500'
-                                }}
-                              >
-                                {milestone.title}
-                              </span>
-                              <Badge bg={milestone.isCompleted ? 'success' : 'secondary'} style={{ fontSize: '0.7rem' }}>
-                                +{milestone.xpReward} XP
-                              </Badge>
+                        <div>
+                          <div className="d-flex align-items-center">
+                            <div className="flex-grow-1">
+                              <div className="d-flex align-items-center gap-2">
+                                <span
+                                  style={{
+                                    textDecoration: milestone.isCompleted ? 'line-through' : 'none',
+                                    opacity: milestone.isCompleted ? 0.6 : 1,
+                                    color: '#fff',
+                                    fontWeight: '500'
+                                  }}
+                                >
+                                  {milestone.title}
+                                </span>
+                                <Badge bg={milestone.isCompleted ? 'success' : 'secondary'} style={{ fontSize: '0.7rem' }}>
+                                  +{milestone.xpReward} XP
+                                </Badge>
+                              </div>
+                              <small style={{ color: '#888' }}>{milestone.description}</small>
                             </div>
-                            <small style={{ color: '#888' }}>{milestone.description}</small>
+                            {isEditing && (
+                              <div className="d-flex gap-1 ms-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline-info"
+                                  onClick={() => handleMoveMilestone(milestone.id, 'up')}
+                                  disabled={idx === 0}
+                                >
+                                  ⬆️
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline-info"
+                                  onClick={() => handleMoveMilestone(milestone.id, 'down')}
+                                  disabled={idx === project.milestones.length - 1}
+                                >
+                                  ⬇️
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline-warning"
+                                  onClick={() => handleStartEdit(milestone)}
+                                >
+                                  ✏️
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline-danger"
+                                  onClick={() => handleDeleteMilestone(milestone.id)}
+                                >
+                                  🗑️
+                                </Button>
+                              </div>
+                            )}
+                            {!isEditing && (
+                              <Button
+                                size="sm"
+                                variant={milestone.isCompleted ? 'outline-secondary' : 'outline-success'}
+                                onClick={() => handleToggleMilestone(milestone.id)}
+                                className="ms-2"
+                              >
+                                {milestone.isCompleted ? '✅' : '⭕'}
+                              </Button>
+                            )}
                           </div>
-                          {isEditing && (
-                            <div className="d-flex gap-1 ms-2">
-                              <Button
-                                size="sm"
-                                variant="outline-info"
-                                onClick={() => handleMoveMilestone(milestone.id, 'up')}
-                                disabled={idx === 0}
-                              >
-                                ⬆️
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline-info"
-                                onClick={() => handleMoveMilestone(milestone.id, 'down')}
-                                disabled={idx === project.milestones.length - 1}
-                              >
-                                ⬇️
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline-warning"
-                                onClick={() => handleStartEdit(milestone)}
-                              >
-                                ✏️
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline-danger"
-                                onClick={() => handleDeleteMilestone(milestone.id)}
-                              >
-                                🗑️
-                              </Button>
-                            </div>
-                          )}
-                          {!isEditing && (
-                            <Button
-                              size="sm"
-                              variant={milestone.isCompleted ? 'outline-secondary' : 'outline-success'}
-                              onClick={() => handleToggleMilestone(milestone.id)}
-                              className="ms-2"
-                            >
-                              {milestone.isCompleted ? '✅' : '⭕'}
-                            </Button>
-                          )}
+                          <MilestoneTimer 
+                            milestone={milestone}
+                            settings={project.timerSettings || DEFAULT_TIMER_SETTINGS}
+                            onUpdate={(updated) => {
+                              const updatedMilestones = project.milestones.map(m =>
+                                m.id === updated.id ? updated : m
+                              );
+                              onUpdate({ ...project, milestones: updatedMilestones });
+                            }}
+                            isEditing={isEditing}
+                          />
                         </div>
                       )}
                     </div>
@@ -362,10 +401,14 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
               <Form.Label style={{ color: '#fff' }}>Popis</Form.Label>
               <Form.Control name="description" as="textarea" rows={3} placeholder="Popište milník..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ color: '#fff' }}>XP Odměna</Form.Label>
-              <Form.Control name="xpReward" type="number" defaultValue={100} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ color: '#fff' }}>XP Odměna</Form.Label>
+            <Form.Control name="xpReward" type="number" defaultValue={100} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ color: '#fff' }}>Cílový čas (hodiny)</Form.Label>
+            <Form.Control name="targetHours" type="number" step="0.5" defaultValue={project.timerSettings?.defaultMilestoneHours || 2} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+          </Form.Group>
             <div className="d-flex justify-content-end gap-2">
               <Button variant="secondary" onClick={() => setShowAddModal(false)}>Zrušit</Button>
               <Button variant="primary" type="submit">Přidat</Button>
