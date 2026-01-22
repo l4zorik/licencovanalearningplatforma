@@ -48,16 +48,29 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
 
   const handleStartEdit = (milestone: ProjectMilestone) => {
     setEditingMilestoneId(milestone.id);
-    setEditForm({ title: milestone.title, description: milestone.description, xpReward: milestone.xpReward });
+    setEditForm({ 
+      title: milestone.title, 
+      description: milestone.description, 
+      xpReward: milestone.xpReward,
+      targetHours: milestone.targetHours || project.timerSettings?.defaultMilestoneHours || 2
+    });
   };
 
   const handleSaveEdit = () => {
     if (!editingMilestoneId || !editForm.title) return;
     
     const updatedMilestones = project.milestones.map(m =>
-      m.id === editingMilestoneId ? { ...m, ...editForm } : m
+      m.id === editingMilestoneId 
+        ? { 
+            ...m, 
+            title: editForm.title || m.title,
+            description: editForm.description || m.description,
+            xpReward: editForm.xpReward || m.xpReward,
+            targetHours: editForm.targetHours !== undefined ? editForm.targetHours : m.targetHours
+          } 
+        : m
     );
-    onUpdate({ ...project, milestones: updatedMilestones });
+    onUpdate({ ...project, milestones: updatedMilestones, timerSettings: project.timerSettings });
     setEditingMilestoneId(null);
     setEditForm({});
   };
@@ -223,7 +236,7 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                                 type="number"
                                 step="0.5"
                                 placeholder="Hodin"
-                                value={milestone.targetHours || project.timerSettings?.defaultMilestoneHours || 2}
+                                value={editForm.targetHours ?? milestone.targetHours ?? project.timerSettings?.defaultMilestoneHours ?? 2}
                                 onChange={e => setEditForm({ ...editForm, targetHours: parseFloat(e.target.value) || 2 })}
                                 style={{ width: '100%' }}
                               />
