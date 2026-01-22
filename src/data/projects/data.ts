@@ -582,6 +582,53 @@ export const INITIAL_PROJECTS: Project[] = [
       defaultMilestoneHours: 3,
       autoStartTimer: false,
     }
+  },
+  {
+    id: 'proj-personal-1',
+    title: 'Osobní Rozvoj',
+    description: 'Experimentální sledování aktivit - učení, cvičení, hledání práce',
+    category: 'personal',
+    status: 'active',
+    priority: 'high',
+    goals: ['Učit se novým věcem', 'Cvičit pravidelně', 'Najít dobrou práci', 'Postarat se o nárem', 'Spořit na důležité výdaje'],
+    milestones: [
+      { id: 'm-p1', title: 'Denní učení', description: 'Alespoň 1h denně', isCompleted: false, xpReward: 50, order: 1, targetHours: 1, timeSpent: 0, timerActive: false },
+      { id: 'm-p2', title: 'Pravidelné cvičení', description: '3x týdně', isCompleted: false, xpReward: 100, order: 2, targetHours: 2, timeSpent: 0, timerActive: false },
+      { id: 'm-p3', title: 'Hledání práce', description: 'Denně životopis a pohovory', isCompleted: false, xpReward: 150, order: 3, targetHours: 3, timeSpent: 0, timerActive: false },
+      { id: 'm-p4', title: 'Finanční stabilita', description: 'Nájem a spoření', isCompleted: false, xpReward: 200, order: 4, targetHours: 1, timeSpent: 0, timerActive: false },
+    ],
+    algorithms: [
+      {
+        id: 'alg-exp-1',
+        projectId: 'proj-personal-1',
+        timestamp: new Date(),
+        type: 'learning',
+        title: 'Snažím se učit, cvičit, najít si práci',
+        description: 'Experimentální sledování aktivit - učení, cvičení, hledání práce, starost o nájem a spoření. Toto je zvláštní přehled algoritmů které probíhají.',
+        duration: 0,
+        outcome: 'learning',
+        xpEarned: 0,
+        tags: ['experimental', 'personal', 'learning', 'exercise', 'job-search', 'finance'],
+        notes: 'Toto je experimentální feature pro sledování osobního rozvoje'
+      }
+    ],
+    skills: ['Učení', 'Disciplína', 'Vytrvalost', 'Finanční gramotnost'],
+    technologies: [],
+    startDate: new Date(),
+    totalHours: 0,
+    xpReward: 2000,
+    color: '#8BC34A',
+    icon: '🌱',
+    progress: 0,
+    streak: 0,
+    linkedGoalId: 'personal-growth',
+    timerSettings: {
+      enabled: true,
+      showUrgency: true,
+      urgencyThresholds: [75, 50, 25],
+      defaultMilestoneHours: 2,
+      autoStartTimer: false,
+    }
   }
 ];
 

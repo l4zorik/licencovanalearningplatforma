@@ -15,6 +15,7 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
   const [isEditing, setIsEditing] = useState(false);
   const [editingMilestoneId, setEditingMilestoneId] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddAlgorithmModal, setShowAddAlgorithmModal] = useState(false);
   const [editForm, setEditForm] = useState<Partial<ProjectMilestone>>({});
   const stats = calculateProjectStats(project);
 
@@ -32,6 +33,26 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
       const updatedMilestones = project.milestones.filter(m => m.id !== milestoneId);
       onUpdate({ ...project, milestones: updatedMilestones });
     }
+  };
+
+  const handleAddAlgorithm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const newAlgorithm = {
+      id: `alg-${Date.now()}`,
+      projectId: project.id,
+      timestamp: new Date(),
+      type: formData.get('type') as any,
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      duration: parseInt(formData.get('duration') as string) || 0,
+      outcome: formData.get('outcome') as any,
+      xpEarned: parseInt(formData.get('xpEarned') as string) || 0,
+      tags: (formData.get('tags') as string)?.split(',').map(t => t.trim()).filter(Boolean) || [],
+      notes: formData.get('notes') as string,
+    };
+    onUpdate({ ...project, algorithms: [...project.algorithms, newAlgorithm] });
+    setShowAddAlgorithmModal(false);
   };
 
   const handleMoveMilestone = (milestoneId: string, direction: 'up' | 'down') => {
@@ -332,15 +353,59 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
               ))}
             </div>
 
-            <h6 className="mt-4" style={{ color: '#fff' }}>🧪 Algoritmy ({project.algorithms.length})</h6>
+            <h6 className="mt-4" style={{ color: '#fff' }}>
+              🧪 Algoritmy ({project.algorithms.length})
+              <Button 
+                variant="outline-success" 
+                size="sm" 
+                className="ms-2"
+                onClick={() => setShowAddAlgorithmModal(true)}
+              >
+                ➕
+              </Button>
+            </h6>
             {project.algorithms.length === 0 ? (
               <p style={{ color: '#888' }}>Zatím žádné algoritmy</p>
             ) : (
-              <div className="d-flex gap-1 flex-wrap">
+              <div className="d-flex flex-column gap-2">
                 {project.algorithms.map((alg) => (
-                  <Badge key={alg.id} bg="info" style={{ fontSize: '0.8rem' }}>
-                    {alg.type}: {alg.title}
-                  </Badge>
+                  <div 
+                    key={alg.id} 
+                    style={{ 
+                      background: 'rgba(255,255,255,0.05)', 
+                      borderRadius: '8px', 
+                      padding: '10px',
+                      border: '1px solid rgba(255,255,255,0.1)'
+                    }}
+                  >
+                    <div className="d-flex align-items-center gap-2 mb-1">
+                      <Badge bg="info" style={{ fontSize: '0.75rem' }}>
+                        {alg.type}
+                      </Badge>
+                      <span style={{ color: '#fff', fontWeight: '500', fontSize: '0.9rem' }}>
+                        {alg.title}
+                      </span>
+                    </div>
+                    {alg.description && (
+                      <small style={{ color: '#aaa', display: 'block', fontSize: '0.8rem' }}>
+                        {alg.description}
+                      </small>
+                    )}
+                    {alg.notes && (
+                      <small style={{ color: '#888', display: 'block', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                        📝 {alg.notes}
+                      </small>
+                    )}
+                    {alg.tags && alg.tags.length > 0 && (
+                      <div className="d-flex gap-1 mt-1 flex-wrap">
+                        {alg.tags.map((tag, idx) => (
+                          <Badge key={idx} bg="secondary" style={{ fontSize: '0.65rem' }}>
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
@@ -424,6 +489,72 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
           </Form.Group>
             <div className="d-flex justify-content-end gap-2">
               <Button variant="secondary" onClick={() => setShowAddModal(false)}>Zrušit</Button>
+              <Button variant="primary" type="submit">Přidat</Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showAddAlgorithmModal} onHide={() => setShowAddAlgorithmModal(false)} centered>
+        <Modal.Header closeButton style={{ background: project.color, color: '#fff' }}>
+          <Modal.Title>🧪 Přidat Algoritmus</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: '#1a1a2e' }}>
+          <Form onSubmit={handleAddAlgorithm}>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ color: '#fff' }}>Typ</Form.Label>
+              <Form.Select name="type" defaultValue="learning" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                <option value="learning">📖 Učení</option>
+                <option value="coding">💻 Kódování</option>
+                <option value="research">🔬 Výzkum</option>
+                <option value="planning">📋 Plánování</option>
+                <option value="exercise">🏋️ Cvičení</option>
+                <option value="job-search">💼 Hledání práce</option>
+                <option value="finance">💰 Finance</option>
+                <option value="other">📝 Ostatní</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ color: '#fff' }}>Název</Form.Label>
+              <Form.Control name="title" required placeholder="Zadejte název..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ color: '#fff' }}>Popis</Form.Label>
+              <Form.Control name="description" as="textarea" rows={3} placeholder="Popište algoritmus..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ color: '#fff' }}>Poznámky</Form.Label>
+              <Form.Control name="notes" as="textarea" rows={2} placeholder="Další poznámky..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+            </Form.Group>
+            <Row>
+              <Col xs={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label style={{ color: '#fff' }}>Trvání (min)</Form.Label>
+                  <Form.Control name="duration" type="number" defaultValue={0} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+                </Form.Group>
+              </Col>
+              <Col xs={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label style={{ color: '#fff' }}>XP</Form.Label>
+                  <Form.Control name="xpEarned" type="number" defaultValue={10} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ color: '#fff' }}>Výsledek</Form.Label>
+              <Form.Select name="outcome" defaultValue="learning" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                <option value="learning">📚 Učení</option>
+                <option value="success">✅ Úspěch</option>
+                <option value="partial">⚡ Částečný úspěch</option>
+                <option value="failure">❌ Neúspěch</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ color: '#fff' }}>Tagy (oddělte čárkou)</Form.Label>
+              <Form.Control name="tags" placeholder="learning, personal, finance" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+            </Form.Group>
+            <div className="d-flex justify-content-end gap-2">
+              <Button variant="secondary" onClick={() => setShowAddAlgorithmModal(false)}>Zrušit</Button>
               <Button variant="primary" type="submit">Přidat</Button>
             </div>
           </Form>
