@@ -4,6 +4,7 @@ import { Project, ProjectMilestone, DEFAULT_TIMER_SETTINGS } from '@/types/proje
 import { calculateProjectStats } from '@/data/projects/data';
 import ProjectDeadlineTimer from '@/components/timers/ProjectDeadlineTimer';
 import MilestoneTimer from '@/components/timers/MilestoneTimer';
+import AlgorithmTemplatesModal, { AlgorithmTemplate } from '@/components/timers/AlgorithmTemplatesModal';
 
 interface FocusedProjectCardProps {
   project: Project;
@@ -16,8 +17,72 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
   const [editingMilestoneId, setEditingMilestoneId] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddAlgorithmModal, setShowAddAlgorithmModal] = useState(false);
+  const [showTemplatesModal, setShowTemplatesModal] = useState(false);
   const [editForm, setEditForm] = useState<Partial<ProjectMilestone>>({});
+  const [algorithmForm, setAlgorithmForm] = useState<{
+    type: string;
+    title: string;
+    description: string;
+    notes: string;
+    duration: number;
+    xpEarned: number;
+    outcome: string;
+    tags: string;
+  }>({
+    type: 'learning',
+    title: '',
+    description: '',
+    notes: '',
+    duration: 30,
+    xpEarned: 10,
+    outcome: 'learning',
+    tags: ''
+  });
   const stats = calculateProjectStats(project);
+
+  const handleSelectTemplate = (template: AlgorithmTemplate) => {
+    setAlgorithmForm({
+      type: template.type,
+      title: template.title,
+      description: template.description,
+      notes: template.notes,
+      duration: template.duration,
+      xpEarned: template.xpEarned,
+      outcome: template.outcome,
+      tags: template.tags.join(', ')
+    });
+    setShowTemplatesModal(false);
+    setShowAddAlgorithmModal(true);
+  };
+
+  const handleAddAlgorithm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newAlgorithm = {
+      id: `alg-${Date.now()}`,
+      projectId: project.id,
+      timestamp: new Date(),
+      type: algorithmForm.type as any,
+      title: algorithmForm.title,
+      description: algorithmForm.description,
+      duration: algorithmForm.duration,
+      outcome: algorithmForm.outcome as any,
+      xpEarned: algorithmForm.xpEarned,
+      tags: algorithmForm.tags.split(',').map(t => t.trim()).filter(Boolean),
+      notes: algorithmForm.notes,
+    };
+    onUpdate({ ...project, algorithms: [...project.algorithms, newAlgorithm] });
+    setShowAddAlgorithmModal(false);
+    setAlgorithmForm({
+      type: 'learning',
+      title: '',
+      description: '',
+      notes: '',
+      duration: 30,
+      xpEarned: 10,
+      outcome: 'learning',
+      tags: ''
+    });
+  };
 
   const handleToggleMilestone = (milestoneId: string) => {
     const updatedMilestones = project.milestones.map(m =>
@@ -28,31 +93,30 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
     onUpdate({ ...project, milestones: updatedMilestones });
   };
 
+  const handleAddMilestone = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const newMilestone: ProjectMilestone = {
+      id: `milestone-${Date.now()}`,
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      isCompleted: false,
+      xpReward: parseInt(formData.get('xpReward') as string) || 100,
+      order: project.milestones.length,
+      targetHours: parseFloat(formData.get('targetHours') as string) || (project.timerSettings?.defaultMilestoneHours || DEFAULT_TIMER_SETTINGS.defaultMilestoneHours),
+      timeSpent: 0,
+      timerActive: false,
+      timerStartedAt: undefined,
+    };
+    onUpdate({ ...project, milestones: [...project.milestones, newMilestone] });
+    setShowAddModal(false);
+  };
+
   const handleDeleteMilestone = (milestoneId: string) => {
     if (confirm('Opravdu chcete smazat tento milník?')) {
       const updatedMilestones = project.milestones.filter(m => m.id !== milestoneId);
       onUpdate({ ...project, milestones: updatedMilestones });
     }
-  };
-
-  const handleAddAlgorithm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const newAlgorithm = {
-      id: `alg-${Date.now()}`,
-      projectId: project.id,
-      timestamp: new Date(),
-      type: formData.get('type') as any,
-      title: formData.get('title') as string,
-      description: formData.get('description') as string,
-      duration: parseInt(formData.get('duration') as string) || 0,
-      outcome: formData.get('outcome') as any,
-      xpEarned: parseInt(formData.get('xpEarned') as string) || 0,
-      tags: (formData.get('tags') as string)?.split(',').map(t => t.trim()).filter(Boolean) || [],
-      notes: formData.get('notes') as string,
-    };
-    onUpdate({ ...project, algorithms: [...project.algorithms, newAlgorithm] });
-    setShowAddAlgorithmModal(false);
   };
 
   const handleMoveMilestone = (milestoneId: string, direction: 'up' | 'down') => {
@@ -94,25 +158,6 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
     onUpdate({ ...project, milestones: updatedMilestones, timerSettings: project.timerSettings });
     setEditingMilestoneId(null);
     setEditForm({});
-  };
-
-  const handleAddMilestone = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const newMilestone: ProjectMilestone = {
-      id: `milestone-${Date.now()}`,
-      title: formData.get('title') as string,
-      description: formData.get('description') as string,
-      isCompleted: false,
-      xpReward: parseInt(formData.get('xpReward') as string) || 100,
-      order: project.milestones.length,
-      targetHours: parseFloat(formData.get('targetHours') as string) || (project.timerSettings?.defaultMilestoneHours || DEFAULT_TIMER_SETTINGS.defaultMilestoneHours),
-      timeSpent: 0,
-      timerActive: false,
-      timerStartedAt: undefined,
-    };
-    onUpdate({ ...project, milestones: [...project.milestones, newMilestone] });
-    setShowAddModal(false);
   };
 
   const getProjectLevel = (xp: number) => {
@@ -500,10 +545,17 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
           <Modal.Title>🧪 Přidat Algoritmus</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ background: '#1a1a2e' }}>
+          <Button variant="outline-success" size="sm" className="mb-3 w-100" onClick={() => setShowTemplatesModal(true)}>
+            📋 Vybrat ze šablon
+          </Button>
           <Form onSubmit={handleAddAlgorithm}>
             <Form.Group className="mb-3">
               <Form.Label style={{ color: '#fff' }}>Typ</Form.Label>
-              <Form.Select name="type" defaultValue="learning" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+              <Form.Select 
+                value={algorithmForm.type} 
+                onChange={(e) => setAlgorithmForm({ ...algorithmForm, type: e.target.value })}
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}
+              >
                 <option value="learning">📖 Učení</option>
                 <option value="coding">💻 Kódování</option>
                 <option value="research">🔬 Výzkum</option>
@@ -516,33 +568,67 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ color: '#fff' }}>Název</Form.Label>
-              <Form.Control name="title" required placeholder="Zadejte název..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+              <Form.Control 
+                value={algorithmForm.title}
+                onChange={(e) => setAlgorithmForm({ ...algorithmForm, title: e.target.value })}
+                required 
+                placeholder="Zadejte název..." 
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} 
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ color: '#fff' }}>Popis</Form.Label>
-              <Form.Control name="description" as="textarea" rows={3} placeholder="Popište algoritmus..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+              <Form.Control 
+                value={algorithmForm.description}
+                onChange={(e) => setAlgorithmForm({ ...algorithmForm, description: e.target.value })}
+                as="textarea" 
+                rows={3} 
+                placeholder="Popište algoritmus..." 
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} 
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ color: '#fff' }}>Poznámky</Form.Label>
-              <Form.Control name="notes" as="textarea" rows={2} placeholder="Další poznámky..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+              <Form.Control 
+                value={algorithmForm.notes}
+                onChange={(e) => setAlgorithmForm({ ...algorithmForm, notes: e.target.value })}
+                as="textarea" 
+                rows={2} 
+                placeholder="Další poznámky..." 
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} 
+              />
             </Form.Group>
             <Row>
               <Col xs={6}>
                 <Form.Group className="mb-3">
                   <Form.Label style={{ color: '#fff' }}>Trvání (min)</Form.Label>
-                  <Form.Control name="duration" type="number" defaultValue={0} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+                  <Form.Control 
+                    value={algorithmForm.duration}
+                    onChange={(e) => setAlgorithmForm({ ...algorithmForm, duration: parseInt(e.target.value) || 0 })}
+                    type="number" 
+                    style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} 
+                  />
                 </Form.Group>
               </Col>
               <Col xs={6}>
                 <Form.Group className="mb-3">
                   <Form.Label style={{ color: '#fff' }}>XP</Form.Label>
-                  <Form.Control name="xpEarned" type="number" defaultValue={10} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+                  <Form.Control 
+                    value={algorithmForm.xpEarned}
+                    onChange={(e) => setAlgorithmForm({ ...algorithmForm, xpEarned: parseInt(e.target.value) || 0 })}
+                    type="number" 
+                    style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} 
+                  />
                 </Form.Group>
               </Col>
             </Row>
             <Form.Group className="mb-3">
               <Form.Label style={{ color: '#fff' }}>Výsledek</Form.Label>
-              <Form.Select name="outcome" defaultValue="learning" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+              <Form.Select 
+                value={algorithmForm.outcome}
+                onChange={(e) => setAlgorithmForm({ ...algorithmForm, outcome: e.target.value })}
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}
+              >
                 <option value="learning">📚 Učení</option>
                 <option value="success">✅ Úspěch</option>
                 <option value="partial">⚡ Částečný úspěch</option>
@@ -551,7 +637,12 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ color: '#fff' }}>Tagy (oddělte čárkou)</Form.Label>
-              <Form.Control name="tags" placeholder="learning, personal, finance" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+              <Form.Control 
+                value={algorithmForm.tags}
+                onChange={(e) => setAlgorithmForm({ ...algorithmForm, tags: e.target.value })}
+                placeholder="learning, personal, finance" 
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} 
+              />
             </Form.Group>
             <div className="d-flex justify-content-end gap-2">
               <Button variant="secondary" onClick={() => setShowAddAlgorithmModal(false)}>Zrušit</Button>
@@ -560,6 +651,12 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
           </Form>
         </Modal.Body>
       </Modal>
+
+      <AlgorithmTemplatesModal 
+        show={showTemplatesModal} 
+        onClose={() => setShowTemplatesModal(false)}
+        onSelectTemplate={handleSelectTemplate}
+      />
     </Card>
   );
 }
