@@ -121,12 +121,6 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
           </div>
         </div>
         
-        <Row className="mt-3">
-          <Col md={12} className="mb-2">
-            <ProjectDeadlineTimer project={project} onUpdate={onUpdate} />
-          </Col>
-        </Row>
-        
         <Row className="mt-2">
           <Col md={8}>
             <div className="d-flex align-items-center gap-3">

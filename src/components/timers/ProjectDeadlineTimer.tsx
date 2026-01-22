@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, ProgressBar, Badge, Button, Form, Row, Col, Alert } from 'react-bootstrap';
-import { Project, TimerSettings } from '@/types/projects';
+import { Project, TimerSettings, DEFAULT_TIMER_SETTINGS } from '@/types/projects';
 import { calculateTimeRemaining, getUrgencyLevel, getUrgencyBadgeVariant, TimeRemaining } from '@/lib/timers/time-utils';
 
 interface ProjectDeadlineTimerProps {
@@ -14,10 +14,10 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
   const [time, setTime] = useState<TimeRemaining | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [tempDeadline, setTempDeadline] = useState('');
-  const settings = project.timerSettings;
+  const settings = project.timerSettings || DEFAULT_TIMER_SETTINGS;
 
   useEffect(() => {
-    if (!project.deadline || !settings?.enabled) {
+    if (!project.deadline || !settings.enabled) {
       setTime(null);
       return;
     }
@@ -29,7 +29,7 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, [project.deadline, project.startDate, settings?.enabled]);
+  }, [project.deadline, project.startDate, settings.enabled]);
 
   const handleSetDeadline = () => {
     if (!tempDeadline) return;
@@ -50,7 +50,7 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
     setIsEditing(false);
   };
 
-  if (!settings?.enabled) return null;
+  if (!settings.enabled) return null;
 
   if (isEditing) {
     return (
@@ -86,16 +86,18 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
 
   if (!time) {
     return (
-      <div className="mt-2">
-        <Button variant="outline-secondary" size="sm" onClick={() => {
-          const now = new Date();
-          now.setDate(now.getDate() + 30);
-          setTempDeadline(now.toISOString().slice(0, 16));
-          setIsEditing(true);
-        }}>
-          ➕ Přidat Deadline
-        </Button>
-      </div>
+      <Card style={{ background: 'rgba(0,0,0,0.2)', border: `1px dashed ${project.color}40` }} className="mt-2">
+        <Card.Body className="py-2 px-3 text-center">
+          <Button variant="outline-primary" size="sm" onClick={() => {
+            const now = new Date();
+            now.setDate(now.getDate() + 30);
+            setTempDeadline(now.toISOString().slice(0, 16));
+            setIsEditing(true);
+          }}>
+            ⏱️ ➕ Přidat Deadline
+          </Button>
+        </Card.Body>
+      </Card>
     );
   }
 

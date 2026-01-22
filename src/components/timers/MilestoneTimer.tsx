@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button, ProgressBar, Badge, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { ProjectMilestone, TimerSettings } from '@/types/projects';
+import { ProjectMilestone, TimerSettings, DEFAULT_TIMER_SETTINGS } from '@/types/projects';
 import { formatHours, calculateMilestoneProgress, getUrgencyLevel, getUrgencyBadgeVariant } from '@/lib/timers/time-utils';
 
 interface MilestoneTimerProps {
@@ -76,13 +76,19 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
   const urgencyLevel = getUrgencyLevel(100 - progress, settings.urgencyThresholds);
   const urgencyVariant = getUrgencyBadgeVariant(urgencyLevel);
 
-  if (!settings.enabled) return null;
+  const formatMinutes = (mins: number): string => {
+    if (!mins || isNaN(mins)) return '0h';
+    if (mins < 60) return `${mins}m`;
+    const hours = Math.floor(mins / 60);
+    const remainingMins = mins % 60;
+    return remainingMins > 0 ? `${hours}h ${remainingMins}m` : `${hours}h`;
+  };
 
   const timeDisplay = milestone.isCompleted 
-    ? `✅ ${formatHours(milestone.timeSpent)}`
+    ? `✅ ${formatMinutes(milestone.timeSpent)}`
     : isTimerRunning 
-      ? `⏱️ ${formatHours(elapsedTime)} / ${formatHours(targetMinutes)}`
-      : `⏱️ ${formatHours(milestone.timeSpent)} / ${formatHours(targetMinutes)}`;
+      ? `⏱️ ${formatMinutes(elapsedTime)} / ${formatMinutes(targetMinutes)}`
+      : `⏱️ ${formatMinutes(milestone.timeSpent)} / ${formatMinutes(targetMinutes)}`;
 
   return (
     <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2">
