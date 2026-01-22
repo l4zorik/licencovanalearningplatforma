@@ -147,6 +147,12 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
             </Badge>
           </Col>
         </Row>
+
+        <Row className="mt-2">
+          <Col md={12}>
+            <ProjectDeadlineTimer project={project} onUpdate={onUpdate} />
+          </Col>
+        </Row>
       </Card.Header>
 
       <Card.Body>

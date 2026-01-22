@@ -54,44 +54,31 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
 
   if (isEditing) {
     return (
-      <Card style={{ background: 'rgba(0,0,0,0.4)', border: `1px solid ${project.color}60` }}>
-        <Card.Body>
-          <h6 style={{ color: '#fff' }}>⏱️ Nastavit Deadline</h6>
-          <Row className="g-2 mb-3">
-            <Col xs={6} md={3}>
-              <Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(7)}>
-                1 týden
-              </Button>
+      <Card style={{ background: 'rgba(0,0,0,0.5)', border: `1px solid ${project.color}80` }} className="mt-2">
+        <Card.Body className="py-2 px-3">
+          <Row className="g-1 mb-2">
+            <Col xs={3}><Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(7)}>7 dní</Button></Col>
+            <Col xs={3}><Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(14)}>14 dní</Button></Col>
+            <Col xs={3}><Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(30)}>30 dní</Button></Col>
+            <Col xs={3}><Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(90)}>90 dní</Button></Col>
+          </Row>
+          <Row className="g-2">
+            <Col xs={8}>
+              <Form.Control
+                type="datetime-local"
+                value={tempDeadline}
+                onChange={(e) => setTempDeadline(e.target.value)}
+                size="sm"
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}
+              />
             </Col>
-            <Col xs={6} md={3}>
-              <Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(14)}>
-                2 týdny
-              </Button>
-            </Col>
-            <Col xs={6} md={3}>
-              <Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(30)}>
-                1 měsíc
-              </Button>
-            </Col>
-            <Col xs={6} md={3}>
-              <Button variant="outline-success" size="sm" className="w-100" onClick={() => handleQuickDeadline(90)}>
-                3 měsíce
-              </Button>
+            <Col xs={4}>
+              <div className="d-flex gap-1">
+                <Button variant="primary" size="sm" onClick={handleSetDeadline}>💾</Button>
+                <Button variant="secondary" size="sm" onClick={() => setIsEditing(false)}>❌</Button>
+              </div>
             </Col>
           </Row>
-          <Form.Group className="mb-3">
-            <Form.Label style={{ color: '#ccc' }}>Vlastní datum a čas</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              value={tempDeadline}
-              onChange={(e) => setTempDeadline(e.target.value)}
-              style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}
-            />
-          </Form.Group>
-          <div className="d-flex gap-2">
-            <Button variant="primary" size="sm" onClick={handleSetDeadline}>💾 Uložit</Button>
-            <Button variant="secondary" size="sm" onClick={() => setIsEditing(false)}>❌ Zrušit</Button>
-          </div>
         </Card.Body>
       </Card>
     );
@@ -99,30 +86,21 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
 
   if (!time) {
     return (
-      <Card style={{ background: 'rgba(0,0,0,0.3)', border: `1px dashed ${project.color}40` }}>
-        <Card.Body className="text-center py-3">
-          <Button variant="outline-light" size="sm" onClick={() => {
-            const now = new Date();
-            now.setDate(now.getDate() + 30);
-            setTempDeadline(now.toISOString().slice(0, 16));
-            setIsEditing(true);
-          }}>
-            ➕ Přidat Deadline
-          </Button>
-        </Card.Body>
-      </Card>
+      <div className="mt-2">
+        <Button variant="outline-secondary" size="sm" onClick={() => {
+          const now = new Date();
+          now.setDate(now.getDate() + 30);
+          setTempDeadline(now.toISOString().slice(0, 16));
+          setIsEditing(true);
+        }}>
+          ➕ Přidat Deadline
+        </Button>
+      </div>
     );
   }
 
   const urgencyLevel = getUrgencyLevel(time.percentage, settings.urgencyThresholds);
   const urgencyVariant = getUrgencyBadgeVariant(urgencyLevel);
-
-  const urgencyMessages: Record<string, string> = {
-    normal: 'Času dost',
-    caution: 'Už toho moc nezbývá',
-    warning: 'Zbývá jen čtvrtina!',
-    critical: '🚨 KRITICKÉ!',
-  };
 
   const getCountdownColor = () => {
     if (urgencyLevel === 'critical') return '#ff4444';
@@ -133,105 +111,56 @@ export default function ProjectDeadlineTimer({ project, onUpdate }: ProjectDeadl
 
   return (
     <Card style={{ 
-      background: `linear-gradient(135deg, ${getCountdownColor()}30 0%, ${getCountdownColor()}10 100%)`,
-      border: `2px solid ${getCountdownColor()}`
-    }}>
+      background: `linear-gradient(90deg, ${getCountdownColor()}25 0%, transparent 100%)`,
+      border: `1px solid ${getCountdownColor()}60`,
+      borderLeft: `4px solid ${getCountdownColor()}`
+    }} className="mt-2">
       <Card.Body className="py-2 px-3">
         <Row className="align-items-center">
-          <Col xs={12} md={7}>
-            <div className="d-flex align-items-center gap-2 mb-1">
-              <span style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 'bold' }}>
-                ⏱️ {time.isOverdue 
-                  ? `🔴 ZPOŽDĚNÍ!`
-                  : `ZBÝVÁ`
-                }
+          <Col xs={7} md={8}>
+            <div className="d-flex align-items-center gap-2">
+              <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 'bold' }}>
+                ⏱️ {time.isOverdue ? '🔴 ZPOŽDĚNÍ:' : 'ZBÝVÁ:'}
               </span>
               {!time.isOverdue && (
-                <>
-                  <span style={{ 
-                    color: getCountdownColor(), 
-                    fontSize: '1.2rem', 
-                    fontFamily: 'monospace',
-                    fontWeight: 'bold'
-                  }}>
-                    {String(time.days).padStart(2, '0')}:{String(time.hours).padStart(2, '0')}:{String(time.minutes).padStart(2, '0')}:{String(time.seconds).padStart(2, '0')}
-                  </span>
-                </>
+                <span style={{ 
+                  color: getCountdownColor(), 
+                  fontSize: '0.9rem', 
+                  fontFamily: 'monospace',
+                  fontWeight: 'bold'
+                }}>
+                  {String(time.days).padStart(2, '0')}:{String(time.hours).padStart(2, '0')}:{String(time.minutes).padStart(2, '0')}:{String(time.seconds).padStart(2, '0')}
+                </span>
+              )}
+              {time.isOverdue && (
+                <span style={{ color: '#ff4444', fontWeight: 'bold' }}>
+                  {Math.abs(time.days)}d {Math.abs(time.hours)}h
+                </span>
               )}
             </div>
-            {time.isOverdue && (
-              <Alert variant="danger" className="py-1 px-2 mb-1" style={{ fontSize: '0.8rem' }}>
-                Deadline uplynul před {Math.abs(time.days)}d {Math.abs(time.hours)}h!
-              </Alert>
-            )}
           </Col>
-          
-          <Col xs={12} md={5}>
-            <div className="d-flex align-items-center gap-2 mb-1">
+          <Col xs={5} md={4}>
+            <div className="d-flex align-items-center gap-1">
               <ProgressBar
                 now={Math.min(100, time.percentage)}
                 variant={urgencyVariant}
-                style={{ flex: 1, height: '12px' }}
+                style={{ flex: 1, height: '8px' }}
                 animated={urgencyLevel === 'critical'}
               />
-              <Badge bg={urgencyVariant} style={{ fontSize: '0.9rem' }}>
+              <Badge bg={urgencyVariant} style={{ fontSize: '0.75rem' }}>
                 {time.percentage.toFixed(0)}%
               </Badge>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <span style={{ color: '#aaa', fontSize: '0.75rem' }}>
-                {urgencyMessages[urgencyLevel]}
-              </span>
-              <div className="d-flex gap-1">
-                <Button 
-                  variant="outline-light" 
-                  size="sm"
-                  onClick={() => {
-                    const now = new Date();
-                    now.setDate(now.getDate() + 7);
-                    setTempDeadline(now.toISOString().slice(0, 16));
-                    setIsEditing(true);
-                  }}
-                  title="Změnit deadline"
-                >
-                  📅
-                </Button>
-                <Button 
-                  variant="outline-light" 
-                  size="sm"
-                  onClick={handleRemoveDeadline}
-                  title="Odebrat deadline"
-                >
-                  🗑️
-                </Button>
-              </div>
+              <Button 
+                variant="link" 
+                size="sm"
+                onClick={() => setIsEditing(true)}
+                style={{ color: '#888', textDecoration: 'none', padding: '0 4px' }}
+              >
+                📅
+              </Button>
             </div>
           </Col>
         </Row>
-
-        {!time.isOverdue && settings.urgencyThresholds.map((threshold, idx) => {
-          const prevThreshold = idx > 0 ? settings.urgencyThresholds[idx - 1] : 100;
-          const showThreshold = time.percentage <= prevThreshold && time.percentage > threshold;
-          
-          if (!showThreshold) return null;
-          
-          const labels: Record<number, string> = {
-            75: '⚠️ 75% uběhlo - zbývá 25%',
-            50: '🔶 50% uběhlo - zbývá polovina!',
-            25: '🚨 75% uběhlo - poslední čtvrtina!',
-          };
-          
-          return (
-            <Alert 
-              key={threshold} 
-              variant={threshold <= 25 ? 'danger' : threshold <= 50 ? 'warning' : 'info'}
-              className="py-1 px-2 mt-1"
-              style={{ fontSize: '0.8rem' }}
-            >
-              {labels[threshold] || `${threshold}% uběhlo`}
-            </Alert>
-          );
-        })}
       </Card.Body>
     </Card>
   );
