@@ -11,7 +11,7 @@ import { JOB_TEMPLATES } from '@/components/WorkSection';
 import { CERTIFICATION_TEMPLATES } from '@/components/CertificationSection';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Project, ProjectTemplate } from '@/types';
-import { calculateProjectStats, PROJECT_TEMPLATES } from '@/data/projects/data';
+import { calculateProjectStats, PROJECT_TEMPLATES, INITIAL_PROJECTS } from '@/data/projects/data';
 import FocusedProjectCard from '@/components/projects/FocusedProjectCard';
 import LifeGoalsSection from '@/components/life/LifeGoalsSection';
 import CareerAdviceSection from '@/components/CareerAdviceSection';
@@ -630,7 +630,10 @@ export default function Home() {
         setProjects(processedProjects);
       } catch (error) {
         console.error('Failed to parse projects:', error);
+        setProjects(INITIAL_PROJECTS);
       }
+    } else {
+      setProjects(INITIAL_PROJECTS);
     }
   }, []);
 
