@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Container, Card, Form, Button, Alert, Spinner } from 'react-bootstrap'
 
-export default function SignIn() {
+function SignInContent() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -37,58 +37,66 @@ export default function SignIn() {
   }
 
   return (
+    <Card className="shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
+      <Card.Body className="p-4">
+        <h2 className="text-center mb-4">Přihlášení</h2>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="vas@email.cz"
+              required
+              disabled={isLoading}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Heslo</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Zadejte heslo"
+              required
+              disabled={isLoading}
+            />
+          </Form.Group>
+          <Button type="submit" className="w-100" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />{' '}
+                Přihlašování...
+              </>
+            ) : (
+              'Přihlásit se'
+            )}
+          </Button>
+        </Form>
+        <div className="text-center mt-3">
+          <small className="text-muted">
+            Demo: admin@learning.cz / tomas-learning-2024
+          </small>
+        </div>
+      </Card.Body>
+    </Card>
+  )
+}
+
+export default function SignIn() {
+  return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
-      <Card className="shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
-        <Card.Body className="p-4">
-          <h2 className="text-center mb-4">Přihlášení</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="vas@email.cz"
-                required
-                disabled={isLoading}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Heslo</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Zadejte heslo"
-                required
-                disabled={isLoading}
-              />
-            </Form.Group>
-            <Button type="submit" className="w-100" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />{' '}
-                  Přihlašování...
-                </>
-              ) : (
-                'Přihlásit se'
-              )}
-            </Button>
-          </Form>
-          <div className="text-center mt-3">
-            <small className="text-muted">
-              Demo: admin@learning.cz / tomas-learning-2024
-            </small>
-          </div>
-        </Card.Body>
-      </Card>
+      <Suspense fallback={<Spinner animation="border" />}>
+        <SignInContent />
+      </Suspense>
     </Container>
   )
 }

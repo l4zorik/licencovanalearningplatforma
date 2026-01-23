@@ -29,6 +29,10 @@ const HelloWorldMission: React.FC<HelloWorldMissionProps> = ({ onComplete }) => 
     const terminalEndRef = useRef<HTMLDivElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    const addAiMessage = (text: string) => {
+        setMessages(prev => [...prev, { sender: 'ai', text }]);
+    };
+
     // Auto-scroll terminal and chat
     useEffect(() => {
         terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,10 +57,6 @@ const HelloWorldMission: React.FC<HelloWorldMissionProps> = ({ onComplete }) => 
             }, 500);
         }
     }, [step]);
-
-    const addAiMessage = (text: string) => {
-        setMessages(prev => [...prev, { sender: 'ai', text }]);
-    };
 
     const handleTerminalSubmit = (e: React.FormEvent) => {
         e.preventDefault();

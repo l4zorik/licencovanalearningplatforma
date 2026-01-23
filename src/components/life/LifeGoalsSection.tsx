@@ -13,7 +13,6 @@ export default function LifeGoalsSection({ projects }: LifeGoalsSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<LifeCategory | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingGoal, setEditingGoal] = useState<LifeGoal | null>(null);
-  const [localGoals, setLocalGoals] = useState<LifeGoal[]>(() => initializeGoals());
 
   function initializeGoals(): LifeGoal[] {
     return LIFE_CATEGORIES.map(cat => ({
@@ -36,6 +35,8 @@ export default function LifeGoalsSection({ projects }: LifeGoalsSectionProps) {
       linkedProjectId: undefined
     }));
   }
+
+  const [localGoals, setLocalGoals] = useState<LifeGoal[]>(() => initializeGoals());
 
   const calculateGoalStats = (goal: LifeGoal): GoalStats => {
     const linkedProjects = projects.filter(p => {

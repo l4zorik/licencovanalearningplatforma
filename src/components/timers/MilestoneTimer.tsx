@@ -30,6 +30,8 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
 
   const targetMinutes = (milestone.targetHours || settings.defaultMilestoneHours) * 60;
   
+  const [elapsedMinutes, setElapsedMinutes] = useState(0);
+
   useEffect(() => {
     if (!milestone.timerActive || milestone.isCompleted) {
       setRemainingTime(null);
@@ -42,6 +44,7 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
       const now = Date.now();
       const startTime = milestone.timerStartedAt ? new Date(milestone.timerStartedAt).getTime() : now;
       const elapsed = Math.floor((now - startTime) / 1000);
+      setElapsedMinutes(Math.floor(elapsed / 60));
       const remaining = Math.max(0, target * 60 - elapsed);
       
       const totalMinutes = Math.floor(remaining / 60);
@@ -211,7 +214,7 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
       {isTimerRunning && (
         <OverlayTrigger
           placement="top"
-          overlay={<Tooltip>Target: {targetMinutes}m | Elapsed: {Math.floor((Date.now() - new Date(milestone.timerStartedAt!).getTime()) / 60000)}m</Tooltip>}
+          overlay={<Tooltip>Target: {targetMinutes}m | Elapsed: {elapsedMinutes}m</Tooltip>}
         >
           <Badge bg={urgencyVariant} style={{ fontSize: '0.7rem' }}>
             ⏳

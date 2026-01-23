@@ -136,6 +136,7 @@ export function createMilestone(data: Partial<ProjectMilestone> = {}): ProjectMi
     timeSpent: 0,
     timerActive: false,
     timerStartedAt: undefined,
+    benefits: [],
     ...data,
   };
 }

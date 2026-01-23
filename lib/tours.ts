@@ -1,4 +1,4 @@
-import Shepherd from 'shepherd.js';
+import * as Shepherd from 'shepherd.js';
 
 // Basic tour setup
 export const createBasicTour = () => {

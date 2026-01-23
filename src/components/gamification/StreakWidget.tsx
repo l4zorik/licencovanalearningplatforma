@@ -12,6 +12,15 @@ interface StreakWidgetProps {
 
 export function StreakWidget({ streakData, userLevel, onUseFreeze }: StreakWidgetProps) {
   const [showFreezeModal, setShowFreezeModal] = useState(false);
+  const [hoursToUnfreeze, setHoursToUnfreeze] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (streakData.status === 'frozen' && streakData.freezeExpiresAt) {
+      setHoursToUnfreeze(Math.ceil((new Date(streakData.freezeExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60)));
+    } else {
+      setHoursToUnfreeze(null);
+    }
+  }, [streakData]);
   
   const { available, total, resetsIn } = getFreezeAvailability(userLevel, streakData.freezeUsed);
   const streakBonus = getStreakBonus(streakData.currentStreak);
@@ -149,9 +158,9 @@ export function StreakWidget({ streakData, userLevel, onUseFreeze }: StreakWidge
             </Button>
           )}
           
-          {isFrozen && streakData.freezeExpiresAt && (
+          {isFrozen && streakData.freezeExpiresAt && hoursToUnfreeze !== null && (
             <small className="text-info">
-              🧊 Do odmrazení: {Math.ceil((new Date(streakData.freezeExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60))}h
+              🧊 Do odmrazení: {hoursToUnfreeze}h
             </small>
           )}
         </div>

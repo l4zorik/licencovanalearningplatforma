@@ -30,6 +30,14 @@ export function UserProfileCard({ user, onEditProfile, onShareProfile }: UserPro
     { subject: 'Career', A: Math.min(100, (user.stats.jobsInInterview + user.stats.jobsWithOffer) * 20), fullMark: 100 },
   ];
 
+  const [activityData] = useState(() => 
+    ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'].map((day) => ({
+      day,
+      xp: Math.floor(Math.random() * 500 + 100),
+      algorithms: Math.floor(Math.random() * 10 + 1)
+    }))
+  );
+
   return (
     <Card className="user-profile-card" style={{
       background: 'linear-gradient(145deg, #1a1a2e 0%, #16213e 100%)',
@@ -302,11 +310,11 @@ export function UserProfileCard({ user, onEditProfile, onShareProfile }: UserPro
                     </tr>
                   </thead>
                   <tbody>
-                    {['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'].map((day, idx) => (
-                      <tr key={day}>
-                        <td>{day}</td>
-                        <td>{Math.floor(Math.random() * 500 + 100)}</td>
-                        <td>{Math.floor(Math.random() * 10 + 1)}</td>
+                    {activityData.map((item) => (
+                      <tr key={item.day}>
+                        <td>{item.day}</td>
+                        <td>{item.xp}</td>
+                        <td>{item.algorithms}</td>
                       </tr>
                     ))}
                   </tbody>

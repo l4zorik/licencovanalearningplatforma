@@ -1,3 +1,5 @@
+"use client";
+
 import { Container, Row, Col, Card, Badge, Button, Accordion } from 'react-bootstrap';
 import Link from 'next/link';
 

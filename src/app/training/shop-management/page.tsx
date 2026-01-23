@@ -65,41 +65,6 @@ export default function ShopManagementPage() {
         setCustomerTimer(0);
     };
 
-    // --- SIMULATION LOOP ---
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-
-        if (phase === 'open') {
-            interval = setInterval(() => {
-                setSimulationTime(prev => {
-                    if (prev >= 100) {
-                        setPhase('report');
-                        return 100;
-                    }
-                    return prev + 1; // Day lasts ~10 seconds (100 ticks * 100ms) - Adjust speed here
-                });
-
-                // Customer Logic
-                if (Math.random() > 0.7) { // 30% chance per tick for a customer event attempt
-                    handleCustomer();
-                }
-
-            }, 100);
-        }
-
-        return () => clearInterval(interval);
-    }, [phase, inventory, prices]); // Re-bind when inventory/prices change to use current state
-
-    // We need to use refs or functional updates for simulation logic to access latest state without re-triggering effect too often
-    // However, for simplicity in this prototype, I'm letting the effect re-run or using the state available in closure.
-    // Better approach for complex games: useReducer or refs.
-    
-    // To fix the closure stale state issue in the interval, let's use a Ref for the game state accessible inside the loop
-    const gameStateRef = useRef({ inventory, prices, cash });
-    useEffect(() => {
-        gameStateRef.current = { inventory, prices, cash };
-    }, [inventory, prices, cash]);
-
     const handleCustomer = () => {
         const state = gameStateRef.current;
         
@@ -135,6 +100,31 @@ export default function ShopManagementPage() {
             setLogs(prev => [`❌ Customer refused ${wantedItem.name} at $${currentPrice} (Too expensive!)`, ...prev].slice(0, 5));
         }
     };
+
+    // --- SIMULATION LOOP ---
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (phase === 'open') {
+            interval = setInterval(() => {
+                setSimulationTime(prev => {
+                    if (prev >= 100) {
+                        setPhase('report');
+                        return 100;
+                    }
+                    return prev + 1; // Day lasts ~10 seconds (100 ticks * 100ms) - Adjust speed here
+                });
+
+                // Customer Logic
+                if (Math.random() > 0.7) { // 30% chance per tick for a customer event attempt
+                    handleCustomer();
+                }
+
+            }, 100);
+        }
+
+        return () => clearInterval(interval);
+    }, [phase]); // Removed inventory/prices from deps as we use ref now
 
     const nextDay = () => {
         setDay(prev => prev + 1);

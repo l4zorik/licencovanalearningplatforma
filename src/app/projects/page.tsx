@@ -54,7 +54,8 @@ export default function ProjectsPage() {
           milestones: p.milestones.map((m) => ({
             ...m,
             completedAt: m.completedAt ? new Date(m.completedAt) : undefined,
-            timerStartedAt: m.timerStartedAt ? new Date(m.timerStartedAt) : undefined
+            timerStartedAt: m.timerStartedAt ? new Date(m.timerStartedAt) : undefined,
+            benefits: []
           })),
           algorithms: p.algorithms.map((a) => ({
             ...a,
@@ -177,7 +178,7 @@ export default function ProjectsPage() {
       status: 'active' as const,
       priority: 'medium' as const,
       goals: [...template.defaultGoals],
-      milestones: template.suggestedMilestones.map((m: string, idx: number) => ({
+       milestones: template.suggestedMilestones.map((m: string, idx: number) => ({
         id: `m-${template.id}-${tIdx}-${idx}`,
         title: m,
         description: '',
@@ -187,6 +188,7 @@ export default function ProjectsPage() {
         targetHours: 2,
         timeSpent: 0,
         timerActive: false,
+        benefits: [],
       })),
       algorithms: [],
       skills: [...template.skills],
