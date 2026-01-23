@@ -32,14 +32,6 @@ declare module 'next-auth/jwt' {
 }
 
 async function getUserFromDatabase(email: string) {
-  /* 
-  DATABASE DISABLED FOR DEPLOYMENT DEBUGGING
-  
-  if (!process.env.POSTGRES_PRISMA_URL) {
-    console.log('No database URL configured, skipping DB check')
-    return null
-  }
-
   try {
     const { PrismaClient } = await import('@prisma/client')
     const prisma = new PrismaClient()
@@ -49,15 +41,12 @@ async function getUserFromDatabase(email: string) {
     await prisma.$disconnect()
     return user
   } catch (error) {
-    console.log('Database check failed or not available:', error)
+    console.error('Database error in auth:', error)
     return null
   }
-  */
-  return null;
 }
 
 export const authOptions: NextAuthOptions = {
-  debug: true, // Enable debugging
   providers: [
     CredentialsProvider({
       name: 'Přihlášení',
@@ -80,14 +69,26 @@ export const authOptions: NextAuthOptions = {
         const email = credentials.email.toLowerCase().trim()
         const password = credentials.password
 
-        // Force disable DB check
-        const dbUser = null; // await getUserFromDatabase(email)
+        const dbUser = await getUserFromDatabase(email)
 
         if (dbUser) {
-          // ... (dead code for now)
+          // Zde by měla být kontrola hashe hesla (např. bcrypt), 
+          // prozatím necháváme jednoduché porovnání dle původního kódu, 
+          // ale v produkci doporučuji bcrypt.compare(password, dbUser.password)
+          // Zde předpokládáme, že uživatelé v DB mají hesla (pokud je pole password v modelu).
+          // Jelikož model User heslo nemá, ověřujeme jen existenci uživatele + ACCESS_PASSWORD (demo režim).
+          
+          if (password === ACCESS_PASSWORD) {
+            return {
+              id: dbUser.id,
+              email: dbUser.email,
+              name: dbUser.name || email.split('@')[0],
+            }
+          }
           return null
         }
 
+        // Fallback pro admina, pokud není v DB
         if (ALLOWED_EMAILS.includes(email)) {
           if (password === ACCESS_PASSWORD) {
             return {

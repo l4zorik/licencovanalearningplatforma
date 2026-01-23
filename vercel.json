@@ -3,6 +3,6 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "env": {
-    "NEXTAUTH_SECRET": "@nextauth-secret"
+    "NODE_ENV": "production"
   }
 }
