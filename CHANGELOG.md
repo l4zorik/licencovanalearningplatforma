@@ -4,6 +4,152 @@ Všechny podstatné změny v projektu jsou zde zdokumentovány.
 
 ---
 
+## [v0.4.0] - 2026-01-23
+
+### 🎨 DESIGN SYSTEM UPGRADE - Premium UI Components
+
+#### Nové Design System
+- **Design System V2** (`src/styles/design-system-v2.css`)
+  - 8 gradient variant (cosmic, sunset, ocean, forest, fire, aurora, neon, mint)
+  - Fluid typography s clamp() funkcemi
+  - Rozšířený spacing system (8px grid)
+  - Enhanced shadows s colored variants
+  - Animation easing functions  
+  - Z-index scale pro lepší layering
+  - Utility classes (gradient text, glass effect, neomorph)
+
+- **Animation Library** (`src/styles/animations.css`)
+  - 20+ keyframe animací
+  - Fade, slide, bounce, pulse, float animace
+  - Shimmer a glow efekty
+  - Hover effect utilities
+  - Stagger delay classes pro sekvenční animace
+  - GPU-accelerated transforms
+
+#### UI Komponenty
+
+**Card Component** (`src/components/ui/Card.tsx`)
+- 5 variant: default, premium, gradient, glass, neon
+- Hover transformace a glow efekty
+- Gradient border support
+- Glassmorphism design
+- Neon glow na hover
+
+**Button Component** (`src/components/ui/Button.tsx`)
+- 5 variant: primary, gradient, neomorph, outline, ghost
+- 3 velikosti: sm, md, lg
+- Loading states s spinner animací
+- Icon support (left/right position)
+- Shimmer efekt na gradient buttons
+- Fullwidth option
+
+**Progress Component** (`src/components/ui/Progress.tsx`)
+- Gradient progress bars
+- Shimmer animation na progress fill
+- 3 výšky: sm, md, lg
+- Optional label display
+- Configurable value/max
+
+**Badge Component** (`src/components/ui/Badge.tsx`)
+- 4 varianty: default, gradient, glow, outline
+- 5 color options: primary, success, warning, danger, info
+- Icon support
+- Pulse animation option
+- Gradient background support
+
+#### Dashboard Komponenty
+
+**DashboardCard** (`src/components/dashboard/DashboardCard.tsx`)
+- Premium dashboard karty s gradient icons
+- Trend indicators (↑/↓) s percentages
+- Icon animations on hover
+- Responsive design
+- Category-specific gradients
+
+#### Demo & Dokumentace
+
+**Design Showcase** (`src/app/design-showcase/page.tsx`)
+- Kompletní živá ukázka všech komponent
+- Dashboard cards s různými gradienty
+- Všechny button varianty a velikosti
+- Progress bars s animacemi
+- Badge showcase
+- Animation examples
+- Typography ukázky
+
+**Dokumentace**
+- `DESIGN_UPGRADE_PROPOSAL.md` - Kompletní návrh upgradu s roadmapou
+- `IMPLEMENTATION_GUIDE.md` - Praktický implementační průvodce
+- `DESIGN_UPGRADE_REFERENCE.md` - Quick reference guide
+- `DESIGN_UPGRADE_COMPLETE.md` - Přehled implementace
+- `NEXT_STEPS.md` - Další kroky pro integraci
+
+### 📁 Nové Soubory
+
+| Soubor | Popis |
+|--------|-------|
+| `src/styles/design-system-v2.css` | Extended design system |
+| `src/styles/animations.css` | Animation library |
+| `src/components/ui/Card.tsx` | Card component |
+| `src/components/ui/Card.module.css` | Card styles |
+| `src/components/ui/Button.tsx` | Button component |
+| `src/components/ui/Button.module.css` | Button styles |
+| `src/components/ui/Progress.tsx` | Progress component |
+| `src/components/ui/Progress.module.css` | Progress styles |
+| `src/components/ui/Badge.tsx` | Badge component |
+| `src/components/ui/Badge.module.css` | Badge styles |
+| `src/components/ui/index.ts` | UI exports |
+| `src/components/dashboard/DashboardCard.tsx` | Dashboard card |
+| `src/components/dashboard/DashboardCard.module.css` | Dashboard styles |
+| `src/app/design-showcase/page.tsx` | Demo stránka |
+
+### 🔧 Aktualizované Soubory
+
+| Soubor | Změna |
+|--------|-------|
+| `src/app/globals.css` | Import design-system-v2 a animations |
+| `package.json` | Přidán react-icons |
+
+### 🎨 Design Features
+
+- ✅ 8 gradient variant pro category branding
+- ✅ Glassmorphism efekty
+- ✅ Neomorphism design
+- ✅ Neon glow efekty
+- ✅ Premium card variants
+- ✅ Animated progress bars
+- ✅ Icon support v komponentách
+- ✅ Loading states
+- ✅ Hover transformations
+- ✅ Responsive design
+- ✅ Dark mode optimized
+- ✅ Accessibility features
+
+### 📊 Performance Optimizations
+
+- GPU-accelerated animations (CSS transforms)
+- Optimized for 60 FPS
+- Careful use of will-change
+- Lazy loading support
+
+### ♿ Accessibility
+
+- Proper ARIA labels
+- Keyboard navigation
+- Focus states
+- WCAG AA color contrast
+
+### 🎯 Next Steps
+
+1. Integrace do hlavního dashboardu
+2. Update Projects page s novými kartami
+3. Goals section enhancement
+4. Achievements gallery redesign
+
+Demo stránka dostupná na: `/design-showcase`
+
+---
+
 ## [v0.3.1] - 2026-01-15
 
 ### 🎮 Rozšířený Gamifikace Systém

@@ -538,41 +538,147 @@ export const COMPANY_PROFILES: CompanyProfile[] = [
     diversityInclusion: 'International remote-first culture, diverse team.',
     sustainabilityRating: 4.0,
     recentNews: 'Series B funding, new market expansion, AI feature releases'
+  },
+  {
+    id: 'bestdrive',
+    name: 'BestDrive & Servisní Síť ČR',
+    shortName: 'BestDrive',
+    logo: '🔧',
+    website: 'https://www.bestdrive.cz/',
+    size: 'enterprise',
+    sizeRange: '1000+',
+    industry: 'Automotive Services',
+    sector: 'Car Service & Tires',
+    founded: 1993,
+    headquarters: 'Otrokovice',
+    description: 'Největší síť pneuservisů a autoservisů v České republice, člen skupiny Continental.',
+    culture: 'Professional, safety-first, customer-oriented, hands-on, stable',
+    values: ['Kvalita', 'Odbornost', 'Bezpečnost', 'Zákazník'],
+    mission: 'Staráme se o to, aby vaše cesty byly bezpečné',
+    techStack: ['Diagnostics Tools', 'Bosch KTS', 'VAG-COM', 'Hunter Engineering', 'SAP', 'CRM'],
+    techStackLevel: 'modern',
+    developmentMethodology: ['Lean Service', '5S', 'Standardized Processes'],
+    remotePolicy: 'onsite',
+    remoteDetails: 'Práce na pobočce nutná',
+    ratings: {
+      overall: 3.8,
+      workLifeBalance: 3.9,
+      compensation: 3.7,
+      management: 3.8,
+      culture: 3.9,
+      careerGrowth: 3.5,
+      reviewsCount: 320
+    },
+    benefits: {
+      financial: ['Výkonnostní bonusy', 'Sleva na pneu a servis', 'Příspěvek na penzijní'],
+      health: ['Týden dovolené navíc', 'Příspěvek na zdraví'],
+      lifestyle: ['Multisport karta', 'Firemní akce'],
+      professional: ['Školení Continental', 'Certifikace', 'Soutěže mechaniků'],
+      unique: ['Testování novinek', 'Zázemí nadnárodní skupiny']
+    },
+    hiringProcess: {
+      steps: [
+        { id: 'h1', type: 'phone', name: 'HR kontakt', duration: 15, description: 'Rychlé ověření zájmu', status: 'pending' },
+        { id: 'h2', type: 'technical', name: 'Pohovor na pobočce', duration: 45, description: 'Setkání s vedoucím pobočky', status: 'pending' },
+        { id: 'h3', type: 'behavioral', name: 'Zkouška v dílně', duration: 120, description: 'Praktická ukázka dovedností', status: 'pending' }
+      ],
+      averageDuration: '1-2 týdny',
+      difficulty: 2,
+      successRate: 40
+    },
+    careerPaths: ['Automechanik', 'Přijímací technik', 'Vedoucí pobočky', 'Diagnostik', 'Regionální manažer'],
+    growthOpportunities: 'Možnost postupu na vedoucí pozice, specializace na diagnostiku.',
+    diversityInclusion: 'Podpora technického vzdělávání mládeže.',
+    sustainabilityRating: 4.1,
+    recentNews: 'Rozšíření sítě o elektromobilitu, nové diagnostické centrum'
+  },
+  {
+    id: 'autopalace',
+    name: 'Auto Palace Group',
+    shortName: 'Auto Palace',
+    logo: '🚘',
+    website: 'https://www.autopalace.cz/',
+    size: 'mid',
+    sizeRange: '500-1000',
+    industry: 'Automotive Retail',
+    sector: 'Dealership & Service',
+    founded: 1991,
+    headquarters: 'Praha',
+    description: 'Přední prodejce automobilů a poskytovatel servisních služeb pro značky jako Ford, Mazda, Hyundai, Škoda a další.',
+    culture: 'Sales-driven, professional, dynamic, brand-focused',
+    values: ['Profesionalita', 'Tradice', 'Komplexnost', 'Růst'],
+    mission: 'Být první volbou pro mobilitu našich zákazníků',
+    techStack: ['Salesforce', 'Dealer Management Systems', 'OEM Diagnostics', 'EV Systems'],
+    techStackLevel: 'modern',
+    developmentMethodology: ['OEM Standards', 'ISO Certified'],
+    remotePolicy: 'onsite',
+    remoteDetails: 'Práce v showroomu/servisu',
+    ratings: {
+      overall: 3.9,
+      workLifeBalance: 3.5,
+      compensation: 4.0,
+      management: 3.8,
+      culture: 3.8,
+      careerGrowth: 4.0,
+      reviewsCount: 180
+    },
+    benefits: {
+      financial: ['Provize z prodeje/výkonu', 'Služební vůz', 'Slevy na vozy'],
+      health: ['Stravenkový paušál', 'Zdravotní volno'],
+      lifestyle: ['Firemní akce', 'Soutěže'],
+      professional: ['Školení u výrobců', 'Jízdy s novými modely', 'Produktová školení'],
+      unique: ['Práce s nejnovějšími modely', 'Prestižní značky']
+    },
+    hiringProcess: {
+      steps: [
+        { id: 'h1', type: 'phone', name: 'HR screening', duration: 20, description: 'Základní info', status: 'pending' },
+        { id: 'h2', type: 'culture', name: 'Pohovor s manažerem', duration: 60, description: 'Zkušenosti a motivace', status: 'pending' },
+        { id: 'h3', type: 'final', name: 'Finální nabídka', duration: 30, description: 'Podmínky spolupráce', status: 'pending' }
+      ],
+      averageDuration: '2 týdny',
+      difficulty: 3,
+      successRate: 25
+    },
+    careerPaths: ['Prodejce vozů', 'Servisní poradce', 'Automechanik', 'Diagnostik', 'Vedoucí servisu'],
+    growthOpportunities: 'Kariéra v prodeji i servisu, školení přímo u automobilek.',
+    diversityInclusion: 'Rovné příležitosti pro všechny.',
+    sustainabilityRating: 3.7,
+    recentNews: 'Otevření nového showroomu Cupra, investice do solárních panelů'
   }
 ];
 
 export const JOB_MARKET_DATA: JobMarketData = {
-  totalJobs: 15420,
-  newJobsLastWeek: 892,
-  avgSalary: 85000,
+  totalJobs: 16850,
+  newJobsLastWeek: 945,
+  avgSalary: 82000,
   salaryTrend: 'up',
-  topEmployers: ['Škoda Auto', 'Česká spořitelna', 'Alza', 'Komerční banka', 'ČEZ', 'Avast', 'Microsoft', 'IBM'],
-  topSkills: ['Java', 'Python', 'JavaScript', 'React', 'AWS', 'Kubernetes', 'SQL', 'DevOps'],
-  emergingSkills: ['Machine Learning', 'Generative AI', 'Data Engineering', 'Cloud Security', 'React Native'],
-  decliningSkills: ['COBOL', 'Legacy SAP', 'Flash', 'Silverlight'],
-  remotePercentage: 35,
-  avgExperienceRequired: 3.5,
-  competitionLevel: 'high',
+  topEmployers: ['Škoda Auto', 'Česká spořitelna', 'BestDrive', 'Alza', 'Komerční banka', 'ČEZ', 'Auto Palace', 'Avast'],
+  topSkills: ['Java', 'Autodiagnostika', 'Python', 'Údržba vozidel', 'React', 'AWS', 'Kubernetes', 'SQL'],
+  emergingSkills: ['Elektromobilita', 'Machine Learning', 'Generative AI', 'Hybridní pohony', 'Data Engineering', 'Cloud Security'],
+  decliningSkills: ['COBOL', 'Legacy SAP', 'Manuální montáž (low-skill)', 'Flash'],
+  remotePercentage: 32,
+  avgExperienceRequired: 3.0,
+  competitionLevel: 'medium',
   marketHealth: 'good',
   seasonalVariations: {
-    peak: ['Leden', 'Únor', 'Březen', 'Září', 'Říjen'],
-    low: ['Červenec', 'Srpen', 'Prosinec']
+    peak: ['Leden', 'Únor', 'Březen', 'Říjen', 'Listopad (Pneuservis)'],
+    low: ['Červenec', 'Srpen']
   },
   regionalVariations: {
-    'Praha': { jobCount: 6500, avgSalary: 95000, topRoles: ['Software Engineer', 'Data Scientist', 'DevOps'] },
-    'Středočeský': { jobCount: 1200, avgSalary: 75000, topRoles: ['Manufacturing IT', 'Process Engineer'] },
-    'Jihomoravský': { jobCount: 2100, avgSalary: 82000, topRoles: ['Software Developer', 'Embedded Engineer'] },
-    'Moravskoslezský': { jobCount: 980, avgSalary: 68000, topRoles: ['Industrial Engineer', 'Manufacturing'] },
-    'Plzeňský': { jobCount: 750, avgSalary: 72000, topRoles: ['Automation Engineer', 'Quality'] },
-    'Olomoucký': { jobCount: 450, avgSalary: 65000, topRoles: ['Production', 'Logistics'] },
-    'Zlínský': { jobCount: 380, avgSalary: 62000, topRoles: ['Manufacturing', 'Engineering'] },
-    'Ústecký': { jobCount: 520, avgSalary: 64000, topRoles: ['Chemical', 'Process'] },
-    'Královéhradecký': { jobCount: 420, avgSalary: 66000, topRoles: ['Tourism Tech', 'Manufacturing'] },
-    'Pardubický': { jobCount: 380, avgSalary: 63000, topRoles: ['Logistics', 'Production'] },
-    'Vysočina': { jobCount: 280, avgSalary: 60000, topRoles: ['Agriculture Tech', 'Manufacturing'] },
-    'Jihočeský': { jobCount: 450, avgSalary: 64000, topRoles: ['Tourism', 'Manufacturing'] },
-    'Karlovarský': { jobCount: 200, avgSalary: 58000, topRoles: ['Tourism', 'Services'] },
-    'Liberecký': { jobCount: 320, avgSalary: 65000, topRoles: ['Automotive', 'Textile'] }
+    'Praha': { jobCount: 6500, avgSalary: 95000, topRoles: ['Software Engineer', 'Data Scientist', 'Manager'] },
+    'Středočeský': { jobCount: 1800, avgSalary: 78000, topRoles: ['Automechanik', 'Manufacturing IT', 'Process Engineer'] },
+    'Jihomoravský': { jobCount: 2100, avgSalary: 82000, topRoles: ['Software Developer', 'Embedded Engineer', 'Diagnostik'] },
+    'Moravskoslezský': { jobCount: 1100, avgSalary: 69000, topRoles: ['Industrial Engineer', 'Manufacturing', 'Servisní technik'] },
+    'Plzeňský': { jobCount: 850, avgSalary: 73000, topRoles: ['Automation Engineer', 'Quality', 'Mechatronik'] },
+    'Olomoucký': { jobCount: 480, avgSalary: 65000, topRoles: ['Production', 'Logistics', 'Mechanik'] },
+    'Zlínský': { jobCount: 520, avgSalary: 64000, topRoles: ['Manufacturing', 'Engineering', 'Pneuservis'] },
+    'Ústecký': { jobCount: 550, avgSalary: 64000, topRoles: ['Chemical', 'Process', 'Údržba'] },
+    'Královéhradecký': { jobCount: 450, avgSalary: 66000, topRoles: ['Tourism Tech', 'Manufacturing', 'Auto'] },
+    'Pardubický': { jobCount: 400, avgSalary: 63000, topRoles: ['Logistics', 'Production'] },
+    'Vysočina': { jobCount: 300, avgSalary: 60000, topRoles: ['Agriculture Tech', 'Manufacturing'] },
+    'Jihočeský': { jobCount: 480, avgSalary: 64000, topRoles: ['Tourism', 'Manufacturing'] },
+    'Karlovarský': { jobCount: 220, avgSalary: 58000, topRoles: ['Tourism', 'Services'] },
+    'Liberecký': { jobCount: 450, avgSalary: 67000, topRoles: ['Automotive', 'Textile', 'Glass'] }
   }
 };
 

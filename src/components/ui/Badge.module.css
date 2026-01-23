@@ -1,0 +1,164 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-badge);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.badgeIcon {
+    display: inline-flex;
+    font-size: var(--text-base);
+}
+
+/* Default Variant - Solid Colors */
+.badgeDefault[data-color="primary"] {
+    background: var(--color-accent-primary);
+    color: white;
+}
+
+.badgeDefault[data-color="success"] {
+    background: var(--color-success-primary);
+    color: white;
+}
+
+.badgeDefault[data-color="warning"] {
+    background: var(--color-warning-primary);
+    color: var(--color-text-inverse);
+}
+
+.badgeDefault[data-color="danger"] {
+    background: var(--color-error-primary);
+    color: white;
+}
+
+.badgeDefault[data-color="info"] {
+    background: var(--color-info-primary);
+    color: white;
+}
+
+/* Gradient Variant */
+.badgeGradient {
+    background: var(--gradient-cosmic);
+    color: white;
+}
+
+.badgeGradient[data-gradient="cosmic"] {
+    background: var(--gradient-cosmic);
+}
+
+.badgeGradient[data-gradient="sunset"] {
+    background: var(--gradient-sunset);
+}
+
+.badgeGradient[data-gradient="ocean"] {
+    background: var(--gradient-ocean);
+}
+
+.badgeGradient[data-gradient="forest"] {
+    background: var(--gradient-forest);
+}
+
+.badgeGradient[data-gradient="fire"] {
+    background: var(--gradient-fire);
+}
+
+.badgeGradient[data-gradient="mint"] {
+    background: var(--gradient-mint);
+}
+
+/* Glow Variant */
+.badgeGlow {
+    position: relative;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-accent-primary);
+    color: var(--color-accent-primary);
+}
+
+.badgeGlow::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: var(--color-accent-primary);
+    border-radius: var(--radius-badge);
+    opacity: 0.2;
+    filter: blur(8px);
+    z-index: -1;
+}
+
+.badgeGlow[data-color="success"] {
+    border-color: var(--color-success-primary);
+    color: var(--color-success-primary);
+}
+
+.badgeGlow[data-color="success"]::before {
+    background: var(--color-success-primary);
+}
+
+.badgeGlow[data-color="warning"] {
+    border-color: var(--color-warning-primary);
+    color: var(--color-warning-primary);
+}
+
+.badgeGlow[data-color="warning"]::before {
+    background: var(--color-warning-primary);
+}
+
+.badgeGlow[data-color="danger"] {
+    border-color: var(--color-error-primary);
+    color: var(--color-error-primary);
+}
+
+.badgeGlow[data-color="danger"]::before {
+    background: var(--color-error-primary);
+}
+
+.badgeGlow[data-color="info"] {
+    border-color: var(--color-info-primary);
+    color: var(--color-info-primary);
+}
+
+.badgeGlow[data-color="info"]::before {
+    background: var(--color-info-primary);
+}
+
+/* Outline Variant */
+.badgeOutline {
+    background: transparent;
+    border: 1px solid currentColor;
+}
+
+.badgeOutline[data-color="primary"] {
+    color: var(--color-accent-primary);
+}
+
+.badgeOutline[data-color="success"] {
+    color: var(--color-success-primary);
+}
+
+.badgeOutline[data-color="warning"] {
+    color: var(--color-warning-primary);
+}
+
+.badgeOutline[data-color="danger"] {
+    color: var(--color-error-primary);
+}
+
+.badgeOutline[data-color="info"] {
+    color: var(--color-info-primary);
+}
+
+/* Pulse Animation */
+.badgePulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Hover Effect (optional, for clickable badges) */
+.badge:hover {
+    transform: scale(1.05);
+    transition: transform var(--duration-fast) var(--ease-out);
+}

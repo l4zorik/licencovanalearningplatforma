@@ -854,6 +854,7 @@ export type ProjectMilestone = {
   timeSpent: number;
   timerActive: boolean;
   timerStartedAt?: Date;
+  benefits: string[];
 };
 
 export type Project = {

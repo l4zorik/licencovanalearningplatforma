@@ -162,6 +162,322 @@ const AI_TOOLS: Tool[] = [
     }
 ];
 
+// Automotive Tools
+const AUTOMOTIVE_TOOLS: Tool[] = [
+    {
+        id: "autodata",
+        name: "AutoData",
+        description: "Nejobsáhlejší databáze technických informací pro automobily. Obsahuje údaje o údržbě, opravách, seřizování a demontáži pro více než 100 značek.",
+        icon: "📚",
+        category: "Technical Data",
+        tags: ["Technical manuals", "Service information", "Wiring diagrams", "Torque specs"]
+    },
+    {
+        id: "alldata",
+        name: "Alldata Repair",
+        description: "Kompletní systém opravářských informací s technickými bulletiny, TSB a factory service manualy.",
+        icon: "🔧",
+        category: "Technical Data",
+        tags: ["TSB", "Technical bulletins", "Factory manuals", "Diagrams"]
+    },
+    {
+        id: "mitchell-ondemand",
+        name: "Mitchell OnDemand",
+        description: "Rozsáhlá databáze opravářských informací s odhadovanými časy oprav a cenami dílů.",
+        icon: "⏱️",
+        category: "Technical Data",
+        tags: ["Repair times", "Parts pricing", "Estimating", "Labor guides"]
+    },
+    {
+        id: "identifi",
+        name: "Identifi",
+        description: "Online platforma pro identifikaci vozidel a vyhledávání správných dílů podle VIN.",
+        icon: "🔍",
+        category: "Parts Lookup",
+        tags: ["VIN lookup", "Parts identification", "Interchange", "Cross-reference"]
+    },
+    {
+        id: "carfax",
+        name: "CarFax",
+        description: "Historie vozidel z USA a Kanady. Informace o nehodách, servisní historii a vlastnictví.",
+        icon: "📋",
+        category: "Vehicle History",
+        tags: ["Vehicle history", "Accident check", "Service records", "Title check"]
+    },
+    {
+        id: "autocheck",
+        name: "AutoCheck",
+        description: "Alternativa k CarFax s hodnocením vozidla a historií z aukčních síní.",
+        icon: "✅",
+        category: "Vehicle History",
+        tags: ["History report", "Score", "Auction data", "Title verification"]
+    },
+    {
+        id: "motormatch",
+        name: "MotorMatch",
+        description: "Evropská databáze vozidel a dílů s pokročilým vyhledáváním a technickými informacemi.",
+        icon: "🇪🇺",
+        category: "Technical Data",
+        tags: ["European vehicles", "Parts lookup", "Technical data", "Interchange"]
+    },
+    {
+        id: "deltaview",
+        name: "DeltaView",
+        description: "Aukční data a historie vozidel z evropských aukcí s hodnocením stavu.",
+        icon: "🔨",
+        category: "Vehicle History",
+        tags: ["Auction data", "Condition report", "Market value", "Euro data"]
+    },
+    {
+        id: "vin-base",
+        name: "VIN-Base",
+        description: "Databáze specifikací vozidel podle VIN. Bezplatná služba pro identifikaci vozidla.",
+        icon: "🏷️",
+        category: "Parts Lookup",
+        tags: ["VIN decoder", "Specs", "Equipment list", "Build data"]
+    },
+    {
+        id: "parts-catalog",
+        name: "Online Parts Catalogs",
+        description: "Katalog dílů od hlavních výrobců - Bosch, Valeo, Continental, Schaeffler a další.",
+        icon: "📦",
+        category: "Parts Lookup",
+        tags: ["OEM parts", "Aftermarket", "Catalogs", "Cross-reference"]
+    },
+    {
+        id: "scan-tool-apps",
+        name: "Bluetooth Scan Tools",
+        description: "OBD-II scan tool aplikace pro mobily - Torque Pro, CarScanner, OBD Fusion a další.",
+        icon: "📱",
+        category: "Diagnostics",
+        tags: ["Bluetooth OBD", "Mobile apps", "Live data", "DTC reading"]
+    },
+    {
+        id: "autool",
+        name: "Autool Scan Tools",
+        description: "Levné Bluetooth OBD-II skenery s pokročilými funkcemi a EEPROM programováním.",
+        icon: "💉",
+        category: "Diagnostics",
+        tags: ["Budget scanner", "Bluetooth", "Functions", "Programming"]
+    },
+    {
+        id: "launch-x431",
+        name: "Launch X431",
+        description: "Profesionální diagnostické zařízení s pokrytím všech značek a funkcemi key programming.",
+        icon: "🔑",
+        category: "Diagnostics",
+        tags: ["Professional", "Key programming", "All brands", "Advanced functions"]
+    },
+    {
+        id: "autologic",
+        name: "Autologic",
+        description: "Specializované diagnostické nástroje pro evropské luxusní vozy - BMW, Mercedes, Audi.",
+        icon: "💎",
+        category: "Diagnostics",
+        tags: ["European luxury", "Specialized", "OEM level", "Programming"]
+    },
+    {
+        id: "j2534",
+        name: "J2534 Pass-Thru",
+        description: "Zařízení pro programování ECU přes J2534 protokol. Vyžadováno pro mnoho manufacturerských funkcí.",
+        icon: "💾",
+        category: "Programming",
+        tags: ["ECU programming", "J2534", "Flash programming", "OEM software"]
+    },
+    {
+        id: "opcom",
+        name: "OpCom",
+        description: "Diagnostický nástroj pro vozy Opel/Vauxhall s pokročilými funkcemi a programováním.",
+        icon: "🇩🇪",
+        category: "Diagnostics",
+        tags: ["Opel", "Vauxhall", "Advanced functions", "Programming"]
+    },
+    {
+        id: "vvdi",
+        name: "VVDI Key Tool",
+        description: "Nástroj pro programování klíčů a imobilizérů pro širokou škálu vozidel.",
+        icon: "🔐",
+        category: "Key Programming",
+        tags: ["Key programming", "Immobilizer", "Remote learning", "Chip cloning"]
+    },
+    {
+        id: "autool-a4",
+        name: "Autool A4",
+        description: "Programátor airbagů a imobilizérů s podporou mnoha značek a typů řídicích jednotek.",
+        icon: "🛡️",
+        category: "Key Programming",
+        tags: ["Airbag reset", "Immo virgin", "ECU cloning", "Mileage correction"]
+    },
+    {
+        id: "tapro",
+        name: "Tapro Key Programmer",
+        description: "Univerzální programátor klíčů s funkcí key learning pro většinu asijských vozidel.",
+        icon: "🔑",
+        category: "Key Programming",
+        tags: ["Asian vehicles", "Key learning", "Remote copy", "Smart key"]
+    },
+    {
+        id: "mvp-pro",
+        name: "MVP Pro",
+        description: "Pokročilý nástroj pro programování klíčů a imobilizérů s online funkcemi.",
+        icon: "🎯",
+        category: "Key Programming",
+        tags: ["Online programming", "All brands", "Smart key", "Proximity"]
+    },
+    {
+        id: "tissot",
+        name: "Tissot UDI",
+        description: "Diagnostický nástroj pro motorky - Aprilia, BMW, Ducati, Harley, Honda, Kawasaki, KTM, Suzuki, Triumph, Yamaha.",
+        icon: "🏍️",
+        category: "Motorcycle",
+        tags: ["Motorcycles", "MC diagnostics", "All brands", "Motorcycle specific"]
+    },
+    {
+        id: "motoscan",
+        name: "MotoScan",
+        description: "BMW Motorrad diagnostika s pokročilými funkcemi pro motocykly BMW.",
+        icon: "🇩🇪",
+        category: "Motorcycle",
+        tags: ["BMW Motorrad", "Motorcycle", "Advanced", "Specialized"]
+    },
+    {
+        id: "ydss",
+        name: "YDSS",
+        description: "Yamaha Dealer Service System - oficiální diagnostika pro motocykly Yamaha.",
+        icon: "🇯🇵",
+        category: "Motorcycle",
+        tags: ["Yamaha", "Motorcycle", "Dealer level", "Programming"]
+    },
+    {
+        id: "hds",
+        name: "HMS Honda Diagnostics",
+        description: "Diagnostický systém pro motocykly Honda - odpovídá dealer úrovni.",
+        icon: "🔧",
+        category: "Motorcycle",
+        tags: ["Honda", "Motorcycle", "Dealer level", "Advanced"]
+    },
+    {
+        id: "tekmotor",
+        name: "TekMotor",
+        description: "Diagnostika pro Arctic Cat, Polaris, BRP, Honda, Kawasaki, Suzuki, Yamaha, KTM.",
+        icon: "❄️",
+        category: "Powersports",
+        tags: ["ATV", "Side-by-side", "Snowmobile", "Powersports"]
+    },
+    {
+        id: "c-tech2",
+        name: "C-TECH2",
+        description: "Diagnostický nástroj pro vozy s CAN bus - Renault, Dacia, Nissan, Infiniti, Mitsubishi.",
+        icon: "🌐",
+        category: "Diagnostics",
+        tags: ["CAN bus", "Multiple brands", "Advanced", "Specialized"]
+    },
+    {
+        id: "vvdi-mb",
+        name: "VVDI MB BGA",
+        description: "Specializovaný nástroj pro Mercedes-Benz - EIS, ECU, ESL programování a funkce.",
+        icon: "⭐",
+        category: "Key Programming",
+        tags: ["Mercedes", "BGA", "All keys lost", "Data learning"]
+    },
+    {
+        id: "odiag",
+        name: "ODIAG",
+        description: "Nástroj pro identifikaci a diagnostiku OBD-II konektoru a připojení.",
+        icon: "🔌",
+        category: "Utilities",
+        tags: ["OBD check", "Pinout", "Connection test", "Voltage check"]
+    },
+    {
+        id: "battery-programmers",
+        name: "Battery Programmers",
+        description: "Nástroje pro reset a programování BMS po výměně baterie - pro BMW, Tesla, Renault a další.",
+        icon: "🔋",
+        category: "Battery Service",
+        tags: ["BMS reset", "Battery registration", "Hybrid", "EV"]
+    },
+    {
+        id: "tesla-service",
+        name: "Tesla Service Tools",
+        description: "Nástroje a software pro diagnostiku a servis vozidel Tesla.",
+        icon: "⚡",
+        category: "EV Service",
+        tags: ["Tesla", "High voltage", "Diagnostics", "Service mode"]
+    },
+    {
+        id: "hvac-service",
+        name: "A/C Service Equipment",
+        description: "Vybavení pro servis klimatizace - rekuperace chladiva, plnění, testování těsnosti.",
+        icon: "❄️",
+        category: "HVAC Service",
+        tags: ["A/C", "Refrigerant", "Climate control", "Recovery station"]
+    },
+    {
+        id: "brake-bleeder",
+        name: "Power Brake Bleeder",
+        description: "Zařízení pro odvzdušnění brzdového systému pod tlakem pro rychlejší a účinnější práci.",
+        icon: "🛑",
+        category: "Brake Service",
+        tags: ["Brakes", "Bleeding", "Pressure", "ABS bleeding"]
+    },
+    {
+        id: "fuel-injector-cleaner",
+        name: "Fuel Injector Cleaner",
+        description: "Ultrazvukové čističe a testovač vstřikovačů pro profesionální čištění a testování.",
+        icon: "🧼",
+        category: "Fuel Service",
+        tags: ["Injectors", "Ultrasonic", "Testing", "Cleaning"]
+    },
+    {
+        id: "transmission-flush",
+        name: "Transmission Flush Machine",
+        description: "Zařízení pro výměnu ATF s propojením na chladič pro úplnou výměnu oleje.",
+        icon: "🔄",
+        category: "Transmission Service",
+        tags: ["Transmission", "ATF flush", "Fluid exchange", "Cooler line"]
+    },
+    {
+        id: " coolant-flush",
+        name: "Coolant Exchange Machine",
+        description: "Zařízení pro výměnu chladicí kapaliny s proplachem systému.",
+        icon: "🌡️",
+        category: "Cooling Service",
+        tags: ["Coolant", "Flush", "Exchange", "System cleaning"]
+    },
+    {
+        id: "lakovaci-pistole",
+        name: "Lakovací Pistole",
+        description: "Profesionální lakovací pistole pro aplikaci barvy na vozidla. Různé typy pro různé druhy laku.",
+        icon: "🔫",
+        category: "Lakovací Nástroje",
+        tags: ["Lakování", "Pistole", "Barva", "Aplikace"]
+    },
+    {
+        id: "brousek-na-karos",
+        name: "Brousek na Karoserie",
+        description: "Speciální brusky a brusné papíry pro přípravu povrchu před lakováním.",
+        icon: "🪜",
+        category: "Příprava Povrchu",
+        tags: ["Broušení", "Příprava", "Karoserie", "Brusné papíry"]
+    },
+    {
+        id: "tmelova-pistole",
+        name: "Tmeloová Pistole",
+        description: "Pistole pro aplikaci tmelu na vyplňování prasklin a nerovností karoserie.",
+        icon: "🛠️",
+        category: "Tmelení",
+        tags: ["Tmel", "Pistole", "Karoserie", "Oprava"]
+    },
+    {
+        id: "barevne-mixer",
+        name: "Barevný Mixer",
+        description: "Zařízení pro míchání barev podle barevného spektra pro přesné ladění odstínů.",
+        icon: "🌈",
+        category: "Barevné Spektrum",
+        tags: ["Barvy", "Míchání", "Spektrum", "Odstíny"]
+    }
+];
+
 // Detailní nástroje - začínáme s Autodesk
 const TOOL_CATEGORIES: ToolCategory[] = [
     {
@@ -454,7 +770,7 @@ const CATEGORIES = ["Vše", ...new Set(AI_TOOLS.map(t => t.category))];
 export default function ToolsPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("Vše");
-    const [activeTab, setActiveTab] = useState<'ai' | 'detailed'>('ai');
+    const [activeTab, setActiveTab] = useState<'ai' | 'detailed' | 'automotive'>('ai');
 
     const filteredTools = AI_TOOLS.filter(tool => {
         const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -494,6 +810,12 @@ export default function ToolsPage() {
                                 onClick={() => setActiveTab('detailed')}
                             >
                                 🏗️ Profesionální Nástroje
+                            </Button>
+                            <Button 
+                                variant={activeTab === 'automotive' ? 'warning' : 'outline-warning'}
+                                onClick={() => setActiveTab('automotive')}
+                            >
+                                🚗 Automotive Nástroje
                             </Button>
                         </div>
                     </Col>
@@ -659,6 +981,310 @@ export default function ToolsPage() {
                                             <Badge bg="secondary">Visual Studio</Badge>
                                             <Badge bg="secondary">Další...</Badge>
                                         </div>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </>
+                )}
+
+                {activeTab === 'automotive' && (
+                    <>
+                        <Row className="mb-4">
+                            <Col>
+                                <h1 className="display-5 fw-bold">🚗 Automotive Nástroje</h1>
+                                <p className="text-white-50">Kompletní přehled nástrojů pro diagnostiku, programování a servis automobilů</p>
+                            </Col>
+                        </Row>
+
+                        <Row className="mb-4">
+                            <Col md={6}>
+                                <InputGroup>
+                                    <InputGroup.Text>🔍</InputGroup.Text>
+                                    <Form.Control 
+                                        placeholder="Hledat automotive nástroje..." 
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="bg-dark text-white border-secondary"
+                                    />
+                                </InputGroup>
+                            </Col>
+                            <Col md={6}>
+                                <div className="d-flex flex-wrap gap-2">
+                                    {CATEGORIES.map(cat => (
+                                        <Button 
+                                            key={cat}
+                                            variant={selectedCategory === cat ? "warning" : "outline-warning"}
+                                            size="sm"
+                                            onClick={() => setSelectedCategory(cat)}
+                                        >
+                                            {cat}
+                                        </Button>
+                                    ))}
+                                </div>
+                            </Col>
+                        </Row>
+
+                        <Row className="mb-4">
+                            <Col>
+                                <small className="text-muted">Nalezeno {filteredTools.length} nástrojů</small>
+                            </Col>
+                        </Row>
+
+                        {/* Automotive Categories Grid */}
+                        <Row className="g-4 mb-5">
+                            <Col md={4}>
+                                <Card className="bg-dark border-warning h-100">
+                                    <Card.Body className="text-center">
+                                        <div className="fs-1 mb-3">📊</div>
+                                        <h5>Technická Data</h5>
+                                        <p className="text-white-50 small">Servisní manuály, schémata, TSB</p>
+                                        <Badge bg="warning" text="dark">8 nástrojů</Badge>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={4}>
+                                <Card className="bg-dark border-warning h-100">
+                                    <Card.Body className="text-center">
+                                        <div className="fs-1 mb-3">💻</div>
+                                        <h5>Diagnostika</h5>
+                                        <p className="text-white-50 small">Scan tooly, programování, testery</p>
+                                        <Badge bg="warning" text="dark">12 nástrojů</Badge>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={4}>
+                                <Card className="bg-dark border-warning h-100">
+                                    <Card.Body className="text-center">
+                                        <div className="fs-1 mb-3">🔑</div>
+                                        <h5>Programování Klíčů</h5>
+                                        <p className="text-white-50 small">Imobilizéry, key learning</p>
+                                        <Badge bg="warning" text="dark">6 nástrojů</Badge>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+
+                        <Row className="g-4 mb-5">
+                            <Col md={4}>
+                                <Card className="bg-dark border-warning h-100">
+                                    <Card.Body className="text-center">
+                                        <div className="fs-1 mb-3">🛞</div>
+                                        <h5>Historie Vozidel</h5>
+                                        <p className="text-white-50 small">CarFax, AutoCheck, aukční data</p>
+                                        <Badge bg="warning" text="dark">4 nástroje</Badge>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={4}>
+                                <Card className="bg-dark border-warning h-100">
+                                    <Card.Body className="text-center">
+                                        <div className="fs-1 mb-3">🏍️</div>
+                                        <h5>Motorky & Powersports</h5>
+                                        <p className="text-white-50 small">Specializovaná diagnostika</p>
+                                        <Badge bg="warning" text="dark">5 nástrojů</Badge>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={4}>
+                                <Card className="bg-dark border-warning h-100">
+                                    <Card.Body className="text-center">
+                                        <div className="fs-1 mb-3">🔋</div>
+                                        <h5>EV & Hybridy</h5>
+                                        <p className="text-white-50 small">Vysoké napětí, baterie, BMS</p>
+                                        <Badge bg="warning" text="dark">2 nástroje</Badge>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+
+                        {/* Quick Access Tools */}
+                        <Row className="mb-4">
+                            <Col>
+                                <h3 className="text-warning mb-4">🚀 Nejpoužívanější nástroje</h3>
+                                <Row className="g-3">
+                                    {AUTOMOTIVE_TOOLS.slice(0, 6).map(tool => (
+                                        <Col md={6} lg={4} key={tool.id}>
+                                            <Card className="bg-dark border-warning h-100">
+                                                <Card.Body>
+                                                    <div className="d-flex align-items-start mb-2">
+                                                        <span className="fs-3 me-3">{tool.icon}</span>
+                                                        <div>
+                                                            <h6 className="mb-1">{tool.name}</h6>
+                                                            <Badge bg="warning" text="dark" className="small">{tool.category}</Badge>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-white-50 small mb-2">{tool.description}</p>
+                                                    <div className="d-flex flex-wrap gap-1">
+                                                        {tool.tags.slice(0, 3).map(tag => (
+                                                            <Badge key={tag} bg="secondary" className="small">{tag}</Badge>
+                                                        ))}
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </Col>
+                        </Row>
+
+                        {/* Complete Tools List Accordion */}
+                        <Row className="mb-4">
+                            <Col>
+                                <h3 className="text-warning mb-4">📋 Kompletní seznam nástrojů</h3>
+                                <Accordion className="mb-4">
+                                    {[
+                                        { id: 'tech-data', icon: '📚', name: 'Technická Data', tools: AUTOMOTIVE_TOOLS.filter(t => t.category === 'Technical Data') },
+                                        { id: 'diagnostics', icon: '💻', name: 'Diagnostika', tools: AUTOMOTIVE_TOOLS.filter(t => t.category === 'Diagnostics') },
+                                        { id: 'key-prog', icon: '🔑', name: 'Programování Klíčů', tools: AUTOMOTIVE_TOOLS.filter(t => t.category === 'Key Programming') },
+                                        { id: 'parts', icon: '📦', name: 'Vyhledávání Dílů', tools: AUTOMOTIVE_TOOLS.filter(t => t.category === 'Parts Lookup') },
+                                        { id: 'history', icon: '🛞', name: 'Historie Vozidel', tools: AUTOMOTIVE_TOOLS.filter(t => t.category === 'Vehicle History') },
+                                        { id: 'motorcycle', icon: '🏍️', name: 'Motorky & Powersports', tools: AUTOMOTIVE_TOOLS.filter(t => ['Motorcycle', 'Powersports'].includes(t.category)) },
+                                        { id: 'programming', icon: '💾', name: 'ECU Programování', tools: AUTOMOTIVE_TOOLS.filter(t => t.category === 'Programming') },
+                                        { id: 'ev', icon: '⚡', name: 'EV & Servis', tools: AUTOMOTIVE_TOOLS.filter(t => ['EV Service', 'Battery Service'].includes(t.category)) },
+                                        { id: 'service', icon: '🔧', name: 'Servisní Vybavení', tools: AUTOMOTIVE_TOOLS.filter(t => ['HVAC Service', 'Brake Service', 'Fuel Service', 'Transmission Service', 'Cooling Service'].includes(t.category)) }
+                                    ].map((section, idx) => (
+                                        <Accordion.Item key={section.id} eventKey={String(idx)} className="border-warning mb-2">
+                                            <Accordion.Header>
+                                                <div className="d-flex align-items-center w-100">
+                                                    <span className="me-3 fs-4">{section.icon}</span>
+                                                    <span className="flex-grow-1 text-start">{section.name}</span>
+                                                    <Badge bg="warning" text="dark" className="me-3">{section.tools.length}</Badge>
+                                                </div>
+                                            </Accordion.Header>
+                                            <Accordion.Body className="bg-dark">
+                                                <Row className="g-3">
+                                                    {section.tools.map(tool => (
+                                                        <Col md={6} key={tool.id}>
+                                                            <Card className="bg-secondary bg-opacity-25 border-warning">
+                                                                <Card.Body className="py-2">
+                                                                    <div className="d-flex align-items-start">
+                                                                        <span className="fs-4 me-2">{tool.icon}</span>
+                                                                        <div className="flex-grow-1">
+                                                                            <h6 className="mb-1">{tool.name}</h6>
+                                                                            <p className="text-white-50 small mb-1">{tool.description}</p>
+                                                                            <div className="d-flex flex-wrap gap-1">
+                                                                                {tool.tags.map(tag => (
+                                                                                    <Badge key={tag} bg="dark" className="small">{tag}</Badge>
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </Card.Body>
+                                                            </Card>
+                                                        </Col>
+                                                    ))}
+                                                </Row>
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    ))}
+                                </Accordion>
+                            </Col>
+                        </Row>
+
+                        {/* Learning Resources */}
+                        <Row className="mt-4">
+                            <Col>
+                                <Card className="bg-dark border-warning">
+                                    <Card.Body>
+                                        <h4 className="text-warning mb-4">🎓 Zdroje pro učení</h4>
+                                        <Row className="g-4">
+                                            <Col md={4}>
+                                                <div className="d-flex align-items-start">
+                                                    <span className="fs-2 me-3">📺</span>
+                                                    <div>
+                                                        <h6>YouTube Kanály</h6>
+                                                        <ul className="text-white-50 small mb-0">
+                                                            <li>South Main Auto - Diagnostika</li>
+                                                            <li>chrisfix - Opravy</li>
+                                                            <li>EricTheCarGuy - Všeobecné</li>
+                                                            <li>Motor Age - Profesionální</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="d-flex align-items-start">
+                                                    <span className="fs-2 me-3">📖</span>
+                                                    <div>
+                                                        <h6>Doporučené Kurzy</h6>
+                                                        <ul className="text-white-50 small mb-0">
+                                                            <li>ASE Certification Training</li>
+                                                            <li>UTI Automotive Technology</li>
+                                                            <li>AutoMD Repair Guide</li>
+                                                            <li>CarMD DIY Repairs</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="d-flex align-items-start">
+                                                    <span className="fs-2 me-3">🔧</span>
+                                                    <div>
+                                                        <h6>Komunita</h6>
+                                                        <ul className="text-white-50 small mb-0">
+                                                            <li>Reddit r/MechanicAdvice</li>
+                                                            <li>Automotive Forums</li>
+                                                            <li>Garage Journal</li>
+                                                            <li>Motor Vehicle Repair</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+
+                        {/* Career Paths */}
+                        <Row className="mt-4 mb-5">
+                            <Col>
+                                <Card className="bg-dark border-success">
+                                    <Card.Body>
+                                        <h4 className="text-success mb-4">🚀 Kariérní Cesty v Automotive</h4>
+                                        <Row className="g-4">
+                                            <Col md={3}>
+                                                <Card className="bg-success bg-opacity-10 border-success h-100">
+                                                    <Card.Body className="text-center">
+                                                        <span className="fs-1">🔧</span>
+                                                        <h6>Servisní Technik</h6>
+                                                        <p className="text-white-50 small mb-2">Základní údržba a opravy</p>
+                                                        <Badge bg="success">30-50K Kč/měs</Badge>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                            <Col md={3}>
+                                                <Card className="bg-success bg-opacity-10 border-success h-100">
+                                                    <Card.Body className="text-center">
+                                                        <span className="fs-1">💻</span>
+                                                        <h6>Diagnostik</h6>
+                                                        <p className="text-white-50 small mb-2">Pokročilá diagnostika</p>
+                                                        <Badge bg="success">50-80K Kč/měs</Badge>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                            <Col md={3}>
+                                                <Card className="bg-success bg-opacity-10 border-success h-100">
+                                                    <Card.Body className="text-center">
+                                                        <span className="fs-1">🔑</span>
+                                                        <h6>Specialista Klíče</h6>
+                                                        <p className="text-white-50 small mb-2">Programování imobilizérů</p>
+                                                        <Badge bg="success">60-100K Kč/měs</Badge>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                            <Col md={3}>
+                                                <Card className="bg-success bg-opacity-10 border-success h-100">
+                                                    <Card.Body className="text-center">
+                                                        <span className="fs-1">⚡</span>
+                                                        <h6>EV Technik</h6>
+                                                        <p className="text-white-50 small mb-2">Elektromobily a hybridy</p>
+                                                        <Badge bg="success">70-120K Kč/měs</Badge>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        </Row>
                                     </Card.Body>
                                 </Card>
                             </Col>

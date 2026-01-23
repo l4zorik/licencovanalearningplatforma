@@ -50,6 +50,36 @@ export const MILESTONE_TEMPLATES: Omit<Milestone, 'current' | 'status' | 'comple
     rewardBadge: '🔥'
   },
   {
+    id: 'lakyrnik_beginner',
+    title: 'Začínající Lakýrník',
+    description: 'Dokonč kurz základů lakování',
+    category: 'learning',
+    target: 1,
+    unit: 'kurzů',
+    rewardXP: 150,
+    rewardBadge: '🎨'
+  },
+  {
+    id: 'priprava_expert',
+    title: 'Expert na Přípravu',
+    description: 'Dokonč kurz přípravy povrchu',
+    category: 'learning',
+    target: 1,
+    unit: 'kurzů',
+    rewardXP: 200,
+    rewardBadge: '🔧'
+  },
+  {
+    id: 'tmeleni_master',
+    title: 'Mistr Tmelení',
+    description: 'Dokonč kurz tmelení karoserie',
+    category: 'learning',
+    target: 1,
+    unit: 'kurzů',
+    rewardXP: 250,
+    rewardBadge: '🛠️'
+  },
+  {
     id: 'career_switch',
     title: 'Kariérní změna',
     description: 'Odemkni skills ve 3 různých kategoriích',

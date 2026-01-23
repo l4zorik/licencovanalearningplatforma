@@ -1,0 +1,652 @@
+/* 🎬 Animation Library - Tomas Learning Platform */
+
+/* === FADE ANIMATIONS === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* === SLIDE ANIMATIONS === */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === BOUNCE & PULSE === */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(0.95);
+    }
+}
+
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    14% {
+        transform: scale(1.1);
+    }
+
+    28% {
+        transform: scale(1);
+    }
+
+    42% {
+        transform: scale(1.1);
+    }
+
+    70% {
+        transform: scale(1);
+    }
+}
+
+/* === ROTATE & SPIN === */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes wiggle {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+}
+
+/* === SHAKE === */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes shakeY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateY(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateY(5px);
+    }
+}
+
+/* === SHIMMER & GLOW === */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px var(--color-accent-primary);
+    }
+
+    50% {
+        box-shadow: 0 0 20px var(--color-accent-primary);
+    }
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+    }
+}
+
+/* === GRADIENT SHIFT === */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* === FLIP === */
+@keyframes flipX {
+    from {
+        transform: perspective(400px) rotateX(90deg);
+        opacity: 0;
+    }
+
+    to {
+        transform: perspective(400px) rotateX(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes flipY {
+    from {
+        transform: perspective(400px) rotateY(90deg);
+        opacity: 0;
+    }
+
+    to {
+        transform: perspective(400px) rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes flip3D {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+/* === ZOOM === */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+/* === FLOAT === */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes floatSlow {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* === RIPPLE === */
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* === PROGRESS BAR === */
+@keyframes progressFill {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: var(--progress-value, 100%);
+    }
+}
+
+/* === TYPING CURSOR === */
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* === CONFETTI === */
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* === SLIDE & FADE === */
+@keyframes slideAndFade {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === UTILITY ANIMATION CLASSES === */
+
+/* Fade Animations */
+.animate-fade-in {
+    animation: fadeIn 0.4s var(--ease-out) forwards;
+}
+
+.animate-fade-out {
+    animation: fadeOut 0.4s var(--ease-in) forwards;
+}
+
+.animate-fade-in-scale {
+    animation: fadeInScale 0.5s var(--ease-out) forwards;
+}
+
+/* Slide Animations */
+.animate-slide-in-right {
+    animation: slideInRight 0.4s var(--ease-out) forwards;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.4s var(--ease-out) forwards;
+}
+
+.animate-slide-in-up {
+    animation: slideInUp 0.4s var(--ease-out) forwards;
+}
+
+.animate-slide-in-down {
+    animation: slideInDown 0.4s var(--ease-out) forwards;
+}
+
+/* Motion Animations */
+.animate-bounce {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+.animate-bounce-in {
+    animation: bounceIn 0.6s var(--ease-bounce) forwards;
+}
+
+.animate-pulse {
+    animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+.animate-heartbeat {
+    animation: heartbeat 1.3s ease-in-out infinite;
+}
+
+/* Rotate Animations */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.animate-spin-slow {
+    animation: spin 3s linear infinite;
+}
+
+.animate-wiggle {
+    animation: wiggle 0.5s ease-in-out;
+}
+
+/* Shake Animations */
+.animate-shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+.animate-shake-y {
+    animation: shakeY 0.5s ease-in-out;
+}
+
+/* Glow Animations */
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Shimmer Animation */
+.animate-shimmer {
+    background: linear-gradient(90deg,
+            var(--color-bg-tertiary) 25%,
+            var(--color-bg-secondary) 37%,
+            var(--color-bg-tertiary) 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+}
+
+/* Float Animation */
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-float-slow {
+    animation: floatSlow 5s ease-in-out infinite;
+}
+
+/* Zoom Animations */
+.animate-zoom-in {
+    animation: zoomIn 0.4s var(--ease-out) forwards;
+}
+
+.animate-zoom-out {
+    animation: zoomOut 0.4s var(--ease-in) forwards;
+}
+
+/* Flip Animations */
+.animate-flip-x {
+    animation: flipX 0.6s var(--ease-out) forwards;
+}
+
+.animate-flip-y {
+    animation: flipY 0.6s var(--ease-out) forwards;
+}
+
+/* === STAGGER DELAYS === */
+.stagger-1 {
+    animation-delay: 0.1s;
+}
+
+.stagger-2 {
+    animation-delay: 0.2s;
+}
+
+.stagger-3 {
+    animation-delay: 0.3s;
+}
+
+.stagger-4 {
+    animation-delay: 0.4s;
+}
+
+.stagger-5 {
+    animation-delay: 0.5s;
+}
+
+.stagger-6 {
+    animation-delay: 0.6s;
+}
+
+/* === DURATION MODIFIERS === */
+.duration-fast {
+    animation-duration: 0.2s;
+}
+
+.duration-normal {
+    animation-duration: 0.4s;
+}
+
+.duration-slow {
+    animation-duration: 0.8s;
+}
+
+.duration-slower {
+    animation-duration: 1.2s;
+}
+
+/* === HOVER EFFECTS === */
+.hover-lift {
+    transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+}
+
+.hover-scale {
+    transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-glow {
+    transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.hover-glow:hover {
+    box-shadow: var(--glow-primary);
+}
+
+/* === TRANSITION UTILITIES === */
+.transition-all {
+    transition: all var(--duration-normal) var(--ease-out);
+}
+
+.transition-transform {
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.transition-opacity {
+    transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.transition-colors {
+    transition: background-color var(--duration-normal) var(--ease-out),
+        border-color var(--duration-normal) var(--ease-out),
+        color var(--duration-normal) var(--ease-out);
+}
+
+/* === GPU ACCELERATION === */
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.will-change-transform {
+    will-change: transform;
+}
+
+.will-change-opacity {
+    will-change: opacity;
+}

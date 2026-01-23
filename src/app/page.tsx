@@ -10,12 +10,17 @@ import { SKILL_TEMPLATES } from '@/components/EducationSection';
 import { JOB_TEMPLATES } from '@/components/WorkSection';
 import { CERTIFICATION_TEMPLATES } from '@/components/CertificationSection';
 import ThemeToggle from '@/components/ThemeToggle';
-import { Project, ProjectTemplate } from '@/types';
+import { Project, ProjectMilestone, ProjectTemplate } from '@/types';
 import { calculateProjectStats, PROJECT_TEMPLATES, INITIAL_PROJECTS } from '@/data/projects/data';
 import FocusedProjectCard from '@/components/projects/FocusedProjectCard';
 import LifeGoalsSection from '@/components/life/LifeGoalsSection';
 import CareerAdviceSection from '@/components/CareerAdviceSection';
 import RecipesSection from '@/components/RecipesSection';
+import { createBasicTour, addDashboardSteps } from '@/lib/tours';
+// NEW: Premium UI Components (Aliased to avoid conflict)
+import { Card as PremiumCard, Button as PremiumButton, Progress as PremiumProgress, Badge as PremiumBadge } from '@/components/ui';
+import DashboardCard from '@/components/dashboard/DashboardCard';
+import { FiTarget, FiTrendingUp, FiAward, FiBook, FiClock, FiCheckCircle } from 'react-icons/fi';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -27,7 +32,7 @@ const AdBanner = ({ position, size = "medium" }: { position: string, size?: stri
 
   return (
     <div className={`ad-banner ad-${position} ${size} bg-light border rounded p-3 text-center my-3`}
-         style={{ minHeight: size === 'large' ? '120px' : '90px' }}>
+      style={{ minHeight: size === 'large' ? '120px' : '90px' }}>
       <div className="text-muted small">
         🔄 Reklamní prostor - {position}
         <br />
@@ -529,16 +534,16 @@ const MATERIAL_GOALS = [
 
 // Initial Data for the Page State
 const initialCourses: Course[] = [
-  { 
-    id: 1, 
-    title: "Pokročilý React & Next.js 15", 
-    platform: "Udemy", 
+  {
+    id: 1,
+    title: "Pokročilý React & Next.js 15",
+    platform: "Udemy",
     instructor: "Maximilian Schwarzmüller",
-    totalHours: 40, 
+    totalHours: 40,
     spentHours: 12,
     priority: "High",
     deadline: "2026-02-15",
-    tags: ["Frontend", "React", "SSR", "Next.js"], 
+    tags: ["Frontend", "React", "SSR", "Next.js"],
     description: "Kompletní průvodce Next.js App Routerem.",
     modules: [
       { id: "m1", title: "React Refresh", isCompleted: true },
@@ -557,7 +562,7 @@ const initialCourses: Course[] = [
     priority: "Medium",
     tags: ["TypeScript", "JavaScript"],
     description: "Deep dive into TS.",
-    modules: [{id: "t1", title: "Basics", isCompleted: true}],
+    modules: [{ id: "t1", title: "Basics", isCompleted: true }],
     resources: [],
     notes: ""
   }
@@ -592,10 +597,18 @@ export default function Home() {
     }
     return null;
   });
-  
+  const [showNextStepModal, setShowNextStepModal] = useState(false);
+  const [showBenefitsLibraryModal, setShowBenefitsLibraryModal] = useState(false);
+
   const getFocusedProject = () => {
     if (!focusedProjectId) return null;
     return projects.find(p => p.id === focusedProjectId) || null;
+  };
+
+  const getNextStep = () => {
+    const project = getFocusedProject();
+    if (!project) return null;
+    return project.milestones.find(m => !m.isCompleted) || null;
   };
 
   // Save focusedProjectId to localStorage
@@ -667,13 +680,13 @@ export default function Home() {
       const completed = prev[templateId] || [];
       const isCompleted = completed.includes(milestoneTitle);
       let newCompleted: string[];
-      
+
       if (isCompleted) {
         newCompleted = completed.filter(m => m !== milestoneTitle);
       } else {
         newCompleted = [...completed, milestoneTitle];
       }
-      
+
       return {
         ...prev,
         [templateId]: newCompleted
@@ -823,639 +836,1010 @@ export default function Home() {
   // Calculate generic stats for Mission Logic
   // A hypothetical logic to find "Unlocked Jobs" (simulated)
   const unlockedRoles = [
-      { role: "Frontend Developer", progress: 65, missing: ["Testing", "CI/CD"] },
-      { role: "React Specialist", progress: 80, missing: ["Advanced Patterns"] }
+    { role: "Frontend Developer", progress: 65, missing: ["Testing", "CI/CD"] },
+    { role: "React Specialist", progress: 80, missing: ["Advanced Patterns"] }
   ];
 
 
 
   return (
     <main className="min-vh-100 position-relative">
-        <WaveBackground />
+      <WaveBackground />
+      <style jsx>{`
+          @keyframes pulse-next-step {
+            0%, 100% {
+              box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
+            }
+            50% {
+              box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.1);
+            }
+          }
+          .next-step-indicator:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          }
+        `}</style>
 
-        {/* Header / Navbar */}
-        <nav className="navbar navbar-dark navbar-glass mb-4 sticky-top shadow-sm">
-           <Container fluid>
-             <div className="d-flex align-items-center">
-                <span className="navbar-brand mb-0 h1 me-4">🚀 Tomas Learning Platform</span>
-                 <div className="d-flex gap-2">
-                   <Link href="/profile" className="text-decoration-none">
-                      <Button variant="outline-primary" size="sm" className="fw-bold">
-                        👤 PROFILE
+      {/* Header / Navbar */}
+      <nav className="navbar navbar-dark navbar-glass mb-4 sticky-top shadow-sm">
+        <Container fluid>
+          <div className="d-flex align-items-center">
+            <span className="navbar-brand mb-0 h1 me-4">🚀 Tomas Learning Platform</span>
+            <div className="d-flex gap-2">
+              <Link href="/profile" className="text-decoration-none">
+                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="profile">
+                  👤 PROFILE
+                </Button>
+              </Link>
+              <Link href="/analytics" className="text-decoration-none">
+                <Button variant="outline-info" size="sm" className="fw-bold" data-tour="analytics">
+                  📊 ANALYTICS
+                </Button>
+              </Link>
+              <Button
+                variant="outline-warning"
+                size="sm"
+                className="fw-bold d-flex align-items-center gap-2"
+                onClick={() => setShowMissionModal(true)}
+                data-tour="missions"
+              >
+                <span>🎯 MISE</span>
+                <Badge bg="warning" text="dark" pill>2 Active</Badge>
+              </Button>
+              <Link href="/training" className="text-decoration-none">
+                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="training">
+                  🎓 TRAINING
+                </Button>
+              </Link>
+              <Link href="/career-report" className="text-decoration-none">
+                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="career-report">
+                  📈 CAREER REPORT
+                </Button>
+              </Link>
+              <Link href="/courses" className="text-decoration-none">
+                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="courses">
+                  🎓 KURZY
+                </Button>
+              </Link>
+              <Link href="/quick-courses" className="text-decoration-none">
+                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="quick-courses">
+                  ⚡ RYCHLOKURZY
+                </Button>
+              </Link>
+              <Link href="/articles" className="text-decoration-none">
+                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="articles">
+                  📝 ČLÁNKY
+                </Button>
+              </Link>
+              <Link href="/tools" className="text-decoration-none">
+                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="tools">
+                  🛠️ TOOLS
+                </Button>
+              </Link>
+              <Link href="/agencies" className="text-decoration-none">
+                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="agencies">
+                  🏢 AGENTURY
+                </Button>
+              </Link>
+              <Link href="/colleagues" className="text-decoration-none">
+                <Button variant="outline-info" size="sm" className="fw-bold" data-tour="colleagues">
+                  👥 KOLEGOVÉ
+                </Button>
+              </Link>
+              <Link href="/achievements" className="text-decoration-none">
+                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="achievements">
+                  🏆 ACHIEVEMENTS
+                </Button>
+              </Link>
+              <Link href="/roadmap" className="text-decoration-none">
+                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="roadmap">
+                  🗺️ ROADMAP
+                </Button>
+              </Link>
+              <Link href="/journey" className="text-decoration-none">
+                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="journey">
+                  🎯 JOURNEY
+                </Button>
+              </Link>
+              <Link href="/career-advice" className="text-decoration-none">
+                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="career-advice">
+                  💡 RADY
+                </Button>
+              </Link>
+              <Link href="/recipes" className="text-decoration-none">
+                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="recipes">
+                  👨‍🍳 RECEPTY
+                </Button>
+              </Link>
+              <Button
+                variant="outline-info"
+                size="sm"
+                className="fw-bold d-flex align-items-center gap-2"
+                onClick={() => setShowTrendyModal(true)}
+                data-tour="trendy"
+              >
+                <span>📈 TRENDY</span>
+              </Button>
+              {/* Premium features toggle - for future monetization */}
+              <Button
+                variant="outline-info"
+                size="sm"
+                className="fw-bold"
+                onClick={() => {
+                  const tour = createBasicTour();
+                  addDashboardSteps(tour);
+                  tour.start();
+                }}
+                data-tour="tour-button"
+              >
+                🧭 TOUR
+              </Button>
+              <Button
+                variant="outline-gold"
+                size="sm"
+                className="fw-bold"
+                disabled
+                title="Premium features coming soon!"
+              >
+                ⭐ PREMIUM
+              </Button>
+            </div>
+          </div>
+
+          <div className="text-white d-flex align-items-center gap-3">
+            <div className="d-none d-md-block text-white-50 small">
+              Level {stats.level} Developer • {stats.xp} XP
+            </div>
+            <div>
+              <span className="me-2 text-white-50">Next Level:</span>
+              <Badge bg="success">{stats.xpToNext} XP</Badge>
+            </div>
+            <div className="d-flex align-items-center gap-3">
+              <ThemeToggle />
+              <Button
+                variant="outline-light"
+                size="sm"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </nav>
+
+      <Container fluid className="px-4">
+        {/* ✨ PREMIUM DASHBOARD OVERVIEW */}
+        <Row className="g-4 mb-4 animate-fade-in">
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Aktivní Projekty"
+              value={projects.filter(p => p.status === 'active').length}
+              subtitle={`${projects.length} celkem`}
+              icon={<FiTarget />}
+              gradient="cosmic"
+              trend={{ value: 12, label: 'tento týden' }}
+            />
+          </Col>
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Celkové XP"
+              value={stats.xp.toLocaleString()}
+              subtitle={`Level ${stats.level}`}
+              icon={<FiTrendingUp />}
+              gradient="sunset"
+              trend={{ value: 24, label: 'dnes' }}
+            />
+          </Col>
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Zbývá XP"
+              value={stats.xpToNext.toLocaleString()}
+              subtitle="Do dalšího levelu"
+              icon={<FiClock />}
+              gradient="ocean"
+            />
+          </Col>
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Achievementy"
+              value="42"
+              subtitle="8 odemčeno tento měsíc"
+              icon={<FiAward />}
+              gradient="fire"
+            />
+          </Col>
+        </Row>
+
+        {/* 🚀 PROJEKTY - Collapsible Dashboard */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%)' }}>
+              <Card.Header
+                className="bg-transparent border-bottom border-secondary text-dark py-3"
+                data-tour="projects-section"
+                onClick={() => setIsProjectsExpanded(!isProjectsExpanded)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center gap-3">
+                    <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
+                      <span style={{ transition: 'transform 0.3s ease', transform: isProjectsExpanded ? 'rotate(90deg)' : 'rotate(0deg)', display: 'inline-block' }}>
+                        ▶
+                      </span>
+                      🚀 Projekty
+                    </h4>
+                    <Badge bg="info" className="fs-6">
+                      {projects.filter(p => p.status === 'active').length} Aktivní
+                    </Badge>
+                  </div>
+                  <div className="d-flex align-items-center gap-3">
+                    <div className="text-end">
+                      <div className="fw-bold text-info">🔐</div>
+                      <small className="text-white-50">Logování algoritmů</small>
+                    </div>
+                    <Link href="/projects">
+                      <Button variant="info" size="sm">
+                        📊 Přejít na Projekty
                       </Button>
                     </Link>
-                    <Link href="/analytics" className="text-decoration-none">
-                     <Button variant="outline-info" size="sm" className="fw-bold">
-                       📊 ANALYTICS
-                     </Button>
-                   </Link>
-                   <Button
-                      variant="outline-warning"
-                      size="sm"
-                      className="fw-bold d-flex align-items-center gap-2"
-                      onClick={() => setShowMissionModal(true)}
-                   >
-                      <span>🎯 MISE</span>
-                      <Badge bg="warning" text="dark" pill>2 Active</Badge>
-                   </Button>
-                   <Link href="/training" className="text-decoration-none">
-                     <Button variant="outline-primary" size="sm" className="fw-bold">
-                       🎓 TRAINING
-                     </Button>
-                   </Link>
-                   <Link href="/career-report" className="text-decoration-none">
-                     <Button variant="outline-success" size="sm" className="fw-bold">
-                       📈 CAREER REPORT
-                     </Button>
-                   </Link>
-                    <Link href="/courses" className="text-decoration-none">
-                       <Button variant="outline-success" size="sm" className="fw-bold">
-                         🎓 KURZY
-                       </Button>
-                     </Link>
-                     <Link href="/quick-courses" className="text-decoration-none">
-                       <Button variant="outline-warning" size="sm" className="fw-bold">
-                         ⚡ RYCHLOKURZY
-                       </Button>
-                     </Link>
-                     <Link href="/articles" className="text-decoration-none">
-                       <Button variant="outline-primary" size="sm" className="fw-bold">
-                         📝 ČLÁNKY
-                       </Button>
-                     </Link>
-<Link href="/tools" className="text-decoration-none">
-                        <Button variant="outline-warning" size="sm" className="fw-bold">
-                          🛠️ TOOLS
-                        </Button>
-                      </Link>
-                      <Link href="/agencies" className="text-decoration-none">
-                        <Button variant="outline-success" size="sm" className="fw-bold">
-                          🏢 AGENTURY
-                        </Button>
-                      </Link>
-                      <Link href="/colleagues" className="text-decoration-none">
-                         <Button variant="outline-info" size="sm" className="fw-bold">
-                           👥 KOLEGOVÉ
-                         </Button>
-                       </Link>
-                       <Link href="/achievements" className="text-decoration-none">
-                         <Button variant="outline-warning" size="sm" className="fw-bold">
-                           🏆 ACHIEVEMENTS
-                         </Button>
-                       </Link>
-                        <Link href="/roadmap" className="text-decoration-none">
-                          <Button variant="outline-success" size="sm" className="fw-bold">
-                            🗺️ ROADMAP
-                          </Button>
-                        </Link>
-                        <Link href="/journey" className="text-decoration-none">
-                          <Button variant="outline-primary" size="sm" className="fw-bold">
-                            🎯 JOURNEY
-                          </Button>
-                        </Link>
-                        <Link href="/career-advice" className="text-decoration-none">
-                          <Button variant="outline-warning" size="sm" className="fw-bold">
-                            💡 RADY
-                          </Button>
-                        </Link>
-                        <Link href="/recipes" className="text-decoration-none">
-                          <Button variant="outline-success" size="sm" className="fw-bold">
-                            👨‍🍳 RECEPTY
-                          </Button>
-                        </Link>
-                       <Button
-                      variant="outline-info"
-                      size="sm"
-                      className="fw-bold d-flex align-items-center gap-2"
-                      onClick={() => setShowTrendyModal(true)}
-                    >
-                      <span>📈 TRENDY</span>
-                    </Button>
-                   {/* Premium features toggle - for future monetization */}
-                   <Button
-                     variant="outline-gold"
-                     size="sm"
-                     className="fw-bold"
-                     disabled
-                     title="Premium features coming soon!"
-                   >
-                     ⭐ PREMIUM
-                   </Button>
-                 </div>
-             </div>
-
-             <div className="text-white d-flex align-items-center gap-3">
-                <div className="d-none d-md-block text-white-50 small">
-                    Level {stats.level} Developer • {stats.xp} XP
+                  </div>
                 </div>
-                 <div>
-                     <span className="me-2 text-white-50">Next Level:</span>
-                     <Badge bg="success">{stats.xpToNext} XP</Badge>
-                 </div>
-                 <div className="d-flex align-items-center gap-3">
-                   <ThemeToggle />
-                   <Button
-                     variant="outline-light"
-                     size="sm"
-                     onClick={() => signOut()}
-                   >
-                     Sign Out
-                   </Button>
-                 </div>
-              </div>
-           </Container>
-        </nav>
-
-          <Container fluid className="px-4">
-            {/* 🚀 PROJEKTY - Collapsible Dashboard */}
-            <Row className="mb-4">
-              <Col>
-                <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%)' }}>
-                  <Card.Header 
-                    className="bg-transparent border-bottom border-secondary text-dark py-3"
-                    onClick={() => setIsProjectsExpanded(!isProjectsExpanded)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className="d-flex align-items-center gap-3">
-                        <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
-                          <span style={{ transition: 'transform 0.3s ease', transform: isProjectsExpanded ? 'rotate(90deg)' : 'rotate(0deg)', display: 'inline-block' }}>
-                            ▶
-                          </span>
-                          🚀 Projekty
-                        </h4>
-                        <Badge bg="info" className="fs-6">
-                          {projects.filter(p => p.status === 'active').length} Aktivní
+              </Card.Header>
+              <Collapse in={isProjectsExpanded}>
+                <Card.Body className="p-3">
+                  {getFocusedProject() && getNextStep() && (
+                    <div
+                      className="next-step-indicator mb-3"
+                      data-tour="next-step"
+                      onClick={() => setShowNextStepModal(true)}
+                      style={{
+                        background: `linear-gradient(90deg, ${getFocusedProject()?.color}40 0%, ${getFocusedProject()?.color}20 100%)`,
+                        border: `1px solid ${getFocusedProject()?.color}`,
+                        borderRadius: '8px',
+                        padding: '12px 16px',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        animation: 'pulse-next-step 2s infinite'
+                      }}
+                    >
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div className="d-flex align-items-center gap-3">
+                          <span style={{ fontSize: '1.5rem' }}>🎯</span>
+                          <div>
+                            <div className="text-white small fw-bold">DALŠÍ KROK</div>
+                            <div style={{ color: '#fff', fontSize: '0.9rem' }}>
+                              {getNextStep()?.title}
+                            </div>
+                          </div>
+                        </div>
+                        <Badge bg="light" text="dark" style={{ fontSize: '0.75rem' }}>
+                          ⏱️ {getNextStep()?.targetHours || 2}h
                         </Badge>
                       </div>
-                      <div className="d-flex align-items-center gap-3">
-                        <div className="text-end">
-                          <div className="fw-bold text-info">🔐</div>
-                          <small className="text-white-50">Logování algoritmů</small>
-                        </div>
-                        <Link href="/projects">
-                          <Button variant="info" size="sm">
-                            📊 Přejít na Projekty
-                          </Button>
-                        </Link>
+                    </div>
+                  )}
+                  {getFocusedProject() ? (
+                    <FocusedProjectCard
+                      project={getFocusedProject()!}
+                      onClose={() => setFocusedProjectId(null)}
+                      onUpdate={(updatedProject) => {
+                        setProjects(prev => prev.map(p =>
+                          p.id === updatedProject.id ? updatedProject : p
+                        ));
+                      }}
+                    />
+                  ) : projects.length === 0 ? (
+                    <Row>
+                      <Col md={4}>
+                        <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
+                          <Card.Body className="text-center">
+                            <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>➕</div>
+                            <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
+                            <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
+                            <Link href="/projects">
+                              <Button variant="outline-light" size="sm" className="mt-2 w-100">
+                                Vytvořit Projekt
+                              </Button>
+                            </Link>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <>
+                      <Row xs={1} md={2} lg={3} className="g-3">
+                        {projects.map((project) => {
+                          const stats = calculateProjectStats(project);
+                          const isFocused = focusedProjectId === project.id;
+                          return (
+                            <Col key={project.id}>
+                              <Card
+                                style={{
+                                  background: isFocused
+                                    ? `linear-gradient(135deg, ${project.color}60 0%, ${project.color}40 100%)`
+                                    : `${project.color}25`,
+                                  border: isFocused
+                                    ? `3px solid ${project.color}`
+                                    : `1px solid ${project.color}60`,
+                                  cursor: 'pointer',
+                                  transition: 'all 0.3s ease',
+                                  transform: isFocused ? 'scale(1.02)' : 'scale(1)'
+                                }}
+                                onClick={() => setFocusedProjectId(project.id)}
+                                className="hover-card"
+                              >
+                                <Card.Body>
+                                  <div className="d-flex justify-content-between align-items-start mb-2">
+                                    <span style={{ fontSize: '1.8rem' }}>{project.icon}</span>
+                                    <div className="d-flex gap-1">
+                                      <Badge bg={project.priority === 'high' ? 'danger' : project.priority === 'medium' ? 'warning' : 'secondary'}>
+                                        {project.priority}
+                                      </Badge>
+                                      {isFocused && <Badge bg="info">🎯 FOCUS</Badge>}
+                                    </div>
+                                  </div>
+                                  <h6 style={{ color: '#fff' }}>{project.title}</h6>
+                                  <small style={{ color: '#aaa' }}>{project.description.substring(0, 50)}...</small>
+                                  <ProgressBar now={stats.progress} style={{ height: '8px' }} className="mt-2" />
+                                  <div className="d-flex justify-content-between mt-2">
+                                    <small style={{ color: '#888' }}>{stats.progress}% pokrok</small>
+                                    <small style={{ color: '#FFD700' }}>+{stats.totalXp} XP</small>
+                                  </div>
+                                  <div className="d-flex gap-1 mt-2 flex-wrap">
+                                    {project.milestones.slice(0, 3).map((m, idx) => (
+                                      <Badge
+                                        key={idx}
+                                        bg={m.isCompleted ? 'success' : 'secondary'}
+                                        style={{ fontSize: '0.7rem' }}
+                                      >
+                                        {m.isCompleted ? '✅' : '⭕'} {m.title.substring(0, 15)}...
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                      <Row className="mt-3">
+                        <Col>
+                          <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
+                            <Card.Body className="text-center">
+                              <div style={{ fontSize: '2rem', marginBottom: '5px' }}>➕</div>
+                              <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
+                              <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
+                              <Link href="/projects">
+                                <Button variant="outline-light" size="sm" className="mt-2 w-100">
+                                  Vytvořit Projekt
+                                </Button>
+                              </Link>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </>
+                  )}
+                </Card.Body>
+              </Collapse>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* 📋 ŠABLONY PROJEKTŮ - Quick Access to Templates */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(156,39,176,0.2) 0%, rgba(103,58,183,0.2) 100%)' }}>
+              <Card.Header className="bg-transparent border-bottom border-secondary text-dark py-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center gap-3">
+                    <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
+                      📋 Šablony Projektů
+                    </h4>
+                    <Badge bg="info" className="fs-6">
+                      {PROJECT_TEMPLATES.length} Šablon
+                    </Badge>
+                  </div>
+                  <Link href="/projects">
+                    <Button variant="info" size="sm">
+                      📊 Všechny Šablony
+                    </Button>
+                  </Link>
+                </div>
+              </Card.Header>
+              <Card.Body className="p-3">
+                <Row xs={2} md={3} lg={4} className="g-2">
+                  {PROJECT_TEMPLATES.slice(0, 8).map((template) => {
+                    const completedMilestones = templateMilestonesProgress[template.id]?.length || 0;
+                    const totalMilestones = template.suggestedMilestones.length;
+                    const progress = Math.round((completedMilestones / totalMilestones) * 100);
+
+                    return (
+                      <Col key={template.id}>
+                        <Card
+                          style={{
+                            background: `${template.color}20`,
+                            border: `1px solid ${template.color}50`,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          className="h-100 hover-card"
+                          onClick={() => handleOpenTemplateDetail(template)}
+                        >
+                          <Card.Body className="p-2">
+                            <div className="d-flex justify-content-between align-items-start mb-1">
+                              <span style={{ fontSize: '1.5rem' }}>{template.icon}</span>
+                              {completedMilestones === totalMilestones && totalMilestones > 0 && (
+                                <Badge bg="success" style={{ fontSize: '0.6rem' }}>✅</Badge>
+                              )}
+                            </div>
+                            <h6 style={{ color: '#fff', fontSize: '0.85rem', marginBottom: '5px' }}>{template.title}</h6>
+
+                            {totalMilestones > 0 && (
+                              <>
+                                <ProgressBar
+                                  now={progress}
+                                  variant={progress === 100 ? 'success' : 'info'}
+                                  style={{ height: '4px' }}
+                                />
+                                <small style={{ color: '#888', fontSize: '0.7rem' }}>
+                                  {completedMilestones}/{totalMilestones} úkolů
+                                </small>
+                              </>
+                            )}
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    );
+                  })}
+                </Row>
+                <div className="text-center mt-3">
+                  <small style={{ color: '#8892b0' }}>
+                    💡 Klikni na šablonu pro zobrazení checklistu úkolů
+                  </small>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        <div data-tour="goals-section">
+          <LifeGoalsSection projects={projects} />
+        </div>
+
+        {/* 💡 Career Advice & 👨‍🍳 Recipes Sections */}
+        <Row className="mb-4">
+          <Col md={6} className="mb-4" data-tour="career-advice-section">
+            <CareerAdviceSection />
+          </Col>
+          <Col md={6} className="mb-4" data-tour="recipes-section">
+            <RecipesSection />
+          </Col>
+        </Row>
+
+        {/* Top Banner Ad */}
+        <AdBanner position="top" size="large" />
+
+        <Row>
+          {/* Left Side: Education */}
+          <Col md={4} className="mb-4">
+            <div data-tour="education-section">
+              <EducationSection
+                myCourses={courses}
+                setCourses={setCourses}
+              />
+            </div>
+          </Col>
+
+          {/* Middle Side: Certifications */}
+          <Col md={4} className="mb-4">
+            <div data-tour="certification-section">
+              <CertificationSection myCourses={courses} />
+            </div>
+          </Col>
+
+          {/* Right Side: Work */}
+          <Col md={4} className="mb-4">
+            <div data-tour="work-section">
+              <WorkSection myCourses={courses} setCourses={setCourses} />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
+      {/* --- MISSION CONTROL MODAL --- */}
+      <Modal show={showMissionModal} onHide={() => setShowMissionModal(false)} size="xl" centered contentClassName="border-0 bg-transparent">
+        <div className="bg-dark text-white rounded-3 shadow-lg overflow-hidden" style={{ minHeight: '80vh', border: '1px solid #333' }}>
+          <Modal.Header closeButton closeVariant="white" className="border-secondary bg-black bg-opacity-50">
+            <div>
+              <Modal.Title className="fw-bold text-warning letter-spacing-1">⚔️ MISSION CONTROL</Modal.Title>
+              <div className="text-white-50 small">Strategický přehled tvé kariérní cesty</div>
+            </div>
+          </Modal.Header>
+          <Modal.Body className="p-0">
+            <Row className="g-0 h-100">
+              {/* LEFT PANEL: SKILL ARSENAL */}
+              <Col md={4} className="bg-dark border-end border-secondary p-4">
+                <h6 className="text-uppercase text-muted fw-bold mb-4 small tracking-wide">1. Váš Arzenál (Skills)</h6>
+
+                <div className="d-flex flex-column gap-3">
+                  {courses.map(course => (
+                    <div key={course.id} className="p-3 rounded bg-black bg-opacity-25 border border-secondary border-opacity-25 d-flex align-items-center">
+                      <div className="me-3 fs-4">⚡</div>
+                      <div className="flex-grow-1">
+                        <div className="fw-bold text-white">{course.title}</div>
+                        <ProgressBar now={40} variant="info" style={{ height: '4px' }} className="mt-2 bg-secondary" />
                       </div>
                     </div>
-                  </Card.Header>
-                      <Collapse in={isProjectsExpanded}>
-                          <Card.Body className="p-3">
-                            {getFocusedProject() ? (
-                              <FocusedProjectCard
-                                project={getFocusedProject()!}
-                                onClose={() => setFocusedProjectId(null)}
-                                onUpdate={(updatedProject) => {
-                                  setProjects(prev => prev.map(p =>
-                                    p.id === updatedProject.id ? updatedProject : p
-                                  ));
-                                }}
-                              />
-                            ) : projects.length === 0 ? (
-                        <Row>
-                          <Col md={4}>
-                            <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
-                              <Card.Body className="text-center">
-                                <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>➕</div>
-                                <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
-                                <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
-                                <Link href="/projects">
-                                  <Button variant="outline-light" size="sm" className="mt-2 w-100">
-                                    Vytvořit Projekt
-                                  </Button>
-                                </Link>
-                              </Card.Body>
-                            </Card>
-                          </Col>
-                        </Row>
-                      ) : (
-                        <>
-                          <Row xs={1} md={2} lg={3} className="g-3">
-                             {projects.map((project) => {
-                              const stats = calculateProjectStats(project);
-                              const isFocused = focusedProjectId === project.id;
-                              return (
-                                <Col key={project.id}>
-                                  <Card 
-                                    style={{ 
-                                      background: isFocused 
-                                        ? `linear-gradient(135deg, ${project.color}60 0%, ${project.color}40 100%)`
-                                        : `${project.color}25`,
-                                      border: isFocused 
-                                        ? `3px solid ${project.color}`
-                                        : `1px solid ${project.color}60`,
-                                      cursor: 'pointer',
-                                      transition: 'all 0.3s ease',
-                                      transform: isFocused ? 'scale(1.02)' : 'scale(1)'
-                                    }}
-                                    onClick={() => setFocusedProjectId(project.id)}
-                                    className="hover-card"
-                                  >
-                                    <Card.Body>
-                                      <div className="d-flex justify-content-between align-items-start mb-2">
-                                        <span style={{ fontSize: '1.8rem' }}>{project.icon}</span>
-                                        <div className="d-flex gap-1">
-                                          <Badge bg={project.priority === 'high' ? 'danger' : project.priority === 'medium' ? 'warning' : 'secondary'}>
-                                            {project.priority}
-                                          </Badge>
-                                          {isFocused && <Badge bg="info">🎯 FOCUS</Badge>}
-                                        </div>
-                                      </div>
-                                      <h6 style={{ color: '#fff' }}>{project.title}</h6>
-                                      <small style={{ color: '#aaa' }}>{project.description.substring(0, 50)}...</small>
-                                      <ProgressBar now={stats.progress} style={{ height: '8px' }} className="mt-2" />
-                                      <div className="d-flex justify-content-between mt-2">
-                                        <small style={{ color: '#888' }}>{stats.progress}% pokrok</small>
-                                        <small style={{ color: '#FFD700' }}>+{stats.totalXp} XP</small>
-                                      </div>
-                                      <div className="d-flex gap-1 mt-2 flex-wrap">
-                                        {project.milestones.slice(0, 3).map((m, idx) => (
-                                          <Badge 
-                                            key={idx} 
-                                            bg={m.isCompleted ? 'success' : 'secondary'}
-                                            style={{ fontSize: '0.7rem' }}
-                                          >
-                                            {m.isCompleted ? '✅' : '⭕'} {m.title.substring(0, 15)}...
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    </Card.Body>
-                                  </Card>
-                                </Col>
-                              );
-                            })}
-                          </Row>
-                           <Row className="mt-3">
-                             <Col>
-                               <Card style={{ background: 'rgba(156,39,176,0.15)', border: '1px solid rgba(156,39,176,0.3)' }}>
-                                 <Card.Body className="text-center">
-                                   <div style={{ fontSize: '2rem', marginBottom: '5px' }}>➕</div>
-                                   <h6 style={{ color: '#fff' }}>Nový Projekt</h6>
-                                   <small style={{ color: '#aaa' }}>Přidat vlastní projekt</small>
-                                   <Link href="/projects">
-                                     <Button variant="outline-light" size="sm" className="mt-2 w-100">
-                                       Vytvořit Projekt
-                                     </Button>
-                                   </Link>
-                                 </Card.Body>
-                               </Card>
-                             </Col>
-                           </Row>
-                         </>
-                       )}
-                     </Card.Body>
-                   </Collapse>
-                 </Card>
-               </Col>
-             </Row>
+                  ))}
+                  {courses.length === 0 && <div className="text-muted fst-italic">Arzenál je prázdný...</div>}
+                </div>
 
-             {/* 📋 ŠABLONY PROJEKTŮ - Quick Access to Templates */}
-             <Row className="mb-4">
-               <Col>
-                 <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(156,39,176,0.2) 0%, rgba(103,58,183,0.2) 100%)' }}>
-                   <Card.Header className="bg-transparent border-bottom border-secondary text-dark py-3">
-                     <div className="d-flex justify-content-between align-items-center">
-                       <div className="d-flex align-items-center gap-3">
-                         <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
-                           📋 Šablony Projektů
-                         </h4>
-                         <Badge bg="info" className="fs-6">
-                           {PROJECT_TEMPLATES.length} Šablon
-                         </Badge>
-                       </div>
-                       <Link href="/projects">
-                         <Button variant="info" size="sm">
-                           📊 Všechny Šablony
-                         </Button>
-                       </Link>
-                     </div>
-                   </Card.Header>
-                   <Card.Body className="p-3">
-                     <Row xs={2} md={3} lg={4} className="g-2">
-                       {PROJECT_TEMPLATES.slice(0, 8).map((template) => {
-                         const completedMilestones = templateMilestonesProgress[template.id]?.length || 0;
-                         const totalMilestones = template.suggestedMilestones.length;
-                         const progress = Math.round((completedMilestones / totalMilestones) * 100);
-                         
-                         return (
-                           <Col key={template.id}>
-                             <Card 
-                               style={{ 
-                                 background: `${template.color}20`,
-                                 border: `1px solid ${template.color}50`,
-                                 cursor: 'pointer',
-                                 transition: 'all 0.3s ease'
-                               }}
-                               className="h-100 hover-card"
-                               onClick={() => handleOpenTemplateDetail(template)}
-                             >
-                               <Card.Body className="p-2">
-                                 <div className="d-flex justify-content-between align-items-start mb-1">
-                                   <span style={{ fontSize: '1.5rem' }}>{template.icon}</span>
-                                   {completedMilestones === totalMilestones && totalMilestones > 0 && (
-                                     <Badge bg="success" style={{ fontSize: '0.6rem' }}>✅</Badge>
-                                   )}
-                                 </div>
-                                 <h6 style={{ color: '#fff', fontSize: '0.85rem', marginBottom: '5px' }}>{template.title}</h6>
-                                 
-                                 {totalMilestones > 0 && (
-                                   <>
-                                     <ProgressBar 
-                                       now={progress} 
-                                       variant={progress === 100 ? 'success' : 'info'}
-                                       style={{ height: '4px' }}
-                                     />
-                                     <small style={{ color: '#888', fontSize: '0.7rem' }}>
-                                       {completedMilestones}/{totalMilestones} úkolů
-                                     </small>
-                                   </>
-                                 )}
-                               </Card.Body>
-                             </Card>
-                           </Col>
-                         );
-                       })}
-                     </Row>
-                     <div className="text-center mt-3">
-                       <small style={{ color: '#8892b0' }}>
-                         💡 Klikni na šablonu pro zobrazení checklistu úkolů
-                       </small>
-                     </div>
-                   </Card.Body>
-                 </Card>
-               </Col>
-             </Row>
-
-<LifeGoalsSection projects={projects} />
-
-            {/* 💡 Career Advice & 👨‍🍳 Recipes Sections */}
-            <Row className="mb-4">
-              <Col md={6} className="mb-4">
-                <CareerAdviceSection />
-              </Col>
-              <Col md={6} className="mb-4">
-                <RecipesSection />
-              </Col>
-            </Row>
-
-            {/* Top Banner Ad */}
-            <AdBanner position="top" size="large" />
-
-<Row>
-              {/* Left Side: Education */}
-              <Col md={4} className="mb-4">
-                <EducationSection
-                  myCourses={courses}
-                  setCourses={setCourses}
-                />
+                <div className="mt-5 text-center">
+                  <div className="display-4 text-white-50">⬇️</div>
+                </div>
               </Col>
 
-              {/* Middle Side: Certifications */}
-              <Col md={4} className="mb-4">
-                <CertificationSection myCourses={courses} />
+              {/* MIDDLE PANEL: THE LINK */}
+              <Col md={4} className="bg-gradient-dark p-4 d-flex flex-column justify-content-center align-items-center position-relative" style={{ background: 'linear-gradient(to right, #212529, #1a1d20)' }}>
+                <div className="text-center mb-5">
+                  <h2 className="fw-bold text-white mb-3">SYNERGY</h2>
+                  <p className="text-white-50 px-4">Tvé dovednosti přímo odemykají tyto pracovní příležitosti.</p>
+                </div>
+
+                <div className="d-flex align-items-center gap-3 mb-3 text-white">
+                  <Badge bg="info" className="p-2">React</Badge>
+                  <span>+</span>
+                  <Badge bg="primary" className="p-2">TypeScript</Badge>
+                  <span>=</span>
+                  <Badge bg="success" className="p-2">Frontend Dev</Badge>
+                </div>
+
+                <div className="d-flex align-items-center gap-3 text-white">
+                  <Badge bg="danger" className="p-2">Python</Badge>
+                  <span>+</span>
+                  <Badge bg="warning" text="dark" className="p-2">Math</Badge>
+                  <span>=</span>
+                  <Badge bg="warning" className="p-2">AI Engineer</Badge>
+                </div>
+
+                {/* Visual Connector Line */}
+                <div className="position-absolute top-0 bottom-0 start-0 border-start border-secondary opacity-50"></div>
+                <div className="position-absolute top-0 bottom-0 end-0 border-end border-secondary opacity-50"></div>
               </Col>
 
-              {/* Right Side: Work */}
-              <Col md={4} className="mb-4">
-                <WorkSection myCourses={courses} setCourses={setCourses} />
-              </Col>
-            </Row>
-        </Container>
+              {/* RIGHT PANEL: UNLOCKED MISSIONS */}
+              <Col md={4} className="bg-dark p-4">
+                <h6 className="text-uppercase text-muted fw-bold mb-4 small tracking-wide">2. Odemčené Mise (Jobs)</h6>
 
-        {/* --- MISSION CONTROL MODAL --- */}
-        <Modal show={showMissionModal} onHide={() => setShowMissionModal(false)} size="xl" centered contentClassName="border-0 bg-transparent">
-          <div className="bg-dark text-white rounded-3 shadow-lg overflow-hidden" style={{minHeight: '80vh', border: '1px solid #333'}}>
-              <Modal.Header closeButton closeVariant="white" className="border-secondary bg-black bg-opacity-50">
-                  <div>
-                      <Modal.Title className="fw-bold text-warning letter-spacing-1">⚔️ MISSION CONTROL</Modal.Title>
-                      <div className="text-white-50 small">Strategický přehled tvé kariérní cesty</div>
+                <div className="d-flex flex-column gap-4">
+                  {unlockedRoles.map((role, idx) => (
+                    <Card key={idx} className="bg-success bg-opacity-10 border-success border-opacity-50">
+                      <Card.Body>
+                        <div className="d-flex justify-content-between mb-2">
+                          <h5 className="fw-bold text-success mb-0">{role.role}</h5>
+                          <Badge bg="success">OPEN</Badge>
+                        </div>
+                        <div className="text-white-50 small mb-2">Připravenost k nasazení:</div>
+                        <ProgressBar now={role.progress} variant="success" className="mb-3 bg-dark" style={{ height: '8px' }} />
+
+                        {role.missing.length > 0 && (
+                          <div className="small">
+                            <span className="text-muted">Chybí k dokončení: </span>
+                            {role.missing.map(m => (
+                              <span key={m} className="text-danger fw-bold ms-1">{m}</span>
+                            ))}
+                          </div>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  ))}
+
+                  <Card className="bg-secondary bg-opacity-10 border-secondary border-opacity-25 text-muted">
+                    <Card.Body className="text-center py-4">
+                      <div className="fs-1 mb-2">🔒</div>
+                      <h6>LOCKED: Senior Architect</h6>
+                      <div className="small">Vyžaduje: System Design, Cloud AWS</div>
+                    </Card.Body>
+                  </Card>
+
+                  <div className="mt-4">
+                    <Link href="/missions" passHref>
+                      <Button variant="outline-warning" className="w-100 py-3 fw-bold text-uppercase letter-spacing-1">
+                        🚀 Přejít do Operační Místnosti (All Missions)
+                      </Button>
+                    </Link>
                   </div>
-              </Modal.Header>
-              <Modal.Body className="p-0">
-                  <Row className="g-0 h-100">
-                      {/* LEFT PANEL: SKILL ARSENAL */}
-                      <Col md={4} className="bg-dark border-end border-secondary p-4">
-                          <h6 className="text-uppercase text-muted fw-bold mb-4 small tracking-wide">1. Váš Arzenál (Skills)</h6>
+                </div>
+              </Col>
+            </Row>
+          </Modal.Body>
+        </div>
+      </Modal>
 
-                          <div className="d-flex flex-column gap-3">
-                              {courses.map(course => (
-                                  <div key={course.id} className="p-3 rounded bg-black bg-opacity-25 border border-secondary border-opacity-25 d-flex align-items-center">
-                                      <div className="me-3 fs-4">⚡</div>
-                                      <div className="flex-grow-1">
-                                          <div className="fw-bold text-white">{course.title}</div>
-                                          <ProgressBar now={40} variant="info" style={{height: '4px'}} className="mt-2 bg-secondary"/>
-                                      </div>
-                                  </div>
-                              ))}
-                              {courses.length === 0 && <div className="text-muted fst-italic">Arzenál je prázdný...</div>}
-                          </div>
+      {/* Akize AI Guide */}
+      <div data-tour="akize-guide">
+        <AkizeGuide courses={courses} jobs={jobs} />
+      </div>
 
-                          <div className="mt-5 text-center">
-                              <div className="display-4 text-white-50">⬇️</div>
-                          </div>
-                      </Col>
+      {/* Trendy Section Modal */}
+      <TrendySection show={showTrendyModal} onHide={() => setShowTrendyModal(false)} />
 
-                      {/* MIDDLE PANEL: THE LINK */}
-                      <Col md={4} className="bg-gradient-dark p-4 d-flex flex-column justify-content-center align-items-center position-relative" style={{background: 'linear-gradient(to right, #212529, #1a1d20)'}}>
-                           <div className="text-center mb-5">
-                              <h2 className="fw-bold text-white mb-3">SYNERGY</h2>
-                              <p className="text-white-50 px-4">Tvé dovednosti přímo odemykají tyto pracovní příležitosti.</p>
-                           </div>
+      {/* Template Detail Modal */}
+      <Modal show={!!selectedTemplateDetail} onHide={handleCloseTemplateDetail} size="lg" centered>
+        {selectedTemplateDetail && (
+          <>
+            <Modal.Header
+              closeButton
+              style={{
+                background: `linear-gradient(90deg, ${selectedTemplateDetail.color}, ${selectedTemplateDetail.color}80)`,
+                color: '#fff'
+              }}
+            >
+              <Modal.Title>
+                {selectedTemplateDetail.icon} {selectedTemplateDetail.title}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ background: '#1a1a2e' }}>
+              <p style={{ color: '#8892b0', marginBottom: '20px' }}>
+                {selectedTemplateDetail.description}
+              </p>
 
-                           <div className="d-flex align-items-center gap-3 mb-3 text-white">
-                              <Badge bg="info" className="p-2">React</Badge>
-                              <span>+</span>
-                              <Badge bg="primary" className="p-2">TypeScript</Badge>
-                              <span>=</span>
-                              <Badge bg="success" className="p-2">Frontend Dev</Badge>
-                           </div>
+              <div className="d-flex gap-3 mb-4 flex-wrap">
+                <Badge bg="info">⏱️ {selectedTemplateDetail.estimatedHours}h</Badge>
+                <Badge bg="warning" style={{ color: '#000' }}>⭐ +{selectedTemplateDetail.xpReward} XP</Badge>
+                <Badge bg="secondary">{selectedTemplateDetail.skills.length} dovedností</Badge>
+              </div>
 
-                           <div className="d-flex align-items-center gap-3 text-white">
-                              <Badge bg="danger" className="p-2">Python</Badge>
-                              <span>+</span>
-                              <Badge bg="warning" text="dark" className="p-2">Math</Badge>
-                              <span>=</span>
-                              <Badge bg="warning" className="p-2">AI Engineer</Badge>
-                           </div>
+              <h5 style={{ color: '#fff', marginBottom: '15px' }}>📋 Checklist Úkolů</h5>
 
-                           {/* Visual Connector Line */}
-                           <div className="position-absolute top-0 bottom-0 start-0 border-start border-secondary opacity-50"></div>
-                           <div className="position-absolute top-0 bottom-0 end-0 border-end border-secondary opacity-50"></div>
-                      </Col>
+              <div className="mb-4">
+                <div className="d-flex justify-content-between mb-2">
+                  <small style={{ color: '#8892b0' }}>Pokrok</small>
+                  <small style={{ color: '#fff' }}>
+                    {templateMilestonesProgress[selectedTemplateDetail.id]?.length || 0}/{selectedTemplateDetail.suggestedMilestones.length}
+                  </small>
+                </div>
+                <ProgressBar
+                  now={((templateMilestonesProgress[selectedTemplateDetail.id]?.length || 0) / selectedTemplateDetail.suggestedMilestones.length) * 100}
+                  variant="success"
+                  style={{ height: '10px' }}
+                  animated
+                />
+              </div>
 
-                      {/* RIGHT PANEL: UNLOCKED MISSIONS */}
-                      <Col md={4} className="bg-dark p-4">
-                          <h6 className="text-uppercase text-muted fw-bold mb-4 small tracking-wide">2. Odemčené Mise (Jobs)</h6>
+              <ListGroup>
+                {selectedTemplateDetail.suggestedMilestones.map((milestone, idx) => {
+                  const isCompleted = templateMilestonesProgress[selectedTemplateDetail.id]?.includes(milestone);
+                  return (
+                    <ListGroup.Item
+                      key={idx}
+                      style={{
+                        background: isCompleted ? 'rgba(76,175,80,0.2)' : 'rgba(255,255,255,0.05)',
+                        border: 'none',
+                        cursor: 'pointer',
+                        marginBottom: '8px',
+                        borderRadius: '10px'
+                      }}
+                      onClick={() => handleToggleTemplateMilestone(selectedTemplateDetail.id, milestone)}
+                    >
+                      <div className="d-flex align-items-center gap-3">
+                        <div
+                          style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '50%',
+                            background: isCompleted ? '#4CAF50' : 'transparent',
+                            border: `2px solid ${isCompleted ? '#4CAF50' : '#667eea'}`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: 'all 0.3s ease'
+                          }}
+                        >
+                          {isCompleted && '✓'}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <span style={{
+                            color: '#fff',
+                            textDecoration: isCompleted ? 'line-through' : 'none',
+                            opacity: isCompleted ? 0.6 : 1
+                          }}>
+                            {milestone}
+                          </span>
+                        </div>
+                        <Badge bg="success" style={{ opacity: isCompleted ? 1 : 0 }}>
+                          +100 XP
+                        </Badge>
+                      </div>
+                    </ListGroup.Item>
+                  );
+                })}
+              </ListGroup>
 
-                          <div className="d-flex flex-column gap-4">
-                              {unlockedRoles.map((role, idx) => (
-                                  <Card key={idx} className="bg-success bg-opacity-10 border-success border-opacity-50">
-                                      <Card.Body>
-                                          <div className="d-flex justify-content-between mb-2">
-                                              <h5 className="fw-bold text-success mb-0">{role.role}</h5>
-                                              <Badge bg="success">OPEN</Badge>
-                                          </div>
-                                          <div className="text-white-50 small mb-2">Připravenost k nasazení:</div>
-                                          <ProgressBar now={role.progress} variant="success" className="mb-3 bg-dark" style={{height: '8px'}} />
+              <h6 style={{ color: '#fff', marginTop: '20px', marginBottom: '10px' }}>🎯 Cíle</h6>
+              <ul style={{ color: '#8892b0' }}>
+                {selectedTemplateDetail.defaultGoals.map((goal, idx) => (
+                  <li key={idx}>{goal}</li>
+                ))}
+              </ul>
 
-                                          {role.missing.length > 0 && (
-                                              <div className="small">
-                                                  <span className="text-muted">Chybí k dokončení: </span>
-                                                  {role.missing.map(m => (
-                                                      <span key={m} className="text-danger fw-bold ms-1">{m}</span>
-                                                  ))}
-                                              </div>
-                                          )}
-                                      </Card.Body>
-                                  </Card>
-                              ))}
+              <h6 style={{ color: '#fff', marginTop: '15px', marginBottom: '10px' }}>💡 Dovednosti k rozvoji</h6>
+              <div className="d-flex gap-2 flex-wrap">
+                {selectedTemplateDetail.skills.map((skill, idx) => (
+                  <Badge key={idx} bg="primary">{skill}</Badge>
+                ))}
+              </div>
+            </Modal.Body>
+            <Modal.Footer style={{ background: '#1a1a2e' }}>
+              <Button variant="secondary" onClick={handleCloseTemplateDetail}>
+                Zavřít
+              </Button>
+            </Modal.Footer>
+          </>
+        )}
+      </Modal>
 
-                              <Card className="bg-secondary bg-opacity-10 border-secondary border-opacity-25 text-muted">
-                                  <Card.Body className="text-center py-4">
-                                      <div className="fs-1 mb-2">🔒</div>
-                                      <h6>LOCKED: Senior Architect</h6>
-                                      <div className="small">Vyžaduje: System Design, Cloud AWS</div>
-                                  </Card.Body>
-                              </Card>
+      <Modal show={showNextStepModal} onHide={() => setShowNextStepModal(false)} centered size="lg">
+        <Modal.Header closeButton style={{ background: getFocusedProject()?.color || '#667eea', color: '#fff' }}>
+          <Modal.Title>🎯 DALŠÍ KROK</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: '#1a1a2e' }}>
+          {getNextStep() && (
+            <>
+              <div className="text-center mb-4">
+                <h4 style={{ color: '#fff' }}>{getNextStep()?.title}</h4>
+                <p style={{ color: '#aaa' }}>{getNextStep()?.description}</p>
+              </div>
 
-                              <div className="mt-4">
-                                  <Link href="/missions" passHref>
-                                      <Button variant="outline-warning" className="w-100 py-3 fw-bold text-uppercase letter-spacing-1">
-                                          🚀 Přejít do Operační Místnosti (All Missions)
-                                      </Button>
-                                  </Link>
-                              </div>
-                          </div>
-                      </Col>
-                   </Row>
-               </Modal.Body>
-           </div>
-         </Modal>
+              <h6 style={{ color: '#fff', marginBottom: '15px' }}>💡 PROČ JE TO DŮLEŽITÉ:</h6>
+              {getNextStep()?.benefits && getNextStep()!.benefits.length > 0 ? (
+                <div className="benefits-list">
+                  {getNextStep()!.benefits.map((benefit, idx) => (
+                    <div
+                      key={idx}
+                      className="benefit-item mb-3 p-3"
+                      style={{
+                        background: 'rgba(76, 175, 80, 0.1)',
+                        borderLeft: '4px solid #4CAF50',
+                        borderRadius: '0 8px 8px 0'
+                      }}
+                    >
+                      <div className="d-flex align-items-start gap-3">
+                        <span style={{ fontSize: '1.2rem' }}>💡</span>
+                        <span style={{ color: '#fff', fontSize: '0.95rem' }}>{benefit}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="sleep-benefits-chapters">
+                  <div className="mb-4">
+                    <h5 style={{ color: '#4fc3f7', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '1.5rem' }}>😴</span> SPÁNEK - Tvůj superpower
+                    </h5>
+                    <p style={{ color: '#aaa', fontSize: '0.9rem', marginBottom: '20px' }}>
+                      Během spánku se děje něco magického. Tvé tělo a mozek pracují na plné obrátky, aby tě připravily na další den. Spánek není ztráta času - je to investice do tvé budoucnosti.
+                    </p>
+                  </div>
 
-          {/* Akize AI Guide */}
-          <AkizeGuide courses={courses} jobs={jobs} />
+                  <div className="benefit-chapter mb-4 p-3" style={{ background: 'linear-gradient(135deg, rgba(76,175,80,0.15) 0%, rgba(76,175,80,0.05) 100%)', borderRadius: '12px', border: '1px solid rgba(76,175,80,0.3)' }}>
+                    <h6 style={{ color: '#81c784', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span>🧠</span> KAPITOLA 1: Paměť a učení
+                    </h6>
+                    <p style={{ color: '#ccc', fontSize: '0.85rem', marginBottom: '10px' }}>
+                      Věděl jsi, že během spánku mozek doslova "přepisuje" to, co ses naučil? Synapse se posilují, důležité informace se ukládají do dlouhodobé paměti a nepodstatné detaily se mažou.
+                    </p>
+                    <ul style={{ color: '#aaa', fontSize: '0.8rem', paddingLeft: '20px' }}>
+                      <li style={{ marginBottom: '6px' }}>📈 <strong> Lepší paměť o 20-40%</strong> - informace se lépe pamatují po kvalitním spánku</li>
+                      <li style={{ marginBottom: '6px' }}>🔄 <strong> Konsolidace paměti</strong> - mozek třídí a ukládá zážitky z celého dne</li>
+                      <li style={{ marginBottom: '6px' }}>🎯 <strong> Jasnější myšlení</strong> - ráno vstaneš s "čistější hlavou"</li>
+                      <li style={{ marginBottom: '6px' }}>📚 <strong> Lepší učení</strong> - kurz, který jsi studoval večer, si zapamatuješ lépe než ten, který jsi studoval pozdě v noci</li>
+                    </ul>
+                  </div>
 
-           {/* Trendy Section Modal */}
-           <TrendySection show={showTrendyModal} onHide={() => setShowTrendyModal(false)} />
+                  <div className="benefit-chapter mb-4 p-3" style={{ background: 'linear-gradient(135deg, rgba(33,150,243,0.15) 0%, rgba(33,150,243,0.05) 100%)', borderRadius: '12px', border: '1px solid rgba(33,150,243,0.3)' }}>
+                    <h6 style={{ color: '#64b5f6', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span>💪</span> KAPITOLA 2: Fyzické zdraví a regenerace
+                    </h6>
+                    <p style={{ color: '#ccc', fontSize: '0.85rem', marginBottom: '10px' }}>
+                      Spánek je tvůj zdarma regenerační program. Tělo produkuje růstový hormon, opravuje poškozené buňky a posiluje imunitní systém. Bez spánku se tělo nemůže správně zotavit.
+                    </p>
+                    <ul style={{ color: '#aaa', fontSize: '0.8rem', paddingLeft: '20px' }}>
+                      <li style={{ marginBottom: '6px' }}>🔧 <strong> Oprava buněk</strong> - tělo opravuje svaly, kůži a vnitřní orgány</li>
+                      <li style={{ marginBottom: '6px' }}>🛡️ <strong> Silnější imunita</strong> - produkce protilátek a imunitních buněk</li>
+                      <li style={{ marginBottom: '6px' }}>🏋️ <strong> Lepší sportovní výkon</strong> - svaly rostou a regenerují během spánku</li>
+                      <li style={{ marginBottom: '6px' }}>❤️ <strong> Zdravé srdce</strong> - snížení rizika srdečních chorob o 30-50%</li>
+                      <li style={{ marginBottom: '6px' }}>⚖️ <strong> Hormonální rovnováha</strong> - správná hladina kortizolu a melatoninu</li>
+                    </ul>
+                  </div>
 
-           {/* Template Detail Modal */}
-           <Modal show={!!selectedTemplateDetail} onHide={handleCloseTemplateDetail} size="lg" centered>
-             {selectedTemplateDetail && (
-               <>
-                 <Modal.Header 
-                   closeButton
-                   style={{ 
-                     background: `linear-gradient(90deg, ${selectedTemplateDetail.color}, ${selectedTemplateDetail.color}80)`,
-                     color: '#fff'
-                   }}
-                 >
-                   <Modal.Title>
-                     {selectedTemplateDetail.icon} {selectedTemplateDetail.title}
-                   </Modal.Title>
-                 </Modal.Header>
-                 <Modal.Body style={{ background: '#1a1a2e' }}>
-                   <p style={{ color: '#8892b0', marginBottom: '20px' }}>
-                     {selectedTemplateDetail.description}
-                   </p>
-                   
-                   <div className="d-flex gap-3 mb-4 flex-wrap">
-                     <Badge bg="info">⏱️ {selectedTemplateDetail.estimatedHours}h</Badge>
-                     <Badge bg="warning" style={{ color: '#000' }}>⭐ +{selectedTemplateDetail.xpReward} XP</Badge>
-                     <Badge bg="secondary">{selectedTemplateDetail.skills.length} dovedností</Badge>
-                   </div>
+                  <div className="benefit-chapter mb-4 p-3" style={{ background: 'linear-gradient(135deg, rgba(255,193,7,0.15) 0%, rgba(255,193,7,0.05) 100%)', borderRadius: '12px', border: '1px solid rgba(255,193,7,0.3)' }}>
+                    <h6 style={{ color: '#ffd54f', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span>🎭</span> KAPITOLA 3: Emocionální stabilita
+                    </h6>
+                    <p style={{ color: '#ccc', fontSize: '0.85rem', marginBottom: '10px' }}>
+                      Pamatuj si, jak jsi byl podrážděný po špatné noci? Spánek přímo ovlivňuje limbický systém v mozku - centrum emocí. Nedostatek spánku = emocionální horská dráha.
+                    </p>
+                    <ul style={{ color: '#aaa', fontSize: '0.8rem', paddingLeft: '20px' }}>
+                      <li style={{ marginBottom: '6px' }}>😊 <strong> Lepší nálada</strong> - snížení rizika deprese a úzkosti</li>
+                      <li style={{ marginBottom: '6px' }}>😤 <strong> Menší stres</strong> - nižší hladina stresových hormonů</li>
+                      <li style={{ marginBottom: '6px' }}>🤝 <strong> Lepší vztahy</strong> - jsi trpělivější a empatičtější</li>
+                      <li style={{ marginBottom: '6px' }}>🎭 <strong> Lepší sebekontrola</strong> - odoláváš impulzivním rozhodnutím</li>
+                      <li style={{ marginBottom: '6px' }}>☀️ <strong> Pozitivní pohled</strong> - ráno vstaneš s optimismem</li>
+                    </ul>
+                  </div>
 
-                   <h5 style={{ color: '#fff', marginBottom: '15px' }}>📋 Checklist Úkolů</h5>
-                   
-                   <div className="mb-4">
-                     <div className="d-flex justify-content-between mb-2">
-                       <small style={{ color: '#8892b0' }}>Pokrok</small>
-                       <small style={{ color: '#fff' }}>
-                         {templateMilestonesProgress[selectedTemplateDetail.id]?.length || 0}/{selectedTemplateDetail.suggestedMilestones.length}
-                       </small>
-                     </div>
-                     <ProgressBar 
-                       now={((templateMilestonesProgress[selectedTemplateDetail.id]?.length || 0) / selectedTemplateDetail.suggestedMilestones.length) * 100}
-                       variant="success"
-                       style={{ height: '10px' }}
-                       animated
-                     />
-                   </div>
+                  <div className="benefit-chapter mb-4 p-3" style={{ background: 'linear-gradient(135deg, rgba(156,39,176,0.15) 0%, rgba(156,39,176,0.05) 100%)', borderRadius: '12px', border: '1px solid rgba(156,39,176,0.3)' }}>
+                    <h6 style={{ color: '#ba68c8', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span>🚀</span> KAPITOLA 4: Produktivita a kreativita
+                    </h6>
+                    <p style={{ color: '#ccc', fontSize: '0.85rem', marginBottom: '10px' }}>
+                      Firemní manažeři a úspěšní podnikatelé to vědí - produktivita není o tom, jak dlouho pracuješ, ale jak efektivně. A efektivita začíná kvalitním spánkem.
+                    </p>
+                    <ul style={{ color: '#aaa', fontSize: '0.8rem', paddingLeft: '20px' }}>
+                      <li style={{ marginBottom: '6px' }}>⚡ <strong> Vyšší energie</strong> - celodenní vitalita bez kofeinu</li>
+                      <li style={{ marginBottom: '6px' }}>🎯 <strong> Lepší soustředění</strong> - zvládneš 2x více práce za kratší dobu</li>
+                      <li style={{ marginBottom: '6px' }}>💡 <strong> Větší kreativita</strong> - mozek spojuje nečekané myšlenky</li>
+                      <li style={{ marginBottom: '6px' }}>⏰ <strong> Rychlejší rozhodování</strong> - jasnější myšlení = lepší choices</li>
+                      <li style={{ marginBottom: '6px' }}>📉 <strong> Méně chyb</strong> - snížení chybovosti o 50%</li>
+                    </ul>
+                  </div>
 
-                   <ListGroup>
-                     {selectedTemplateDetail.suggestedMilestones.map((milestone, idx) => {
-                       const isCompleted = templateMilestonesProgress[selectedTemplateDetail.id]?.includes(milestone);
-                       return (
-                         <ListGroup.Item 
-                           key={idx}
-                           style={{ 
-                             background: isCompleted ? 'rgba(76,175,80,0.2)' : 'rgba(255,255,255,0.05)',
-                             border: 'none',
-                             cursor: 'pointer',
-                             marginBottom: '8px',
-                             borderRadius: '10px'
-                           }}
-                           onClick={() => handleToggleTemplateMilestone(selectedTemplateDetail.id, milestone)}
-                         >
-                           <div className="d-flex align-items-center gap-3">
-                             <div 
-                               style={{
-                                 width: '28px',
-                                 height: '28px',
-                                 borderRadius: '50%',
-                                 background: isCompleted ? '#4CAF50' : 'transparent',
-                                 border: `2px solid ${isCompleted ? '#4CAF50' : '#667eea'}`,
-                                 display: 'flex',
-                                 alignItems: 'center',
-                                 justifyContent: 'center',
-                                 fontSize: '14px',
-                                 transition: 'all 0.3s ease'
-                               }}
-                             >
-                               {isCompleted && '✓'}
-                             </div>
-                             <div style={{ flex: 1 }}>
-                               <span style={{ 
-                                 color: '#fff',
-                                 textDecoration: isCompleted ? 'line-through' : 'none',
-                                 opacity: isCompleted ? 0.6 : 1
-                               }}>
-                                 {milestone}
-                               </span>
-                             </div>
-                             <Badge bg="success" style={{ opacity: isCompleted ? 1 : 0 }}>
-                               +100 XP
-                             </Badge>
-                           </div>
-                         </ListGroup.Item>
-                       );
-                     })}
-                   </ListGroup>
+                  <div className="benefit-chapter mb-4 p-3" style={{ background: 'linear-gradient(135deg, rgba(244,67,54,0.15) 0%, rgba(244,67,54,0.05) 100%)', borderRadius: '12px', border: '1px solid rgba(244,67,54,0.3)' }}>
+                    <h6 style={{ color: '#ef5350', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span>⚖️</span> KAPITOLA 5: Metabolismus a hubnutí
+                    </h6>
+                    <p style={{ color: '#ccc', fontSize: '0.85rem', marginBottom: '10px' }}>
+                      Chceš zhubnout? Spánek je tvůj nejlepší spojenec. Hormony ghrelin (hlad) a leptin (sytost) jsou přímo ovlivněny kvalitou spánku. Nedostatek spánku = více chuti k jídlu.
+                    </p>
+                    <ul style={{ color: '#aaa', fontSize: '0.8rem', paddingLeft: '20px' }}>
+                      <li style={{ marginBottom: '6px' }}>🍽️ <strong> Menší chuť k jídlu</strong> - snížení chuti na sladké a tučné</li>
+                      <li style={{ marginBottom: '6px' }}>🔥 <strong> Rychlejší metabolismus</strong> - tělo efektivněji spaluje kalorie</li>
+                      <li style={{ marginBottom: '6px' }}>💧 <strong> Lepší hydratace</strong> - dostatek spánku = funkční ledviny</li>
+                      <li style={{ marginBottom: '6px' }}>🏃 <strong> Lepší sportovní výkon</strong> - více energie pro cvičení</li>
+                      <li style={{ marginBottom: '6px' }}>📊 <strong> Stabilní cukr v krvi</strong> - snížení rizika diabetu 2. typu</li>
+                    </ul>
+                  </div>
 
-                   <h6 style={{ color: '#fff', marginTop: '20px', marginBottom: '10px' }}>🎯 Cíle</h6>
-                   <ul style={{ color: '#8892b0' }}>
-                     {selectedTemplateDetail.defaultGoals.map((goal, idx) => (
-                       <li key={idx}>{goal}</li>
-                     ))}
-                   </ul>
+                  <div className="benefit-chapter mb-4 p-3" style={{ background: 'linear-gradient(135deg, rgba(0,188,212,0.15) 0%, rgba(0,188,212,0.05) 100%)', borderRadius: '12px', border: '1px solid rgba(0,188,212,0.3)' }}>
+                    <h6 style={{ color: '#4dd0e1', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span>🛡️</span> KAPITOLA 6: Dlouhověkost a prevence
+                    </h6>
+                    <p style={{ color: '#ccc', fontSize: '0.85rem', marginBottom: '10px' }}>
+                      Spánek je nejlevnější lék na světě. Studie ukazují, že lidé, kteří spí 7-9 hodin denně, žijí déle a mají nižší riziko chronických nemocí.
+                    </p>
+                    <ul style={{ color: '#aaa', fontSize: '0.8rem', paddingLeft: '20px' }}>
+                      <li style={{ marginBottom: '6px' }}>🧬 <strong> Zpomalení stárnutí</strong> - buňky se regenerují efektivněji</li>
+                      <li style={{ marginBottom: '6px' }}>🧠 <strong> Prevence Alzheimeru</strong> - mozek se čistí od toxinů</li>
+                      <li style={{ marginBottom: '6px' }}>🎯 <strong> Nižší riziko rakoviny</strong> - silnější imunitní dohled</li>
+                      <li style={{ marginBottom: '6px' }}>💊 <strong> Lepší účinek léků</strong> - tělo je lépe připraveno je vstřebat</li>
+                      <li style={{ marginBottom: '6px' }}>🌙 <strong> Zdravá pleť</strong> - kolagen se produkuje v noci</li>
+                    </ul>
+                  </div>
 
-                   <h6 style={{ color: '#fff', marginTop: '15px', marginBottom: '10px' }}>💡 Dovednosti k rozvoji</h6>
-                   <div className="d-flex gap-2 flex-wrap">
-                     {selectedTemplateDetail.skills.map((skill, idx) => (
-                       <Badge key={idx} bg="primary">{skill}</Badge>
-                     ))}
-                   </div>
-                 </Modal.Body>
-                 <Modal.Footer style={{ background: '#1a1a2e' }}>
-                   <Button variant="secondary" onClick={handleCloseTemplateDetail}>
-                     Zavřít
-                   </Button>
-                 </Modal.Footer>
-               </>
-             )}
-           </Modal>
+                  <div className="mt-4 p-3" style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <h6 style={{ color: '#fff', marginBottom: '15px', textAlign: 'center' }}>🎯 KLÍČOVÉ ZÁVĚRY</h6>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '10px' }}>
+                      <div className="text-center p-2" style={{ background: 'rgba(76,175,80,0.1)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>⏰</div>
+                        <div style={{ color: '#fff', fontSize: '0.85rem' }}>7-9 hodin</div>
+                        <div style={{ color: '#888', fontSize: '0.75rem' }}>Ideální doba</div>
+                      </div>
+                      <div className="text-center p-2" style={{ background: 'rgba(33,150,243,0.1)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>🌙</div>
+                        <div style={{ color: '#fff', fontSize: '0.85rem' }}>Pravidelnost</div>
+                        <div style={{ color: '#888', fontSize: '0.75rem' }}>Každý den</div>
+                      </div>
+                      <div className="text-center p-2" style={{ background: 'rgba(255,193,7,0.1)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>📱</div>
+                        <div style={{ color: '#fff', fontSize: '0.85rem' }}>Bez obrazovek</div>
+                        <div style={{ color: '#888', fontSize: '0.75rem' }}>1h před spaním</div>
+                      </div>
+                      <div className="text-center p-2" style={{ background: 'rgba(156,39,176,0.1)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>🌡️</div>
+                        <div style={{ color: '#fff', fontSize: '0.85rem' }}>18-20°C</div>
+                        <div style={{ color: '#888', fontSize: '0.75rem' }}>Ideální teplota</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-        </main>
-      );
-    }
+              <div className="d-flex justify-content-between align-items-center mt-4 pt-3 border-top" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                <small style={{ color: '#888' }}>
+                  ⏱️ Odhadovaný čas: <span style={{ color: '#fff' }}>{getNextStep()?.targetHours || 2} hodin</span>
+                </small>
+                <small style={{ color: '#888' }}>
+                  🏆 XP: <span style={{ color: '#FFD700' }}>+{getNextStep()?.xpReward || 100}</span>
+                </small>
+              </div>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer style={{ background: '#1a1a2e' }}>
+          <Button variant="secondary" onClick={() => setShowNextStepModal(false)}>
+            Zavřít
+          </Button>
+          <Button variant="info" onClick={() => setShowBenefitsLibraryModal(true)}>
+            📚 Knihovna benefitů
+          </Button>
+          <Link href="/projects">
+            <Button variant="primary">
+              📊 Otevřít projekt
+            </Button>
+          </Link>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showBenefitsLibraryModal} onHide={() => setShowBenefitsLibraryModal(false)} centered size="xl">
+        <Modal.Header closeButton style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: '#fff' }}>
+          <Modal.Title>📚 Knihovna benefitů</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: '#1a1a2e', maxHeight: '70vh', overflowY: 'auto' }}>
+          <p style={{ color: '#aaa', marginBottom: '20px' }}>
+            Prozkoumej různé typy benefitů a jejich vliv na tvůj život. Klikni na kategorii pro více detailů.
+          </p>
+          <p style={{ color: '#888', fontStyle: 'italic', marginBottom: '20px' }}>
+            💡 Tady si v budoucnu vybereš typy benefitů, které chceš zobrazovat ve svých dalších krocích.
+          </p>
+          <Row xs={1} md={2} lg={3} className="g-3">
+            {[
+              { icon: '😴', title: 'Spánek a odpočinek', color: '#4fc3f7', desc: 'Regenerace těla i mysli', count: 6 },
+              { icon: '🧠', title: 'Paměť a učení', color: '#81c784', desc: 'Kognitivní funkce a produktivita', count: 5 },
+              { icon: '💪', title: 'Fyzické zdraví', color: '#64b5f6', desc: 'Sport, imunita, energie', count: 5 },
+              { icon: '🎭', title: 'Emocionální stabilita', color: '#ffd54f', desc: 'Nálada, stres, vztahy', count: 5 },
+              { icon: '🚀', title: 'Produktivita', color: '#ba68c8', desc: 'Kreativita, soustředění, výkon', count: 5 },
+              { icon: '⚖️', title: 'Metabolismus', color: '#ef5350', desc: 'Hubnutí, výživa, hormony', count: 5 },
+              { icon: '🛡️', title: 'Dlouhověkost', color: '#4dd0e1', desc: 'Prevence, stárnutí, dlouhý život', count: 5 },
+              { icon: '💰', title: 'Finance', color: '#4caf50', desc: 'Peníze, kariéra, investice', count: 5 },
+              { icon: '👥', title: 'Sociální vztahy', color: '#ff8a65', desc: 'Přátelé, rodina, komunikace', count: 5 },
+              { icon: '🎯', title: 'Osobní rozvoj', color: '#7986cb', desc: 'Dovednosti, cíle, růst', count: 5 },
+              { icon: '❤️', title: 'Zdraví srdce', color: '#f44336', desc: 'Kardio, cévy, krevní tlak', count: 5 },
+              { icon: '🔋', title: 'Energie a vitalita', color: '#ffc107', desc: 'Denní energie, únava, motivace', count: 5 },
+            ].map((category, idx) => (
+              <Col key={idx}>
+                <Card
+                  className="h-100"
+                  style={{
+                    background: `${category.color}15`,
+                    border: `1px solid ${category.color}40`,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-5px)';
+                    e.currentTarget.style.boxShadow = `0 10px 30px ${category.color}30`;
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <Card.Body className="text-center">
+                    <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>{category.icon}</div>
+                    <h6 style={{ color: '#fff', marginBottom: '5px' }}>{category.title}</h6>
+                    <small style={{ color: category.color }}>{category.desc}</small>
+                    <div className="mt-2">
+                      <Badge bg="dark" style={{ fontSize: '0.7rem' }}>
+                        {category.count} kapitol
+                      </Badge>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Modal.Body>
+        <Modal.Footer style={{ background: '#1a1a2e' }}>
+          <Button variant="secondary" onClick={() => setShowBenefitsLibraryModal(false)}>
+            Zavřít
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </main>
+  );
+}

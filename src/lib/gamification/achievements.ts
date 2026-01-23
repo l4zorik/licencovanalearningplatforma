@@ -500,6 +500,61 @@ export const ACHIEVEMENTS: Achievement[] = [
     condition: { type: 'ev_specialization_mechanic', value: 1 },
     secret: false
   },
+  {
+    id: 'mechanic_lakovani_beginner',
+    title: 'Začínající Lakýrník',
+    description: 'Dokonč kurz základů lakování',
+    icon: '🎨',
+    category: 'mechanic',
+    rarity: 'Common',
+    xpReward: 50,
+    condition: { type: 'courses_completed_lakovani', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_priprava_expert',
+    title: 'Expert na Přípravu',
+    description: 'Dokonč kurz přípravy povrchu',
+    icon: '🔧',
+    category: 'mechanic',
+    rarity: 'Rare',
+    xpReward: 100,
+    condition: { type: 'courses_completed_priprava', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_tmeleni_master',
+    title: 'Mistr Tmelení',
+    description: 'Dokonč kurz tmelení karoserie',
+    icon: '🛠️',
+    category: 'mechanic',
+    rarity: 'Epic',
+    xpReward: 150,
+    condition: { type: 'courses_completed_tmeleni', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_color_spectrum',
+    title: 'Barevné Spektrum',
+    description: 'Získej znalost barevného spektra',
+    icon: '🌈',
+    category: 'mechanic',
+    rarity: 'Rare',
+    xpReward: 120,
+    condition: { type: 'courses_completed_barevne_spektrum', value: 1 },
+    secret: false
+  },
+  {
+    id: 'mechanic_lakovaci_pistole',
+    title: 'Mistr Lakovací Pistole',
+    description: 'Dokonč kurz obsluhy lakovacích pistolí',
+    icon: '🔫',
+    category: 'mechanic',
+    rarity: 'Epic',
+    xpReward: 180,
+    condition: { type: 'courses_completed_lakovaci_pistole', value: 1 },
+    secret: false
+  },
 
   // Svářeč - Welder
   {

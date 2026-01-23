@@ -391,6 +391,86 @@ export const NON_IT_SKILL_TEMPLATES: SkillTemplate[] = [
     careerPaths: ['HVAC Technician', 'Building Maintenance Engineer', 'Facilities Technician'],
     iconColor: '#4682B4',
     icon: '❄️'
+  },
+
+  // === AUTOMOTIVE ===
+  {
+    title: 'Základy automechaniky a údržby',
+    platform: 'Vocational Training',
+    category: 'Automotive' as SkillCategory,
+    instructor: 'Master Mechanic',
+    totalHours: 80,
+    tags: ['Automotive', 'Mechanics', 'Engine Repair', 'Maintenance', 'Oil Change', 'Safety', 'Tools'],
+    description: 'Komplexní úvod do automechaniky. Naučte se, jak fungují spalovací motory, provádět základní údržbu (výměna oleje, filtrů), a bezpečně pracovat v dílně.',
+    modules: [
+      { id: 'am1', title: 'Bezpečnost práce a nářadí', isCompleted: false },
+      { id: 'am2', title: 'Princip spalovacího motoru', isCompleted: false },
+      { id: 'am3', title: 'Chladicí a mazací soustava', isCompleted: false },
+      { id: 'am4', title: 'Brzdový systém - základy', isCompleted: false },
+      { id: 'am5', title: 'Pravidelné servisní prohlídky', isCompleted: false },
+      { id: 'am6', title: 'Výměna provozních kapalin', isCompleted: false },
+      { id: 'am7', title: 'Základy podvozku a řízení', isCompleted: false }
+    ],
+    resources: [
+      { name: 'Jak na to (Service Manuals)', url: 'https://www.haynes.com/', type: 'book' },
+      { name: 'Engineering Explained (YouTube)', url: 'https://www.youtube.com/user/EngineeringExplained', type: 'video' }
+    ],
+    difficulty: 2,
+    careerPaths: ['Junior Automechanik', 'Servisní asistent', 'Hobby mechanik'],
+    iconColor: '#D32F2F',
+    icon: '🚗'
+  },
+  {
+    title: 'Autodiagnostika a elektrika vozidel',
+    platform: 'Technical Certification',
+    category: 'Automotive' as SkillCategory,
+    instructor: 'Automotive Electrician',
+    totalHours: 60,
+    tags: ['Diagnostics', 'OBD-II', 'Car Electrics', 'Sensors', 'Troubleshooting', 'Wiring', 'ECU'],
+    description: 'Zvládněte moderní diagnostiku vozidel. Kurz pokrývá práci s OBD-II skenery, měření multimetrem, testování senzorů a řešení elektronických závad.',
+    modules: [
+      { id: 'ad1', title: 'Základy autoelektriky (V, A, Ohm)', isCompleted: false },
+      { id: 'ad2', title: 'Práce s multimetrem a osciloskopem', isCompleted: false },
+      { id: 'ad3', title: 'OBD-II diagnostika a chybové kódy', isCompleted: false },
+      { id: 'ad4', title: 'Senzory motoru a jejich funkce', isCompleted: false },
+      { id: 'ad5', title: 'Startovací a dobíjecí soustava', isCompleted: false },
+      { id: 'ad6', title: 'Komfortní elektronika', isCompleted: false },
+      { id: 'ad7', title: 'Čtení elektrických schémat', isCompleted: false }
+    ],
+    resources: [
+      { name: 'Ross-Tech VCDS', url: 'https://www.ross-tech.com/', type: 'doc' },
+      { name: 'AutoCodes.com', url: 'https://www.autocodes.com/', type: 'doc' }
+    ],
+    difficulty: 4,
+    careerPaths: ['Autoelektrikář', 'Diagnostik', 'Mechatronik'],
+    iconColor: '#FFC107',
+    icon: '⚡'
+  },
+  {
+    title: 'Pneuservis a geometrie podvozku',
+    platform: 'Specialized Workshop',
+    category: 'Automotive' as SkillCategory,
+    instructor: 'Chassis Specialist',
+    totalHours: 40,
+    tags: ['Tires', 'Suspension', 'Alignment', 'Brakes', 'Wheels', 'Safety Systems', 'TPMS'],
+    description: 'Specializace na podvozkové části. Výměna a vyvažování pneumatik, opravy defektů, seřízení geometrie kol a servis brzdových systémů.',
+    modules: [
+      { id: 'pg1', title: 'Konstrukce a značení pneumatik', isCompleted: false },
+      { id: 'pg2', title: 'Demontáž, montáž a vyvažování kol', isCompleted: false },
+      { id: 'pg3', title: 'Opravy průpichů pneumatik', isCompleted: false },
+      { id: 'pg4', title: 'Systémy TPMS (tlak v pneu)', isCompleted: false },
+      { id: 'pg5', title: 'Geometrie podvozku - teorie a praxe', isCompleted: false },
+      { id: 'pg6', title: 'Kontrola tlumičů a zavěšení', isCompleted: false },
+      { id: 'pg7', title: 'Servis kotoučových a bubnových brzd', isCompleted: false }
+    ],
+    resources: [
+      { name: 'Tire Review Magazine', url: 'https://www.tirereview.com/', type: 'doc' },
+      { name: 'Brembo Brake Guide', url: 'https://www.bremboparts.com/', type: 'doc' }
+    ],
+    difficulty: 3,
+    careerPaths: ['Pneuservisní mechanik', 'Podvozkový specialista'],
+    iconColor: '#212121',
+    icon: '🔧'
   }
 ];
 

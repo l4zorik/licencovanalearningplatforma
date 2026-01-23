@@ -379,6 +379,16 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
     difficulty: 3,
     perks: ["Modern Cars", "Electrical Systems", "Diagnostic Tools"]
   },
+  {
+    title: "Lakýrník",
+    company: "Auto Body Shop",
+    category: "Automechanic",
+    requiredSkills: ["Lakování", "Příprava", "Tmelení", "Barevné spektrum", "Lakovací pistole"],
+    location: "Praha",
+    salaryRange: "40k - 60k CZK",
+    difficulty: 3,
+    perks: ["Creative Work", "Color Matching", "Body Shop"]
+  },
     // --- AUTOMOTIVE (NEW) ---
     {
       title: "Dělník ve výrobě / Obsluha strojů",
@@ -1622,6 +1632,158 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
       salaryRange: "80k - 130k CZK",
       difficulty: 4,
       perks: ["APM Focus", "Remote", "Innovation"]
+    },
+
+    // --- AUTOMOTIVE SPECIFIC (BESTDRIVE & AUTO PALACE) ---
+    {
+      title: "Automechanik - Pneuservis",
+      company: "BestDrive",
+      category: "Automechanic",
+      requiredSkills: ["Pneuservis", "Mechanika", "Geometrie", "TPMS", "Řidičský průkaz B"],
+      location: "Celá ČR",
+      salaryRange: "35k - 50k CZK",
+      difficulty: 2,
+      perks: ["Sleva na pneu", "Bonusy", "Stabilita"]
+    },
+    {
+      title: "Autodiagnostik Specialist",
+      company: "Auto Palace",
+      category: "Automechanic",
+      requiredSkills: ["Diagnostika", "Autoelektrika", "OBD-II", "Osciloskop", "Angličtina (manuály)"],
+      location: "Praha / Brno",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 4,
+      perks: ["Školení u výrobce", "Moderní dílna", "Kariérní růst"]
+    },
+    {
+      title: "Servisní Technik - Klimatizace",
+      company: "Auto Klimat",
+      category: "Automechanic",
+      requiredSkills: ["Klimatizace", "Chladící technika", "Elektrika", "R-134a", "R-1234yf"],
+      location: "Praha",
+      salaryRange: "40k - 60k CZK",
+      difficulty: 3,
+      perks: ["Sezónní bonusy", "Certifikace", "Příspěvek na dopravu"]
+    },
+    {
+      title: "Karosář - Svářeč",
+      company: "Karosárna Praha",
+      category: "Automechanic",
+      requiredSkills: ["Karosářské práce", "MIG/MAG svařování", "Příprava povrchů", "Leštění"],
+      location: "Praha-východ",
+      salaryRange: "45k - 70k CZK",
+      difficulty: 4,
+      perks: ["Kvalifikace", "Nástroje", "13. plat"]
+    },
+    {
+      title: "Lakýrník",
+      company: "AutoLakyrna Plus",
+      category: "Automechanic",
+      requiredSkills: ["Lakování", "Příprava", "Tmelení", "Barevné spektrum", "Lakovací pistole"],
+      location: "Brno",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 4,
+      perks: ["Profesionální vybavení", "Kurzy", "Příspěvek na oběd"]
+    },
+    {
+      title: "STK Technik / Emisní technik",
+      company: "Stanice technické kontroly",
+      category: "Automechanic",
+      requiredSkills: ["STK", "Emise", "Diagnostika", "Bezpečnostní kontrola", "Předpisy"],
+      location: "České Budějovice",
+      salaryRange: "38k - 55k CZK",
+      difficulty: 3,
+      perks: ["Stabilní zaměstnání", "Pravidelná pracovní doba", "Penzijní připojištění"]
+    },
+    {
+      title: "Elektrikář - Autoelektrika",
+      company: "AutoElektro Service",
+      category: "Automechanic",
+      requiredSkills: ["Autoelektrika", "Kabely", "Osvětlení", "Centrální zamykání", "Alarmy"],
+      location: "Ostrava",
+      salaryRange: "42k - 62k CZK",
+      difficulty: 3,
+      perks: ["Moderní vozy", "Diagnostické přístroje", "Flexibilní pracovní doba"]
+    },
+    {
+      title: "Mechanik - Nutič",
+      company: "TruckCentrum",
+      category: "Automechanic",
+      requiredSkills: ["Nákladní vozidla", "Brzdy", "Pneumatiky", "Geometrie", "STK nákladních"],
+      location: "Pardubice",
+      salaryRange: "45k - 65k CZK",
+      difficulty: 3,
+      perks: ["Fleet služby", "Bonusy za výkon", "Pružná pracovní doba"]
+    },
+    {
+      title: "Servisní Poradce",
+      company: "Autorizovaný Dealer",
+      category: "Automechanic",
+      requiredSkills: ["Zákaznický servis", "Komunikace", "Technické znalosti", "Objednávání dílů"],
+      location: "Plzeň",
+      salaryRange: "40k - 60k CZK",
+      difficulty: 3,
+      perks: ["Slevy na vozy", "Kariérní růst", "Vzdělávací programy"]
+    },
+    {
+      title: "Technik - Převodovky",
+      company: "Getriebe Service",
+      category: "Automechanic",
+      requiredSkills: ["Převodovky", "Manuální", "Automatické", "DSG", "Opravy"],
+      location: "Hradec Králové",
+      salaryRange: "48k - 75k CZK",
+      difficulty: 4,
+      perks: ["Specializace", "Moderní vybavení", "Vysoká poptávka"]
+    },
+    {
+      title: "Servisní Technik - EV/Hybrid",
+      company: "ElectroMobil Service",
+      category: "Automechanic",
+      requiredSkills: ["Elektromobily", "Hybridy", "Vysoké napětí", "Baterie", "Diagnostika HV"],
+      location: "Praha",
+      salaryRange: "55k - 90k CZK",
+      difficulty: 5,
+      perks: ["Budoucnost", "Školení HV", "Konkurenceschopný plat"]
+    },
+    {
+      title: "Mechanik - Klimatizace a topení",
+      company: "AutoClimate",
+      category: "Automechanic",
+      requiredSkills: ["Klimatizace", "Topení", "Větrání", "Elektronika", "Chladiva"],
+      location: "Liberec",
+      salaryRange: "38k - 55k CZK",
+      difficulty: 3,
+      perks: ["Sezónní práce", "Certifikace", "Příspěvek na dopravu"]
+    },
+    {
+      title: "Karoserista",
+      company: "Karosárna Expres",
+      category: "Automechanic",
+      requiredSkills: ["Karosářské práce", "Rámy", "Nárazníky", "Panty", "Tmelení"],
+      location: "Ústí nad Labem",
+      salaryRange: "42k - 65k CZK",
+      difficulty: 4,
+      perks: ["Řemeslná práce", "Stabilní zaměstnavatel", "Penzijní fond"]
+    },
+    {
+      title: "Technik - Geometrie a podvozek",
+      company: "Geometrie Profi",
+      category: "Automechanic",
+      requiredSkills: ["Geometrie", "Podvozek", "Nápravy", "Brzdy", "Tlumiče"],
+      location: "Jihlava",
+      salaryRange: "40k - 60k CZK",
+      difficulty: 3,
+      perks: ["Specializace", "Moderní zařízení", "Pravidelná pracovní doba"]
+    },
+    {
+      title: "Svářeč karoserií",
+      company: "Autosvařovna",
+      category: "Automechanic",
+      requiredSkills: ["Svařování", "MIG/MAG", "TIG", "Karoserie", "Bodové svařování"],
+      location: "Zlín",
+      salaryRange: "45k - 70k CZK",
+      difficulty: 4,
+      perks: ["Kvalifikace", "Příplatky za směny", "Závodní stravování"]
     }
     ];
 

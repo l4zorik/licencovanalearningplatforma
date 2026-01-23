@@ -40,4 +40,18 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Prisma & Generated
 /src/generated/prisma
+prisma/migrations
+*.sqlite
+*.sqlite-journal
+
+# Large files & Temp
+*.sst
+*.log
+*.bak
+/backups
+/temp
+/tmp
+*.tmp
+*.node

@@ -19,6 +19,7 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
   const [showAddAlgorithmModal, setShowAddAlgorithmModal] = useState(false);
   const [showTemplatesModal, setShowTemplatesModal] = useState(false);
   const [editForm, setEditForm] = useState<Partial<ProjectMilestone>>({});
+  const [benefitForm, setBenefitForm] = useState<{ [milestoneId: string]: string }>({});
   const [algorithmForm, setAlgorithmForm] = useState<{
     type: string;
     title: string;
@@ -96,6 +97,7 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
   const handleAddMilestone = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const benefitsRaw = formData.get('benefits') as string;
     const newMilestone: ProjectMilestone = {
       id: `milestone-${Date.now()}`,
       title: formData.get('title') as string,
@@ -107,6 +109,7 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
       timeSpent: 0,
       timerActive: false,
       timerStartedAt: undefined,
+      benefits: benefitsRaw ? benefitsRaw.split('\n').filter(b => b.trim()) : [],
     };
     onUpdate({ ...project, milestones: [...project.milestones, newMilestone] });
     setShowAddModal(false);
@@ -137,12 +140,18 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
       title: milestone.title, 
       description: milestone.description, 
       xpReward: milestone.xpReward,
-      targetHours: milestone.targetHours || project.timerSettings?.defaultMilestoneHours || 2
+      targetHours: milestone.targetHours || project.timerSettings?.defaultMilestoneHours || 2,
+      benefits: milestone.benefits
     });
+    setBenefitForm({ [milestone.id]: milestone.benefits.join('\n') });
   };
 
   const handleSaveEdit = () => {
     if (!editingMilestoneId || !editForm.title) return;
+    
+    const benefits = (benefitForm[editingMilestoneId] || '')
+      .split('\n')
+      .filter(b => b.trim());
     
     const updatedMilestones = project.milestones.map(m =>
       m.id === editingMilestoneId 
@@ -151,13 +160,15 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
             title: editForm.title || m.title,
             description: editForm.description || m.description,
             xpReward: editForm.xpReward || m.xpReward,
-            targetHours: editForm.targetHours !== undefined ? editForm.targetHours : m.targetHours
+            targetHours: editForm.targetHours !== undefined ? editForm.targetHours : m.targetHours,
+            benefits
           } 
         : m
     );
     onUpdate({ ...project, milestones: updatedMilestones, timerSettings: project.timerSettings });
     setEditingMilestoneId(null);
     setEditForm({});
+    setBenefitForm({});
   };
 
   const getProjectLevel = (xp: number) => {
@@ -296,7 +307,7 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                                 style={{ width: '100%' }}
                               />
                             </Col>
-                            <Col xs={6}>
+                             <Col xs={6}>
                               <Form.Control
                                 size="sm"
                                 type="number"
@@ -308,6 +319,16 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                               />
                             </Col>
                           </Row>
+                          <Form.Control
+                            size="sm"
+                            className="mt-2"
+                            as="textarea"
+                            placeholder="Benefity (proč je to důležité) - každý na nový řádek"
+                            value={benefitForm[milestone.id] || ''}
+                            onChange={e => setBenefitForm({ ...benefitForm, [milestone.id]: e.target.value })}
+                            rows={2}
+                            style={{ fontSize: '0.8rem' }}
+                          />
                           <div className="d-flex gap-1 mt-2">
                             <Button size="sm" variant="success" onClick={handleSaveEdit}>💾</Button>
                             <Button size="sm" variant="secondary" onClick={() => setEditingMilestoneId(null)}>❌</Button>
@@ -333,6 +354,16 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                                 </Badge>
                               </div>
                               <small style={{ color: '#888' }}>{milestone.description}</small>
+                              {milestone.benefits && milestone.benefits.length > 0 && (
+                                <div className="mt-2">
+                                  {milestone.benefits.map((benefit, bIdx) => (
+                                    <div key={bIdx} className="d-flex align-items-start gap-2 mb-1">
+                                      <span style={{ color: '#4CAF50', fontSize: '0.8rem' }}>💡</span>
+                                      <span style={{ color: '#aaa', fontSize: '0.8rem' }}>{benefit}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                             {isEditing && (
                               <div className="d-flex gap-1 ms-2">
@@ -528,11 +559,16 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
             <Form.Label style={{ color: '#fff' }}>XP Odměna</Form.Label>
             <Form.Control name="xpReward" type="number" defaultValue={100} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label style={{ color: '#fff' }}>Cílový čas (hodiny)</Form.Label>
-            <Form.Control name="targetHours" type="number" step="0.5" defaultValue={project.timerSettings?.defaultMilestoneHours || 2} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
-          </Form.Group>
-            <div className="d-flex justify-content-end gap-2">
+           <Form.Group className="mb-3">
+             <Form.Label style={{ color: '#fff' }}>Cílový čas (hodiny)</Form.Label>
+             <Form.Control name="targetHours" type="number" step="0.5" defaultValue={project.timerSettings?.defaultMilestoneHours || 2} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+           </Form.Group>
+           <Form.Group className="mb-3">
+             <Form.Label style={{ color: '#fff' }}>Benefity (proč je to důležité)</Form.Label>
+             <Form.Control name="benefits" as="textarea" rows={3} placeholder="💡 Tento krok ti pomůže...&#10;🎯 Díky tomu dosáhneš...&#10;🚀 Bez toho bys ztratil..." style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} />
+             <small className="text-muted">Každý benefit na nový řádek</small>
+           </Form.Group>
+             <div className="d-flex justify-content-end gap-2">
               <Button variant="secondary" onClick={() => setShowAddModal(false)}>Zrušit</Button>
               <Button variant="primary" type="submit">Přidat</Button>
             </div>

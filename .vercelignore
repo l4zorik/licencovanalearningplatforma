@@ -1,0 +1,6 @@
+node_modules/
+.git/
+.vercel/
+*.log
+backup_*
+PLANS/

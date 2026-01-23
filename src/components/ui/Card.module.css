@@ -1,0 +1,192 @@
+.card {
+    position: relative;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    transition: all var(--duration-normal) var(--ease-out);
+}
+
+/* Default Card */
+.cardDefault {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Premium Card */
+.cardPremium {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+}
+
+.cardPremium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-cosmic);
+    opacity: 0;
+    transition: opacity var(--duration-normal);
+}
+
+.card[data-gradient="cosmic"]::before {
+    background: var(--gradient-cosmic);
+}
+
+.card[data-gradient="sunset"]::before {
+    background: var(--gradient-sunset);
+}
+
+.card[data-gradient="ocean"]::before {
+    background: var(--gradient-ocean);
+}
+
+.card[data-gradient="forest"]::before {
+    background: var(--gradient-forest);
+}
+
+.card[data-gradient="fire"]::before {
+    background: var(--gradient-fire);
+}
+
+.card[data-gradient="mint"]::before {
+    background: var(--gradient-mint);
+}
+
+.cardPremium.cardHover:hover::before {
+    opacity: 1;
+}
+
+/* Gradient Border Card */
+.cardGradient {
+    padding: 2px;
+    background: var(--gradient-cosmic);
+}
+
+.cardGradient[data-gradient="cosmic"] {
+    background: var(--gradient-cosmic);
+}
+
+.cardGradient[data-gradient="sunset"] {
+    background: var(--gradient-sunset);
+}
+
+.cardGradient[data-gradient="ocean"] {
+    background: var(--gradient-ocean);
+}
+
+.cardGradient[data-gradient="forest"] {
+    background: var(--gradient-forest);
+}
+
+.cardGradient[data-gradient="fire"] {
+    background: var(--gradient-fire);
+}
+
+.cardGradient[data-gradient="mint"] {
+    background: var(--gradient-mint);
+}
+
+.gradientWrapper {
+    background: var(--color-bg-elevated);
+    border-radius: calc(var(--radius-card) - 2px);
+    padding: var(--space-6);
+    height: 100%;
+}
+
+/* Glass Card */
+.cardGlass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Neon Card */
+.cardNeon {
+    background: var(--color-bg-elevated);
+    border: 2px solid transparent;
+    padding: var(--space-6);
+}
+
+.cardNeon {
+    background: var(--color-bg-elevated);
+    border: 2px solid transparent;
+    padding: var(--space-6);
+}
+
+.cardNeon::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--gradient-neon);
+    border-radius: var(--radius-card);
+    z-index: -1;
+    opacity: 0;
+    filter: blur(10px);
+    transition: opacity var(--duration-normal);
+}
+
+.cardNeon[data-gradient="cosmic"]::after {
+    background: var(--gradient-cosmic);
+}
+
+.cardNeon[data-gradient="sunset"]::after {
+    background: var(--gradient-sunset);
+}
+
+.cardNeon[data-gradient="ocean"]::after {
+    background: var(--gradient-ocean);
+}
+
+.cardNeon[data-gradient="forest"]::after {
+    background: var(--gradient-forest);
+}
+
+.cardNeon[data-gradient="fire"]::after {
+    background: var(--gradient-fire);
+}
+
+.cardNeon[data-gradient="mint"]::after {
+    background: var(--gradient-mint);
+}
+
+.cardNeon.cardHover:hover::after {
+    opacity: 0.8;
+}
+
+/* Hover Effects */
+.cardHover {
+    cursor: pointer;
+}
+
+.cardHover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl), var(--shadow-primary);
+}
+
+.cardDefault.cardHover:hover,
+.cardPremium.cardHover:hover {
+    border-color: var(--color-accent-primary);
+}
+
+/* Glow Effect */
+.cardGlow {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Active/Focus States */
+.card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+.card:active {
+    transform: translateY(-2px);
+}

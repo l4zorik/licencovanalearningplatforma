@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Container, Row, Col, Card, Badge, Button, ProgressBar, Modal, ListGroup, Alert } from 'react-bootstrap';
 import Link from 'next/link';
+import { createBasicTour, addCoursesSteps } from '@/lib/tours';
 
 const EMBEDDED_DB_COURSE = {
   title: "Embedded Databases in Common Lisp",
@@ -217,6 +218,51 @@ const OTHER_COURSES = [
     level: "Intermediate",
     students: 890,
     rating: 4.6
+  },
+  {
+    id: 12,
+    title: "Autodiagnostika pro Profesionály",
+    instructor: "Ing. Jan Novák",
+    duration: "6 weeks",
+    level: "Intermediate",
+    students: 450,
+    rating: 4.8
+  },
+  {
+    id: 13,
+    title: "Základy Údržby Vozidel",
+    instructor: "Petr Svoboda",
+    duration: "4 weeks",
+    level: "Beginner",
+    students: 890,
+    rating: 4.7
+  },
+  {
+    id: 14,
+    title: "Lakování Vozidel - Základy",
+    instructor: "Jan Novák",
+    duration: "6 weeks",
+    level: "Intermediate",
+    students: 450,
+    rating: 4.8
+  },
+  {
+    id: 15,
+    title: "Příprava Povrchu pro Lakování",
+    instructor: "Marie Křenková",
+    duration: "4 weeks",
+    level: "Beginner",
+    students: 320,
+    rating: 4.6
+  },
+  {
+    id: 16,
+    title: "Tmelení a Karosářské Opravy",
+    instructor: "František Hruška",
+    duration: "8 weeks",
+    level: "Intermediate",
+    students: 280,
+    rating: 4.7
   }
 ];
 
@@ -245,10 +291,20 @@ export default function CoursesPage() {
       {/* Header */}
       <Row className="mb-5">
         <Col>
-          <div className="text-center mb-4">
-            <h1 className="display-4 fw-bold mb-3">🎓 Online Kurzy</h1>
-            <p className="lead text-muted">Rozšiřte své znalosti s našimi profesionálními kurzy</p>
-          </div>
+           <div className="text-center mb-4">
+             <h1 className="display-4 fw-bold mb-3">🎓 Online Kurzy</h1>
+             <p className="lead text-muted">Rozšiřte své znalosti s našimi profesionálními kurzy</p>
+             <Button
+               variant="outline-info"
+               onClick={() => {
+                 const tour = createBasicTour();
+                 addCoursesSteps(tour);
+                 tour.start();
+               }}
+             >
+               🧭 Take Tour
+             </Button>
+           </div>
         </Col>
       </Row>
 
@@ -461,6 +517,16 @@ export default function CoursesPage() {
                     <h6>Sports Betting</h6>
                     <small className="text-muted">Odds analysis, bankroll management</small>
                     <Button variant="outline-success" size="sm" className="mt-2 d-block mx-auto">
+                      View Courses
+                    </Button>
+                  </div>
+                </Col>
+                <Col md={4}>
+                  <div className="text-center p-3 bg-danger bg-opacity-10 rounded">
+                    <div className="fs-1 mb-2">🚗</div>
+                    <h6>Automotive</h6>
+                    <small className="text-muted">Diagnostics, maintenance, repair</small>
+                    <Button variant="outline-danger" size="sm" className="mt-2 d-block mx-auto">
                       View Courses
                     </Button>
                   </div>
