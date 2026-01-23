@@ -32,7 +32,9 @@ declare module 'next-auth/jwt' {
 }
 
 async function getUserFromDatabase(email: string) {
-  // If no DB URL is configured, skip Prisma initialization entirely
+  /* 
+  DATABASE DISABLED FOR DEPLOYMENT DEBUGGING
+  
   if (!process.env.POSTGRES_PRISMA_URL) {
     console.log('No database URL configured, skipping DB check')
     return null
@@ -50,9 +52,12 @@ async function getUserFromDatabase(email: string) {
     console.log('Database check failed or not available:', error)
     return null
   }
+  */
+  return null;
 }
 
 export const authOptions: NextAuthOptions = {
+  debug: true, // Enable debugging
   providers: [
     CredentialsProvider({
       name: 'Přihlášení',
@@ -75,16 +80,11 @@ export const authOptions: NextAuthOptions = {
         const email = credentials.email.toLowerCase().trim()
         const password = credentials.password
 
-        const dbUser = await getUserFromDatabase(email)
+        // Force disable DB check
+        const dbUser = null; // await getUserFromDatabase(email)
 
         if (dbUser) {
-          if (password === ACCESS_PASSWORD) {
-            return {
-              id: dbUser.id,
-              email: dbUser.email,
-              name: dbUser.name || email.split('@')[0],
-            }
-          }
+          // ... (dead code for now)
           return null
         }
 
