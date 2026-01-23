@@ -39,7 +39,8 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
     outcome: 'learning',
     tags: ''
   });
-  const stats = calculateProjectStats(project);
+   const stats = calculateProjectStats(project);
+   const totalHours = project.milestones.reduce((sum, m) => sum + (m.targetHours || project.timerSettings?.defaultMilestoneHours || 2), 0);
 
   const handleSelectTemplate = (template: AlgorithmTemplate) => {
     setAlgorithmForm({
@@ -410,17 +411,19 @@ export default function FocusedProjectCard({ project, onClose, onUpdate }: Focus
                               </Button>
                             )}
                           </div>
-                          <MilestoneTimer 
-                            milestone={milestone}
-                            settings={project.timerSettings || DEFAULT_TIMER_SETTINGS}
-                            onUpdate={(updated) => {
-                              const updatedMilestones = project.milestones.map(m =>
-                                m.id === updated.id ? updated : m
-                              );
-                              onUpdate({ ...project, milestones: updatedMilestones });
-                            }}
-                            isEditing={isEditing}
-                          />
+                           <MilestoneTimer
+                             milestone={milestone}
+                             settings={project.timerSettings || DEFAULT_TIMER_SETTINGS}
+                             onUpdate={(updated) => {
+                               const updatedMilestones = project.milestones.map(m =>
+                                 m.id === updated.id ? updated : m
+                               );
+                               onUpdate({ ...project, milestones: updatedMilestones });
+                             }}
+                             isEditing={isEditing}
+                             projectTotalHours={totalHours}
+                             projectColor={project.color}
+                           />
                         </div>
                       )}
                     </div>

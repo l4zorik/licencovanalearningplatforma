@@ -10,6 +10,8 @@ interface MilestoneTimerProps {
   settings: TimerSettings;
   onUpdate: (milestone: ProjectMilestone) => void;
   isEditing: boolean;
+  projectTotalHours?: number;
+  projectColor?: string;
 }
 
 interface TimeRemaining {
@@ -22,7 +24,7 @@ interface TimeRemaining {
   isOverdue: boolean;
 }
 
-export default function MilestoneTimer({ milestone, settings, onUpdate, isEditing }: MilestoneTimerProps) {
+export default function MilestoneTimer({ milestone, settings, onUpdate, isEditing, projectTotalHours, projectColor }: MilestoneTimerProps) {
   const [remainingTime, setRemainingTime] = useState<TimeRemaining | null>(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [editHours, setEditHours] = useState(milestone.targetHours?.toString() || settings.defaultMilestoneHours.toString());
@@ -104,6 +106,19 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
   const urgencyLevel = getUrgencyLevel(100 - progress, settings.urgencyThresholds);
   const urgencyVariant = getUrgencyBadgeVariant(urgencyLevel);
 
+  // Calculate proportion for color coding
+  const milestoneHours = milestone.targetHours || settings.defaultMilestoneHours;
+  const proportion = projectTotalHours ? Math.min(1, milestoneHours / projectTotalHours) : 0;
+
+  const hexToRgba = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const proportionColor = projectColor ? hexToRgba(projectColor, proportion * 0.3) : undefined; // 0.3 max opacity
+
   const formatTime = (t: TimeRemaining | null): string => {
     if (!t) return '--:--:--:--';
     if (t.isOverdue) return `+${Math.abs(t.days)}d ${Math.abs(t.hours)}h`;
@@ -130,7 +145,7 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
 
   if (milestone.isCompleted) {
     return (
-      <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2">
+      <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2" style={{ border: proportionColor ? `2px solid ${proportionColor}` : undefined }}>
         <span style={{ fontSize: '0.8rem', color: '#4CAF50' }}>✅ Hotovo</span>
         {milestone.timeSpent > 0 && (
           <span style={{ fontSize: '0.8rem', color: '#888' }}>
@@ -142,7 +157,7 @@ export default function MilestoneTimer({ milestone, settings, onUpdate, isEditin
   }
 
   return (
-    <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2">
+    <div className="milestone-timer d-flex align-items-center gap-2 flex-wrap mt-2" style={{ border: proportionColor ? `2px solid ${proportionColor}` : undefined }}>
       <span style={{ 
         fontSize: '0.9rem', 
         fontFamily: 'monospace',

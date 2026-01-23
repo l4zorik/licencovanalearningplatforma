@@ -156,17 +156,7 @@ export const addDashboardSteps = (tour: Shepherd.Tour) => {
     ],
   });
 
-  tour.addStep({
-    id: 'colleagues-section',
-    text: 'Kolegové - síť kontaktů a spolupracovníků.',
-    attachTo: { element: 'button[data-tour="colleagues"]', on: 'bottom' },
-    buttons: [
-      {
-        text: 'Další',
-        action: tour.next,
-      },
-    ],
-  });
+
 
   tour.addStep({
     id: 'achievements-section',

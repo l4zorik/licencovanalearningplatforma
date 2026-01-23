@@ -16,6 +16,9 @@ import FocusedProjectCard from '@/components/projects/FocusedProjectCard';
 import LifeGoalsSection from '@/components/life/LifeGoalsSection';
 import CareerAdviceSection from '@/components/CareerAdviceSection';
 import RecipesSection from '@/components/RecipesSection';
+import ProbabilityIndicator from '@/components/ProbabilityIndicator';
+import TechnicalIntelligence from '@/components/TechnicalIntelligence';
+import AchievementRoadmap from '@/components/gamification/AchievementRoadmap';
 import { createBasicTour, addDashboardSteps } from '@/lib/tours';
 // NEW: Premium UI Components (Aliased to avoid conflict)
 import { Card as PremiumCard, Button as PremiumButton, Progress as PremiumProgress, Badge as PremiumBadge } from '@/components/ui';
@@ -921,11 +924,7 @@ export default function Home() {
                   🏢 AGENTURY
                 </Button>
               </Link>
-              <Link href="/colleagues" className="text-decoration-none">
-                <Button variant="outline-info" size="sm" className="fw-bold" data-tour="colleagues">
-                  👥 KOLEGOVÉ
-                </Button>
-              </Link>
+
               <Link href="/achievements" className="text-decoration-none">
                 <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="achievements">
                   🏆 ACHIEVEMENTS
@@ -1009,6 +1008,75 @@ export default function Home() {
       </nav>
 
       <Container fluid className="px-4">
+
+        {/* 🔮 PROBABILITY INDICATOR */}
+        <ProbabilityIndicator
+          userStats={stats}
+          courses={courses}
+          jobs={jobs}
+          projects={projects}
+        />
+
+        {/* 🧠 TECHNICAL INTELLIGENCE */}
+        <TechnicalIntelligence
+          userStats={stats}
+          courses={courses}
+        />
+
+        {/* Education - Skill Board */}
+        <Row className="mb-4">
+          <Col>
+            <div data-tour="education-section">
+              <EducationSection
+                myCourses={courses}
+                setCourses={setCourses}
+              />
+            </div>
+          </Col>
+        </Row>
+
+        {/* Work - Job Board */}
+        <Row className="mb-4">
+          <Col>
+            <div data-tour="work-section">
+              <WorkSection myCourses={courses} setCourses={setCourses} />
+            </div>
+          </Col>
+        </Row>
+
+        {/* Achievement Map */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(255,193,7,0.1) 0%, rgba(40,167,69,0.1) 100%)' }}>
+              <Card.Header className="bg-transparent border-bottom border-warning text-dark py-3">
+                <div className="d-flex align-items-center gap-3">
+                  <span style={{ fontSize: '1.5rem' }}>🏆</span>
+                  <h4 className="mb-0 fw-bold">Mapa Achievementů</h4>
+                </div>
+              </Card.Header>
+              <Card.Body className="p-4">
+                <AchievementRoadmap
+                  unlockedIds={['first_step', 'first_job', 'mission_starter', 'xp_collector_100', 'level_5']}
+                  userProgress={{
+                    first_step: 100,
+                    first_job: 100,
+                    mission_starter: 100,
+                    xp_collector_100: 75,
+                    level_5: 100,
+                    learning_hero: 10,
+                    streak_week: 42,
+                    job_hunter: 10,
+                    mission_master: 0,
+                    skill_builder: 15,
+                    xp_collector_1000: 7,
+                  }}
+                  currentLevel={stats.level}
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
         {/* ✨ PREMIUM DASHBOARD OVERVIEW */}
         <Row className="g-4 mb-4 animate-fade-in">
           <Col md={6} lg={3}>
@@ -1320,32 +1388,6 @@ export default function Home() {
 
         {/* Top Banner Ad */}
         <AdBanner position="top" size="large" />
-
-        <Row>
-          {/* Left Side: Education */}
-          <Col md={4} className="mb-4">
-            <div data-tour="education-section">
-              <EducationSection
-                myCourses={courses}
-                setCourses={setCourses}
-              />
-            </div>
-          </Col>
-
-          {/* Middle Side: Certifications */}
-          <Col md={4} className="mb-4">
-            <div data-tour="certification-section">
-              <CertificationSection myCourses={courses} />
-            </div>
-          </Col>
-
-          {/* Right Side: Work */}
-          <Col md={4} className="mb-4">
-            <div data-tour="work-section">
-              <WorkSection myCourses={courses} setCourses={setCourses} />
-            </div>
-          </Col>
-        </Row>
       </Container>
 
       {/* --- MISSION CONTROL MODAL --- */}
