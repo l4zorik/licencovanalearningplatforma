@@ -32,6 +32,12 @@ declare module 'next-auth/jwt' {
 }
 
 async function getUserFromDatabase(email: string) {
+  // If no DB URL is configured, skip Prisma initialization entirely
+  if (!process.env.POSTGRES_PRISMA_URL) {
+    console.log('No database URL configured, skipping DB check')
+    return null
+  }
+
   try {
     const { PrismaClient } = await import('@prisma/client')
     const prisma = new PrismaClient()
@@ -41,7 +47,7 @@ async function getUserFromDatabase(email: string) {
     await prisma.$disconnect()
     return user
   } catch (error) {
-    console.log('Database not available, using fallback auth')
+    console.log('Database check failed or not available:', error)
     return null
   }
 }
