@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar, Collapse } from 'react-bootstrap';
 import { Course, SkillCategory } from '@/types';
 import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS } from '@/data/skills/comprehensive-skills';
@@ -66,25 +66,48 @@ export const SKILL_TEMPLATES: DisplaySkill[] = COMPREHENSIVE_SKILL_DATA.map(skil
 
 // Hierarchical skill categories structure
 const SKILL_CATEGORIES_HIERARCHY = {
-  'Development': {
-    icon: '💻',
-    subcategories: [
-      'Programming',
-      'Web Development',
-      'Frontend Development',
-      'Backend Development',
-      'Fullstack Development',
-      'Mobile Development',
-      'Game Development',
-      '3D & GameDev',
-      'Hardware Development',
-      'Embedded Systems',
-      'IoT & Robotics',
-      'Blockchain & Crypto',
-      'AR/VR Development',
-      'UI/UX Design'
-    ]
-  },
+   'Development': {
+     icon: '💻',
+     subcategories: [
+       'Programming',
+       'Web Development',
+       'Frontend Development',
+       'Backend Development',
+       'Fullstack Development',
+       'Mobile Development',
+       'Hardware Development',
+       'Embedded Systems',
+       'IoT & Robotics',
+       'Blockchain & Crypto',
+       'AR/VR Development',
+       'UI/UX Design',
+       'No Code Platforms'
+     ]
+   },
+   'Game Development': {
+     icon: '🎮',
+     subcategories: [
+       'Game Engines',
+       '3D Modeling',
+       'Game Design'
+     ]
+   },
+   '3D Software': {
+     icon: '🎨',
+     subcategories: [
+       '3D Modeling',
+       'Animation',
+       'Rendering'
+     ]
+   },
+   'CNC Software & Systems': {
+     icon: '⚙️',
+     subcategories: [
+       'CNC Controllers',
+       'CAD Software',
+       'CAM Software'
+     ]
+   },
   'AI & Data': {
     icon: '🤖',
     subcategories: [
@@ -202,29 +225,30 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'Human Resources'
     ]
   },
-  'Creative': {
-    icon: '🎨',
-    subcategories: [
-      'Creative & Media',
-      'Writing & Content',
-      'Art & Creativity',
-      'Music Production',
-      'UI/UX Design'
-    ]
-  },
-  'Trades': {
-    icon: '🏗️',
-    subcategories: [
-      'CNC & Engineering',
-      'Construction & Trades',
-      'Manufacturing & Production',
-      'Automechanic',
-      'Agriculture & Environment',
-      'Hospitality & Tourism',
-      'Retail & Sales',
-      'Transportation & Logistics'
-    ]
-  },
+   'Creative': {
+     icon: '🎨',
+     subcategories: [
+       'Creative & Media',
+       'Writing & Content',
+       'Art & Creativity',
+       'Music Production',
+       'AI Tools',
+       'Video Editing'
+     ]
+    },
+    'Trades': {
+     icon: '🏗️',
+     subcategories: [
+       'CNC & Engineering',
+       'Construction & Trades',
+       'Manufacturing & Production',
+       'Automechanic',
+       'Agriculture & Environment',
+       'Hospitality & Tourism',
+       'Retail & Sales',
+       'Transportation & Logistics'
+     ]
+   },
   'Professional': {
     icon: '🏥',
     subcategories: [
@@ -563,8 +587,20 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'success' | 'warning' | 'info'>('success');
   const [archivedSkills, setArchivedSkills] = useState<DisplaySkill[]>([]);
+   const [expandedSlots, setExpandedSlots] = useState<(string | null)[]>(() => {
+     if (typeof window !== 'undefined') {
+       const saved = localStorage.getItem('expandedSkillSlots');
+       return saved ? JSON.parse(saved) : Array(24).fill(null);
+     }
+     return Array(24).fill(null);
+   });
+   const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
 
-  const mySkillIds = useMemo(() => new Set(myCourses.map(c => c.title)), [myCourses]);
+   useEffect(() => {
+     localStorage.setItem('expandedSkillSlots', JSON.stringify(expandedSlots));
+   }, [expandedSlots]);
+
+   const mySkillIds = useMemo(() => new Set(myCourses.map(c => c.title)), [myCourses]);
 
   const displayedSkills = useMemo(() => {
     let skills = SKILL_TEMPLATES.filter(s => mySkillIds.has(s.title));
@@ -609,9 +645,23 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
   }, [setCourses]);
 
   const handleAddSkill = useCallback((skill: DisplaySkill) => {
-    handleAddToCourses(skill);
+    if (selectedSlotIndex !== null) {
+      // Přidat skill do konkrétního slotu
+      setExpandedSlots(prev => {
+        const newSlots = [...prev];
+        newSlots[selectedSlotIndex] = skill.id;
+        return newSlots;
+      });
+      setSelectedSlotIndex(null);
+      setToastMessage(`${skill.title} přidáno do slotu ${selectedSlotIndex + 1}`);
+      setToastVariant('success');
+      setShowToast(true);
+    } else {
+      // Přidat do hlavného boardu (původní chování)
+      handleAddToCourses(skill);
+    }
     setShowAddModal(false);
-  }, [handleAddToCourses]);
+  }, [handleAddToCourses, selectedSlotIndex]);
 
   const archiveSkill = useCallback((skillId: string) => {
     const skill = SKILL_TEMPLATES.find(s => s.id === skillId);
@@ -623,6 +673,21 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
       setShowToast(true);
     }
   }, [setCourses]);
+
+  const removeSkillFromSlot = useCallback((skillId: string) => {
+    const slotIndex = expandedSlots.findIndex(slot => slot === skillId);
+    if (slotIndex !== -1) {
+      setExpandedSlots(prev => {
+        const newSlots = [...prev];
+        newSlots[slotIndex] = null;
+        return newSlots;
+      });
+      const skill = SKILL_TEMPLATES.find(s => s.id === skillId);
+      setToastMessage(`${skill?.title || 'Skill'} odstraněno ze slotu ${slotIndex + 1}`);
+      setToastVariant('warning');
+      setShowToast(true);
+    }
+  }, [expandedSlots]);
 
   const restoreSkill = useCallback((skill: DisplaySkill) => {
     handleAddToCourses(skill);
@@ -785,13 +850,49 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
     return icons[category] || '📌';
   };
 
-  const trendingSkills = useMemo(() => SKILL_TEMPLATES.filter(s => 
-    s.marketData && s.marketData.demandIndex > 70
-  ).slice(0, 10), []);
+  const trendingSkills = useMemo(() => SKILL_TEMPLATES.filter(s =>
+    s.marketData && (s.category === 'Programming' || s.category === 'Data Science & AI' || s.tags.some(tag => tag.toLowerCase().includes('software') || tag.toLowerCase().includes('ide') || tag.toLowerCase().includes('development') || tag.toLowerCase().includes('ai') || tag.toLowerCase().includes('machine learning')))
+  ).map(s => ({
+    ...s,
+    trendingScore: (s.marketData!.demandIndex * 0.5) + ((s.marketData!.salaryRange.senior / 10000) * 0.3) + ((100 - s.difficulty * 10) * 0.2)
+  })).sort((a, b) => b.trendingScore - a.trendingScore).slice(0, 15), []);
 
-  return (
-    <div className="education-section">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+   return (
+     <div className="education-section">
+       {/* AI Trends 2026 Banner */}
+       <Card className="bg-gradient text-white border-0 shadow-lg mb-4" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+         <Card.Body className="text-center py-4">
+           <h3 className="mb-1">🚀 AI Trends 2026</h3>
+           <p className="mb-0 opacity-75">Discover the top skills shaping the future of technology</p>
+         </Card.Body>
+       </Card>
+
+       {/* Trending Skills Grid */}
+       <div className="row g-3 mb-5">
+         {trendingSkills.slice(0, 12).map(skill => (
+           <div className="col-lg-1 col-md-2 col-sm-3 col-4" key={skill.id}>
+             <Card className="h-100 border-0 shadow-sm hover-lift" style={{ cursor: 'pointer' }}
+                   onClick={() => { setSelectedSkill(skill); setShowSkillModal(true); }}>
+               <Card.Body className="text-center p-2">
+                 <div className="fs-1 mb-2">{skill.icon}</div>
+                 <h6 className="fw-bold mb-1 text-truncate" style={{ fontSize: '0.7rem', lineHeight: '1.2' }} title={skill.title}>
+                   {skill.title}
+                 </h6>
+                 <div className="d-flex justify-content-center gap-1">
+                   <Badge bg="success" className="px-1 py-0" style={{ fontSize: '0.6rem' }}>
+                     {skill.marketData!.demandIndex}%
+                   </Badge>
+                   <Badge bg="primary" className="px-1 py-0" style={{ fontSize: '0.6rem' }}>
+                     {skill.difficulty}/5
+                   </Badge>
+                 </div>
+               </Card.Body>
+             </Card>
+           </div>
+         ))}
+       </div>
+
+       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>🛠️ Skill Board</h2>
         <div className="d-flex gap-2">
           <input
@@ -837,8 +938,8 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                     setShowSkillModal(true);
                   }}
                 >
-                  <Card.Header className="d-flex justify-content-between align-items-center" style={{ backgroundColor: skill.iconColor, color: 'white' }}>
-                    <span className="fw-bold">{skill.icon} {skill.title}</span>
+                   <Card.Header className="d-flex justify-content-between align-items-center" style={{ backgroundColor: 'white', color: 'black' }}>
+                     <span className="fw-bold text-black" style={{ fontSize: '1.1rem' }}>{skill.icon} {skill.title}</span>
                     <Dropdown>
                       <Dropdown.Toggle variant="light" size="sm" className="shadow-sm">
                         ⋮
@@ -871,12 +972,13 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                         <Badge key={tag} bg="secondary" className="me-1" pill>{tag}</Badge>
                       ))}
                     </div>
-                    {skill.marketData && (
-                      <div className="small">
-                        <span className="text-success">📈 {skill.marketData.demandIndex}%</span>
-                      </div>
-                    )}
-                  </Card.Body>
+                     {skill.marketData && (
+                       <div className="small">
+                         <span className="text-success">📈 {skill.marketData.demandIndex}%</span>
+                       </div>
+                     )}
+                     <div className="text-black fw-bold small mt-1">{skill.category}</div>
+                   </Card.Body>
                   <Card.Footer className="d-flex justify-content-between align-items-center">
                     <Badge bg="primary">{skill.difficulty}/5</Badge>
                     <small className="text-muted">{skill.totalHours}h</small>
@@ -927,15 +1029,94 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
             </Card>
           </Col>
          </Row>
-       )}
+        )}
+
+        {/* Druhé podlažie - rozšířené sloty pro výběr skills */}
+        <div className="mt-5">
+          <h3 className="mb-3">🎯 Rozšířené Skill Sloty</h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(6, 1fr)',
+            gap: '0.75rem',
+            marginBottom: '2rem'
+          }}>
+            {/* Vytvoříme 24 slotů (6x4) */}
+            {Array.from({ length: 24 }, (_, index) => {
+              const skillId = expandedSlots[index];
+              const skill = skillId ? SKILL_TEMPLATES.find(s => s.id === skillId) : null;
+
+              return (
+                <Card
+                  key={`slot-${index}`}
+                  className={`text-center h-100 ${skill ? 'border-primary' : 'border-2 border-dashed'}`}
+                  style={{
+                    minHeight: '120px',
+                    cursor: 'pointer',
+                    borderColor: skill ? undefined : '#dee2e6',
+                    backgroundColor: skill ? 'white' : '#f8f9fa'
+                  }}
+                  onClick={() => {
+                    if (skill) {
+                      // Kliknutí na vybraný skill - zobraz detail
+                      setSelectedSkill(skill);
+                      setShowSkillModal(true);
+                    } else {
+                      // Kliknutí na prázdný slot - otevři modal pro výběr
+                      setSelectedSlotIndex(index);
+                      setShowAddModal(true);
+                    }
+                  }}
+                  onContextMenu={(e) => {
+                    if (skill) {
+                      e.preventDefault();
+                      // Kontextové menu pro vybraný skill ve slotu
+                      setSelectedSkill(skill);
+                      setShowSkillModal(true);
+                    }
+                  }}
+                >
+                  {skill ? (
+                    <Card.Body className="d-flex flex-column p-2">
+                      <div style={{
+                        height: '3px',
+                        backgroundColor: skill.iconColor,
+                        marginBottom: '4px'
+                      }}></div>
+                      <div className="d-flex justify-content-between align-items-start mb-1">
+                        <Badge bg="dark" text="light" style={{ fontSize: '0.6rem' }}>{skill.difficulty}/5</Badge>
+                        {skill.marketData && (
+                          <Badge bg="success" style={{ fontSize: '0.6rem' }}>{skill.marketData.demandIndex}%</Badge>
+                        )}
+                      </div>
+                        <h6 className="card-title fw-bold mb-1 text-black" style={{ fontSize: '0.9rem' }}>
+                          {skill.icon} {skill.title}
+                        </h6>
+                        <div className="fw-bold text-black" style={{ fontSize: '0.7rem' }}>{skill.category}</div>
+                    </Card.Body>
+                  ) : (
+                    <Card.Body className="d-flex flex-column justify-content-center align-items-center p-2">
+                      <div className="fs-2 mb-2 text-dark fw-bold">+</div>
+                      <small className="text-dark fw-bold">Slot {index + 1}</small>
+                    </Card.Body>
+                  )}
+                </Card>
+              );
+            })}
+          </div>
+        </div>
 
 
 
-       <Modal show={showSkillModal} onHide={() => setShowSkillModal(false)} size="lg">
+        <Modal show={showSkillModal} onHide={() => setShowSkillModal(false)} size="lg">
         {selectedSkill && (
           <>
             <Modal.Header closeButton style={{ backgroundColor: selectedSkill.iconColor, color: 'white' }}>
               <Modal.Title>{selectedSkill.icon} {selectedSkill.title}</Modal.Title>
+              {selectedSkill && expandedSlots.includes(selectedSkill.id) && (
+                <div className="text-white-50 small mt-1">
+                  🎯 Slot {expandedSlots.findIndex(slot => slot === selectedSkill.id) + 1}
+                </div>
+              )}
             </Modal.Header>
             <Modal.Body>
               <Row>
@@ -1003,11 +1184,22 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                 </Col>
               </Row>
             </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowSkillModal(false)}>
-                Zavřít
-              </Button>
-            </Modal.Footer>
+             <Modal.Footer>
+               <Button variant="secondary" onClick={() => setShowSkillModal(false)}>
+                 Zavřít
+               </Button>
+               {selectedSkill && expandedSlots.includes(selectedSkill.id) && (
+                 <Button
+                   variant="outline-danger"
+                   onClick={() => {
+                     removeSkillFromSlot(selectedSkill.id);
+                     setShowSkillModal(false);
+                   }}
+                 >
+                   🗑️ Odstranit ze slotu
+                 </Button>
+               )}
+             </Modal.Footer>
           </>
         )}
       </Modal>
