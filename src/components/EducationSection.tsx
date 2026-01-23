@@ -66,7 +66,7 @@ export const SKILL_TEMPLATES: DisplaySkill[] = COMPREHENSIVE_SKILL_DATA.map(skil
 
 // Hierarchical skill categories structure
 const SKILL_CATEGORIES_HIERARCHY = {
-  '💻 Development': {
+  'Development': {
     icon: '💻',
     subcategories: [
       'Programming',
