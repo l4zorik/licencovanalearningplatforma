@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
+import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar, Collapse } from 'react-bootstrap';
 import { Course, SkillCategory } from '@/types';
 import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS } from '@/data/skills/comprehensive-skills';
 
@@ -64,159 +64,186 @@ export const SKILL_TEMPLATES: DisplaySkill[] = COMPREHENSIVE_SKILL_DATA.map(skil
   }
 }));
 
-const SKILL_CATEGORIES = [
-  // 🔥 Core Categories
-  'Programming',
-  'Web Development',
-  'Frontend Development',
-  'Backend Development',
-  'Fullstack Development',
-  'Mobile Development',
-  'Game Development',
-  '3D & GameDev',
-  'Hardware Development',
-  'Embedded Systems',
-  'IoT & Robotics',
-  'Blockchain & Crypto',
-  'AR/VR Development',
-  'UI/UX Design',
+// Hierarchical skill categories structure
+const SKILL_CATEGORIES_HIERARCHY = {
+  '💻 Development': {
+    icon: '💻',
+    subcategories: [
+      'Programming',
+      'Web Development',
+      'Frontend Development',
+      'Backend Development',
+      'Fullstack Development',
+      'Mobile Development',
+      'Game Development',
+      '3D & GameDev',
+      'Hardware Development',
+      'Embedded Systems',
+      'IoT & Robotics',
+      'Blockchain & Crypto',
+      'AR/VR Development',
+      'UI/UX Design'
+    ]
+  },
+  '🤖 AI & Data': {
+    icon: '🤖',
+    subcategories: [
+      'Data Science & AI',
+      'Machine Learning Engineering',
+      'Computer Vision',
+      'Natural Language Processing',
+      'Big Data',
+      'Business Intelligence',
+      'Data Engineering',
+      'ETL Development',
+      'Data Visualization',
+      'Statistical Analysis',
+      'Predictive Modeling',
+      'A/B Testing',
+      'Data & Analytics'
+    ]
+  },
+  '🛡️ Security': {
+    icon: '🛡️',
+    subcategories: [
+      'Cybersecurity',
+      'Penetration Testing',
+      'Network Security',
+      'Application Security',
+      'Cloud Security',
+      'Mobile Security',
+      'IoT Security',
+      'Blockchain Security',
+      'Bug Bounty Programs',
+      'Security Research',
+      'Security & Safety',
+      'Access Control',
+      'Identity Management',
+      'Single Sign-On',
+      'Multi-Factor Authentication',
+      'OAuth',
+      'JWT',
+      'API Security',
+      'Data Encryption'
+    ]
+  },
+  '☁️ Infrastructure': {
+    icon: '☁️',
+    subcategories: [
+      'Cloud & DevOps',
+      'DevOps & Infrastructure',
+      'Cloud Computing',
+      'Database Administration',
+      'API Development',
+      'Microservices Architecture',
+      'Continuous Integration',
+      'Continuous Deployment',
+      'Infrastructure as Code',
+      'Container Orchestration',
+      'Monitoring & Logging',
+      'Site Reliability Engineering',
+      'System Administration',
+      'Server Management',
+      'Backup & Recovery',
+      'Disaster Recovery',
+      'High Availability',
+      'Scalability',
+      'Load Balancing',
+      'Caching Strategies',
+      'CDN Management',
+      'SSL/TLS Management',
+      'Domain Management',
+      'DNS Management',
+      'Firewall Management',
+      'VPN Management'
+    ]
+  },
+  '📋 Compliance': {
+    icon: '📋',
+    subcategories: [
+      'GDPR',
+      'HIPAA',
+      'PCI DSS',
+      'SOX',
+      'ISO 27001',
+      'Cybersecurity Auditing',
+      'Vulnerability Assessment',
+      'Forensic Analysis',
+      'Malware Analysis',
+      'Threat Intelligence',
+      'Security Operations Center',
+      'SIEM Systems',
+      'Intrusion Detection',
+      'Risk Assessment',
+      'Security Policies',
+      'Incident Management',
+      'Crisis Management',
+      'Business Continuity',
+      'Disaster Recovery Planning'
+    ]
+  },
+  '💼 Business': {
+    icon: '💼',
+    subcategories: [
+      'Management & Leadership',
+      'Project Management',
+      'Agile/Scrum',
+      'Kanban',
+      'Business & Finance',
+      'Marketing & PR',
+      'Performance Marketing',
+      'SEO/SEM',
+      'Social Media Marketing',
+      'Content Marketing',
+      'Email Marketing',
+      'CRM Systems',
+      'Sales Automation',
+      'Customer Analytics',
+      'Human Resources'
+    ]
+  },
+  '🎨 Creative': {
+    icon: '🎨',
+    subcategories: [
+      'Creative & Media',
+      'Writing & Content',
+      'Art & Creativity',
+      'Music Production',
+      'UI/UX Design'
+    ]
+  },
+  '🏗️ Trades': {
+    icon: '🏗️',
+    subcategories: [
+      'CNC & Engineering',
+      'Construction & Trades',
+      'Manufacturing & Production',
+      'Automechanic',
+      'Agriculture & Environment',
+      'Hospitality & Tourism',
+      'Retail & Sales',
+      'Transportation & Logistics'
+    ]
+  },
+  '🏥 Professional': {
+    icon: '🏥',
+    subcategories: [
+      'Healthcare & Medical',
+      'Education & Training',
+      'Science & Research',
+      'Green & Sustainability',
+      'Legal & Compliance',
+      'Customer Service',
+      'Quality Assurance',
+      'Fitness & Health',
+      'Reselling & Business'
+    ]
+  }
+};
 
-  // 🤖 AI & Data
-  'Data Science & AI',
-  'Machine Learning Engineering',
-  'Computer Vision',
-  'Natural Language Processing',
-  'Big Data',
-  'Business Intelligence',
-  'Data Engineering',
-  'ETL Development',
-  'Data Visualization',
-  'Statistical Analysis',
-  'Predictive Modeling',
-  'A/B Testing',
-
-  // 🛡️ Security & Infrastructure
-  'Cybersecurity',
-  'Penetration Testing',
-  'Network Security',
-  'Application Security',
-  'Cloud Security',
-  'Mobile Security',
-  'IoT Security',
-  'Blockchain Security',
-  'Bug Bounty Programs',
-  'Security Research',
-  'Red Team Operations',
-  'Blue Team Operations',
-  'Purple Team Operations',
-  'Security Awareness Training',
-  'Compliance Training',
-  'Risk Assessment',
-  'Security Policies',
-  'Incident Management',
-  'Crisis Management',
-  'Business Continuity',
-  'Disaster Recovery Planning',
-
-  // ☁️ DevOps & Cloud
-  'Cloud & DevOps',
-  'DevOps & Infrastructure',
-  'Database Administration',
-  'API Development',
-  'Microservices Architecture',
-  'Cloud Computing',
-  'Continuous Integration',
-  'Continuous Deployment',
-  'Infrastructure as Code',
-  'Container Orchestration',
-  'Monitoring & Logging',
-  'Site Reliability Engineering',
-  'System Administration',
-  'Server Management',
-  'Backup & Recovery',
-  'Disaster Recovery',
-  'High Availability',
-  'Scalability',
-  'Load Balancing',
-  'Caching Strategies',
-  'CDN Management',
-  'SSL/TLS Management',
-  'Domain Management',
-  'DNS Management',
-  'Firewall Management',
-  'VPN Management',
-
-  // 🔐 Access & Identity
-  'Access Control',
-  'Identity Management',
-  'Single Sign-On',
-  'Multi-Factor Authentication',
-  'OAuth',
-  'JWT',
-  'API Security',
-  'Data Encryption',
-
-  // 📋 Compliance & Legal
-  'GDPR',
-  'HIPAA',
-  'PCI DSS',
-  'SOX',
-  'ISO 27001',
-  'Cybersecurity Auditing',
-  'Vulnerability Assessment',
-  'Forensic Analysis',
-  'Malware Analysis',
-  'Threat Intelligence',
-  'Security Operations Center',
-  'SIEM Systems',
-  'Intrusion Detection',
-
-  // 💼 Business & Management
-  'Management & Leadership',
-  'Project Management',
-  'Agile/Scrum',
-  'Kanban',
-  'Business & Finance',
-  'Marketing & PR',
-  'Performance Marketing',
-  'SEO/SEM',
-  'Social Media Marketing',
-  'Content Marketing',
-  'Email Marketing',
-  'CRM Systems',
-  'Sales Automation',
-  'Customer Analytics',
-  'Human Resources',
-
-  // 🎨 Creative & Media
-  'Creative & Media',
-  'Writing & Content',
-  'Art & Creativity',
-  'Music Production',
-
-  // 🔬 Science & Research
-  'Science & Research',
-  'Healthcare & Medical',
-  'Green & Sustainability',
-
-  // 🏗️ Trades & Services
-  'CNC & Engineering',
-  'Construction & Trades',
-  'Agriculture & Environment',
-  'Manufacturing & Production',
-  'Automechanic',
-  'Hospitality & Tourism',
-  'Retail & Sales',
-  'Transportation & Logistics',
-  'Customer Service',
-  'Quality Assurance',
-  'Security & Safety',
-  'Education & Training',
-  'Fitness & Health',
-  'Reselling & Business',
-  'Legal & Compliance',
-  'Data & Analytics'
-];
+  // Flatten all subcategories for backward compatibility
+  const SKILL_CATEGORIES = Object.values(SKILL_CATEGORIES_HIERARCHY)
+    .flatMap(category => category.subcategories);
 
 const CATEGORY_STYLES: Record<string, { primary: string; secondary: string; gradient: string }> = {
   // Core Development
@@ -512,11 +539,26 @@ const ArchiveDropZone = ({ onDrop }: { onDrop: (skillId: string) => void }) => {
 
 export default function EducationSection({ myCourses, setCourses }: Props) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSkill, setSelectedSkill] = useState<DisplaySkill | null>(null);
-  const [showSkillModal, setShowSkillModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('Trending');
+  const [selectedMainCategory, setSelectedMainCategory] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [showAddModal, setShowAddModal] = useState(false);
   const [showSkillDetail, setShowSkillDetail] = useState(false);
   const [detailSkill, setDetailSkill] = useState<DisplaySkill | null>(null);
+  const [showSkillModal, setShowSkillModal] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<DisplaySkill | null>(null);
+
+  // Auto-expand first subcategory when main category is selected
+  const handleMainCategoryChange = (mainCategory: string) => {
+    setSelectedMainCategory(mainCategory);
+    const categoryData = SKILL_CATEGORIES_HIERARCHY[mainCategory as keyof typeof SKILL_CATEGORIES_HIERARCHY];
+    if (categoryData && categoryData.subcategories.length > 0) {
+      const newExpanded = new Set(expandedCategories);
+      // Expand first subcategory by default
+      newExpanded.add(categoryData.subcategories[0]);
+      setExpandedCategories(newExpanded);
+    }
+  };
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'success' | 'warning' | 'info'>('success');
@@ -978,7 +1020,7 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
           </div>
         </Modal.Header>
         <Modal.Body className="bg-light p-4">
-          <Tabs defaultActiveKey="Trending" className="mb-4" fill variant="pills">
+          <Tabs defaultActiveKey="Trending" className="mb-4" fill variant="pills" onSelect={(key) => key && key !== 'Trending' && handleMainCategoryChange(key)}>
             <Tab eventKey="Trending" title={<span className="fw-bold">🔥 Trending</span>}>
               <Row className="g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                 {trendingSkills.map((skill, idx) => (
@@ -1011,53 +1053,87 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
               </div>
             </Tab>
 
-            {SKILL_CATEGORIES.map(category => (
-              <Tab 
-                eventKey={category} 
-                title={<span className="fw-bold">{getCategoryIcon(category)} {category}</span>}
-                key={category}
+            {Object.entries(SKILL_CATEGORIES_HIERARCHY).map(([mainCategory, data]) => (
+              <Tab
+                eventKey={mainCategory}
+                title={<span className="fw-bold">{data.icon} {mainCategory}</span>}
+                key={mainCategory}
               >
-                {category === 'CNC & Engineering' ? (
-                  <CNCSkillsWithFacts 
-                    onAddSkill={handleAddSkill} 
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : (
-                  <>
-                    <Row className="g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-                      {SKILL_TEMPLATES.filter(s => s.category === category).map((skill, idx) => (
-                        <Col key={idx}>
-                          <Card 
-                            className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
-                            style={{ transition: '0.2s', cursor: 'pointer' }}
-                            onClick={() => handleAddSkill(skill)}
-                          >
-                            <div style={{ height: '5px', backgroundColor: skill.iconColor }}></div>
-                            <Card.Body className="d-flex flex-column p-2">
-                              <div className="d-flex justify-content-between align-items-start mb-1">
-                                <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.7rem' }}>{skill.difficulty}/5</Badge>
-                                {skill.marketData && (
-                                  <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} style={{ fontSize: '0.7rem' }}>
-                                    {skill.marketData.demandIndex}%
-                                  </Badge>
-                                )}
-                              </div>
-                              <h6 className="card-title fw-bold mb-1" style={{ fontSize: '0.9rem' }}>
-                                {skill.icon} {skill.title}
-                              </h6>
-                              <p className="small flex-grow-1" style={{ fontSize: '0.75rem' }}>{skill.description.substring(0, 60)}...</p>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      ))}
-                    </Row>
-                    <div className="text-center mt-3">
-                      <small className="text-muted">
-                        {getCategoryIcon(category)} {category}: {SKILL_TEMPLATES.filter(s => s.category === category).length} skills
-                      </small>
-                    </div>
-                  </>
-                )}
+                <div className="mb-3">
+                  {data.subcategories.map(subcategory => (
+                    <Card key={subcategory} className="mb-3 border-0 shadow-sm">
+                      <Card.Header
+                        className="d-flex justify-content-between align-items-center cursor-pointer"
+                        onClick={() => {
+                          const newExpanded = new Set(expandedCategories);
+                          if (newExpanded.has(subcategory)) {
+                            newExpanded.delete(subcategory);
+                          } else {
+                            newExpanded.add(subcategory);
+                          }
+                          setExpandedCategories(newExpanded);
+                        }}
+                        style={{
+                          background: getCategoryStyle(subcategory).gradient,
+                          color: 'white',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <div className="d-flex align-items-center">
+                          <span className="me-2">{getCategoryIcon(subcategory)}</span>
+                          <span className="fw-bold">{subcategory}</span>
+                          <Badge bg="light" text="dark" className="ms-2">
+                            {SKILL_TEMPLATES.filter(s => s.category === subcategory).length}
+                          </Badge>
+                        </div>
+                        <span style={{
+                          transform: expandedCategories.has(subcategory) ? 'rotate(90deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.2s'
+                        }}>
+                          ▶
+                        </span>
+                      </Card.Header>
+                      <Collapse in={expandedCategories.has(subcategory)}>
+                        <Card.Body className="p-3">
+                          {subcategory === 'CNC & Engineering' ? (
+                            <CNCSkillsWithFacts
+                              onAddSkill={handleAddSkill}
+                              onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                            />
+                          ) : (
+                            <Row className="g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+                              {SKILL_TEMPLATES.filter(s => s.category === subcategory).map((skill, idx) => (
+                                <Col key={idx}>
+                                  <Card
+                                    className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
+                                    style={{ transition: '0.2s', cursor: 'pointer' }}
+                                    onClick={() => handleAddSkill(skill)}
+                                  >
+                                    <div style={{ height: '5px', backgroundColor: skill.iconColor }}></div>
+                                    <Card.Body className="d-flex flex-column p-2">
+                                      <div className="d-flex justify-content-between align-items-start mb-1">
+                                        <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.7rem' }}>{skill.difficulty}/5</Badge>
+                                        {skill.marketData && (
+                                          <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} style={{ fontSize: '0.7rem' }}>
+                                            {skill.marketData.demandIndex}%
+                                          </Badge>
+                                        )}
+                                      </div>
+                                      <h6 className="card-title fw-bold mb-1" style={{ fontSize: '0.9rem' }}>
+                                        {skill.icon} {skill.title}
+                                      </h6>
+                                      <p className="small flex-grow-1" style={{ fontSize: '0.75rem' }}>{skill.description.substring(0, 60)}...</p>
+                                    </Card.Body>
+                                  </Card>
+                                </Col>
+                              ))}
+                            </Row>
+                          )}
+                        </Card.Body>
+                      </Collapse>
+                    </Card>
+                  ))}
+                </div>
               </Tab>
             ))}
           </Tabs>
