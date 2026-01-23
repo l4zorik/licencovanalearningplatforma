@@ -1,5 +1,11 @@
 # Tomas Learning Platform - Kariérní Rozvojová Platforma
 
+## ✨ Premium Design Upgrade (v0.4.0) - Branched in `novydesign`
+Platforma byla vylepšena o prémiový designový systém s animovanými kartami a moderními komponenty.
+- **Nový Dashboard**: Přístupný na hlavní stránce nebo `/dashboard-new`
+- **Design System V2**: Pokročilé gradienty a animace v `src/styles/`
+- **UI Komponenty**: Znovupoužitelné prémiové komponenty v `src/components/ui/`
+
 ## 📋 Přehled Projektu
 
 Moderní webová aplikace pro sledování kariérního rozvoje, skill management a job hunting. Kombinuje osobní development tracking s komplexním kariérním poradenstvím.
