@@ -85,7 +85,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'UI/UX Design'
     ]
   },
-  '🤖 AI & Data': {
+  'AI & Data': {
     icon: '🤖',
     subcategories: [
       'Data Science & AI',
@@ -103,7 +103,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'Data & Analytics'
     ]
   },
-  '🛡️ Security': {
+  'Security': {
     icon: '🛡️',
     subcategories: [
       'Cybersecurity',
@@ -127,7 +127,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'Data Encryption'
     ]
   },
-  '☁️ Infrastructure': {
+  'Infrastructure': {
     icon: '☁️',
     subcategories: [
       'Cloud & DevOps',
@@ -158,7 +158,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'VPN Management'
     ]
   },
-  '📋 Compliance': {
+  'Compliance': {
     icon: '📋',
     subcategories: [
       'GDPR',
@@ -182,7 +182,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'Disaster Recovery Planning'
     ]
   },
-  '💼 Business': {
+  'Business': {
     icon: '💼',
     subcategories: [
       'Management & Leadership',
@@ -202,7 +202,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'Human Resources'
     ]
   },
-  '🎨 Creative': {
+  'Creative': {
     icon: '🎨',
     subcategories: [
       'Creative & Media',
@@ -212,7 +212,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'UI/UX Design'
     ]
   },
-  '🏗️ Trades': {
+  'Trades': {
     icon: '🏗️',
     subcategories: [
       'CNC & Engineering',
@@ -225,7 +225,7 @@ const SKILL_CATEGORIES_HIERARCHY = {
       'Transportation & Logistics'
     ]
   },
-  '🏥 Professional': {
+  'Professional': {
     icon: '🏥',
     subcategories: [
       'Healthcare & Medical',
