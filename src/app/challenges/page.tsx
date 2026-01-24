@@ -323,30 +323,31 @@ export default function ChallengesPage() {
                   )}
 
                   {/* Action Button */}
-                  <Button
-                    variant={completedChallenges.includes(challenge.id) ? "outline-success" : "primary"}
-                    className="w-100"
-                    style={{
-                      borderRadius: '12px',
-                      fontWeight: '600',
-                      background: completedChallenges.includes(challenge.id) 
-                        ? 'transparent' 
-                        : `linear-gradient(135deg, ${CATEGORIES[challenge.category as keyof typeof CATEGORIES].color} 0%, ${CATEGORIES[challenge.category as keyof typeof CATEGORIES].color}dd 100%)`,
-                      border: completedChallenges.includes(challenge.id) 
-                        ? '1px solid #4CAF50' 
-                        : 'none'
-                    }}
-                    onClick={() => handleComplete(challenge.id)}
-                  >
-                    {completedChallenges.includes(challenge.id) ? (
-                      <>
-                        <FiCheckCircle style={{ marginRight: '8px' }} />
-                        Dokončeno
-                      </>
-                    ) : (
-                      "Začít challenge"
-                    )}
-                  </Button>
+                  <Link href={`/challenges/${challenge.id}`} style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant={completedChallenges.includes(challenge.id) ? "outline-success" : "primary"}
+                      className="w-100"
+                      style={{
+                        borderRadius: '12px',
+                        fontWeight: '600',
+                        background: completedChallenges.includes(challenge.id) 
+                          ? 'transparent' 
+                          : `linear-gradient(135deg, ${CATEGORIES[challenge.category as keyof typeof CATEGORIES].color} 0%, ${CATEGORIES[challenge.category as keyof typeof CATEGORIES].color}dd 100%)`,
+                        border: completedChallenges.includes(challenge.id) 
+                          ? '1px solid #4CAF50' 
+                          : 'none'
+                      }}
+                    >
+                      {completedChallenges.includes(challenge.id) ? (
+                        <>
+                          <FiCheckCircle style={{ marginRight: '8px' }} />
+                          Dokončeno
+                        </>
+                      ) : (
+                        "Začít challenge"
+                      )}
+                    </Button>
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>
