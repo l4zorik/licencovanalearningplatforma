@@ -950,6 +950,15 @@ export default function Home() {
                   👨‍🍳 RECEPTY
                 </Button>
               </Link>
+              <Link href="/challenges" className="text-decoration-none">
+                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="challenges">
+                  🏆 CHALLENGES
+                </Button>
+              </Link>
+              <Link href="/recipes" className="text-decoration-none">
+                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="recipes">
+                </Button>
+              </Link>
               <Button
                 variant="outline-info"
                 size="sm"
