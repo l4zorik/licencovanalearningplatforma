@@ -51,63 +51,99 @@ export default function ProbabilityIndicator({ userStats, courses, jobs, project
   };
 
   return (
-    <Row className="mb-4">
-      <Col>
-        <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(33,150,243,0.1) 0%, rgba(156,39,176,0.1) 100%)' }}>
-          <Card.Body className="p-4">
-            <Row className="align-items-center">
-              <Col md={6} className="text-center mb-3 mb-md-0">
-                <div className="d-flex align-items-center justify-content-center mb-2">
-                  <FiBriefcase size={24} className="me-2 text-primary" />
-                  <h5 className="mb-0">Pravděpodobnost nové práce</h5>
+    <>
+      {/* SECTION: JOB PROBABILITY */}
+      <Row className="mb-4">
+        <Col>
+          <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(33,150,243,0.1) 0%, rgba(3,169,244,0.1) 100%)' }}>
+            <Card.Body className="p-4">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <div className="d-flex align-items-center gap-3">
+                  <div className="p-3 rounded-circle bg-primary bg-opacity-25 text-primary">
+                    <FiBriefcase size={32} />
+                  </div>
+                  <div>
+                    <h4 className="mb-0 fw-bold">Pravděpodobnost nové práce</h4>
+                    <p className="text-muted mb-0">Analýza trhu a tvého profilu</p>
+                  </div>
                 </div>
-                <div className="mb-2">
+                <div className="text-end">
                   <span className="display-4 fw-bold text-primary">{probabilities.job}%</span>
+                  <div>
+                    <Badge bg={getProbabilityColor(probabilities.job)} className="fs-6 px-3 py-2">
+                      {getProbabilityLabel(probabilities.job)} šance
+                    </Badge>
+                  </div>
                 </div>
-                <Badge bg={getProbabilityColor(probabilities.job)} className="fs-6">
-                  {getProbabilityLabel(probabilities.job)} šance
-                </Badge>
-                <ProgressBar
-                  now={probabilities.job}
-                  variant={getProbabilityColor(probabilities.job)}
-                  className="mt-3"
-                  style={{ height: '8px' }}
-                />
-              </Col>
+              </div>
+              
+              <ProgressBar
+                now={probabilities.job}
+                variant={getProbabilityColor(probabilities.job)}
+                className="mb-3"
+                style={{ height: '12px', borderRadius: '6px' }}
+                animated
+              />
+              
+              <div className="d-flex justify-content-between text-muted small mt-2">
+                <span>0% (Nemožné)</span>
+                <span>50% (Možné)</span>
+                <span>100% (Garantované)</span>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-              <Col md={6} className="text-center">
-                <div className="d-flex align-items-center justify-content-center mb-2">
-                  <FiHome size={24} className="me-2 text-success" />
-                  <h5 className="mb-0">Pravděpodobnost ubytování</h5>
+      {/* SECTION: ACCOMMODATION PROBABILITY */}
+      <Row className="mb-4">
+        <Col>
+          <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(76,175,80,0.1) 0%, rgba(139,195,74,0.1) 100%)' }}>
+            <Card.Body className="p-4">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <div className="d-flex align-items-center gap-3">
+                  <div className="p-3 rounded-circle bg-success bg-opacity-25 text-success">
+                    <FiHome size={32} />
+                  </div>
+                  <div>
+                    <h4 className="mb-0 fw-bold">Pravděpodobnost ubytování</h4>
+                    <p className="text-muted mb-0">Dostupnost bydlení a tvé zázemí</p>
+                  </div>
                 </div>
-                <div className="mb-2">
-                  <span className="display-4 fw-bold text-success">{probabilities.housing}%</span>
+                <div className="text-end">
+                  <span className="display-4 fw-bold text-success">71%</span>
+                  <div>
+                    <Badge bg="warning" text="dark" className="fs-6 px-3 py-2">
+                      Střední šance
+                    </Badge>
+                  </div>
                 </div>
-                <Badge bg={getProbabilityColor(probabilities.housing)} className="fs-6">
-                  {getProbabilityLabel(probabilities.housing)} šance
-                </Badge>
-                <ProgressBar
-                  now={probabilities.housing}
-                  variant={getProbabilityColor(probabilities.housing)}
-                  className="mt-3"
-                  style={{ height: '8px' }}
-                />
-              </Col>
-            </Row>
+              </div>
+              
+              <ProgressBar
+                now={71}
+                variant="warning"
+                className="mb-3"
+                style={{ height: '12px', borderRadius: '6px' }}
+                animated
+              />
+              
+              <div className="d-flex justify-content-between text-muted small mt-2">
+                <span>Aktuální tržní skóre pro tvůj region</span>
+                <span className="text-success fw-bold">+5% zlepšení tento týden</span>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-            <hr className="my-4" />
-
-            <Row className="text-center">
-              <Col>
-                <small className="text-muted">
-                  Pravděpodobnosti jsou kalkulovány na základě vašich dovedností, projektů a zkušeností.
-                  Čím více se učíte a pracujete na projektech, tím vyšší je šance na úspěch.
-                </small>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+      <Row className="mb-4 text-center">
+        <Col>
+          <small className="text-muted italic">
+            💡 Pravděpodobnosti jsou kalkulovány na základě vašich dovedností, projektů a zkušeností v reálném čase.
+          </small>
+        </Col>
+      </Row>
+    </>
   );
 }

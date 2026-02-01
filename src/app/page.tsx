@@ -23,7 +23,10 @@ import { createBasicTour, addDashboardSteps } from '@/lib/tours';
 // NEW: Premium UI Components (Aliased to avoid conflict)
 import { Card as PremiumCard, Button as PremiumButton, Progress as PremiumProgress, Badge as PremiumBadge } from '@/components/ui';
 import DashboardCard from '@/components/dashboard/DashboardCard';
-import { FiTarget, FiTrendingUp, FiAward, FiBook, FiClock, FiCheckCircle } from 'react-icons/fi';
+import { FiTarget, FiTrendingUp, FiAward, FiBook, FiClock, FiCheckCircle, FiUser, FiBarChart2, FiBookOpen, FiBriefcase, FiMap, FiCompass, FiLayers, FiTool, FiHome, FiZap, FiFileText, FiCoffee, FiStar, FiHelpCircle, FiLogOut, FiMenu, FiGithub } from 'react-icons/fi';
+import LifeStatusWidget from '@/components/life/LifeStatusWidget';
+import FinancialOverview from '@/components/finance/FinancialOverview';
+import { HabitTracker, FriendTrustTracker, FamilyTrustTracker, FinishedJobTracker } from '@/components/trackers';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -863,162 +866,297 @@ export default function Home() {
           }
         `}</style>
 
-      {/* Header / Navbar */}
-      <nav className="navbar navbar-dark navbar-glass mb-4 sticky-top shadow-sm">
-        <Container fluid>
-          <div className="d-flex align-items-center">
-            <span className="navbar-brand mb-0 h1 me-4">🚀 Tomas Learning Platform</span>
-            <div className="d-flex gap-2">
-              <Link href="/profile" className="text-decoration-none">
-                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="profile">
-                  👤 PROFILE
-                </Button>
-              </Link>
-              <Link href="/analytics" className="text-decoration-none">
-                <Button variant="outline-info" size="sm" className="fw-bold" data-tour="analytics">
-                  📊 ANALYTICS
-                </Button>
-              </Link>
-              <Button
-                variant="outline-warning"
-                size="sm"
-                className="fw-bold d-flex align-items-center gap-2"
-                onClick={() => setShowMissionModal(true)}
-                data-tour="missions"
-              >
-                <span>🎯 MISE</span>
-                <Badge bg="warning" text="dark" pill>2 Active</Badge>
-              </Button>
-              <Link href="/training" className="text-decoration-none">
-                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="training">
-                  🎓 TRAINING
-                </Button>
-              </Link>
-              <Link href="/career-report" className="text-decoration-none">
-                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="career-report">
-                  📈 CAREER REPORT
-                </Button>
-              </Link>
-              <Link href="/courses" className="text-decoration-none">
-                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="courses">
-                  🎓 KURZY
-                </Button>
-              </Link>
-              <Link href="/quick-courses" className="text-decoration-none">
-                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="quick-courses">
-                  ⚡ RYCHLOKURZY
-                </Button>
-              </Link>
-              <Link href="/articles" className="text-decoration-none">
-                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="articles">
-                  📝 ČLÁNKY
-                </Button>
-              </Link>
-              <Link href="/tools" className="text-decoration-none">
-                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="tools">
-                  🛠️ TOOLS
-                </Button>
-              </Link>
-              <Link href="/agencies" className="text-decoration-none">
-                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="agencies">
-                  🏢 AGENTURY
-                </Button>
-              </Link>
-
-              <Link href="/achievements" className="text-decoration-none">
-                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="achievements">
-                  🏆 ACHIEVEMENTS
-                </Button>
-              </Link>
-              <Link href="/roadmap" className="text-decoration-none">
-                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="roadmap">
-                  🗺️ ROADMAP
-                </Button>
-              </Link>
-              <Link href="/journey" className="text-decoration-none">
-                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="journey">
-                  🎯 JOURNEY
-                </Button>
-              </Link>
-              <Link href="/career-advice" className="text-decoration-none">
-                <Button variant="outline-warning" size="sm" className="fw-bold" data-tour="career-advice">
-                  💡 RADY
-                </Button>
-              </Link>
-              <Link href="/recipes" className="text-decoration-none">
-                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="recipes">
-                  👨‍🍳 RECEPTY
-                </Button>
-              </Link>
-              <Link href="/challenges" className="text-decoration-none">
-                <Button variant="outline-primary" size="sm" className="fw-bold" data-tour="challenges">
-                  🏆 CHALLENGES
-                </Button>
-              </Link>
-              <Link href="/recipes" className="text-decoration-none">
-                <Button variant="outline-success" size="sm" className="fw-bold" data-tour="recipes">
-                </Button>
-              </Link>
-              <Button
-                variant="outline-info"
-                size="sm"
-                className="fw-bold d-flex align-items-center gap-2"
-                onClick={() => setShowTrendyModal(true)}
-                data-tour="trendy"
-              >
-                <span>📈 TRENDY</span>
-              </Button>
-              {/* Premium features toggle - for future monetization */}
-              <Button
-                variant="outline-info"
-                size="sm"
-                className="fw-bold"
-                onClick={() => {
-                  const tour = createBasicTour();
-                  addDashboardSteps(tour);
-                  tour.start();
-                }}
-                data-tour="tour-button"
-              >
-                🧭 TOUR
-              </Button>
-              <Button
-                variant="outline-gold"
-                size="sm"
-                className="fw-bold"
-                disabled
-                title="Premium features coming soon!"
-              >
-                ⭐ PREMIUM
-              </Button>
+      {/* Header / Navbar - Compact */}
+      <nav
+        className="navbar navbar-glass shadow-lg"
+        style={{
+          background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(99, 102, 241, 0.2)',
+          padding: '6px 12px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1050,
+        }}
+      >
+        <Container fluid className="px-2">
+          {/* Main Row: Brand + Nav Items + Logout */}
+          <div className="d-flex align-items-center gap-2 flex-wrap">
+            {/* Brand */}
+            <div
+              className="d-flex align-items-center gap-1 px-2 py-1"
+              style={{
+                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%)',
+                borderRadius: '8px',
+                border: '1px solid rgba(99, 102, 241, 0.4)'
+              }}
+            >
+              <span style={{ fontSize: '1.2rem' }}>🚀</span>
+              <span className="fw-bold text-white d-none d-md-inline" style={{ fontSize: '0.9rem' }}>
+                Tomas Learning
+              </span>
             </div>
+
+            {/* Navigation Items - Compact */}
+            <Link href="/profile" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="profile">
+                <FiUser size={14} className="text-info" />
+                <span className="text-white d-none d-lg-inline" style={{ fontSize: '0.7rem' }}>Profil</span>
+              </div>
+            </Link>
+
+            <Link href="/analytics" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="analytics">
+                <FiBarChart2 size={14} style={{ color: '#a78bfa' }} />
+                <span className="text-white d-none d-lg-inline" style={{ fontSize: '0.7rem' }}>Analytika</span>
+              </div>
+            </Link>
+
+            <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1 position-relative" data-tour="missions" onClick={() => setShowMissionModal(true)} style={{ cursor: 'pointer' }}>
+              <FiTarget size={14} className="text-warning" />
+              <span className="text-white d-none d-lg-inline" style={{ fontSize: '0.7rem' }}>Mise</span>
+              <Badge bg="warning" text="dark" pill style={{ fontSize: '0.5rem', padding: '1px 4px', position: 'absolute', top: '-2px', right: '-2px' }}>2</Badge>
+            </div>
+
+            <div className="nav-divider d-none d-md-block" style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
+
+            <Link href="/training" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="training">
+                <FiBookOpen size={14} className="text-success" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Trénink</span>
+              </div>
+            </Link>
+
+            <Link href="/career-report" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="career-report">
+                <FiBriefcase size={14} className="text-info" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Kariéra</span>
+              </div>
+            </Link>
+
+            <Link href="/courses" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="courses">
+                <FiLayers size={14} className="text-success" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Kurzy</span>
+              </div>
+            </Link>
+
+            <Link href="/quick-courses" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="quick-courses">
+                <FiZap size={14} className="text-warning" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Rychlo</span>
+              </div>
+            </Link>
+
+            <div className="nav-divider d-none d-md-block" style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
+
+            <Link href="/articles" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="articles">
+                <FiFileText size={14} className="text-info" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Články</span>
+              </div>
+            </Link>
+
+            <Link href="/tools" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="tools">
+                <FiTool size={14} className="text-warning" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Nástroje</span>
+              </div>
+            </Link>
+
+            <Link href="/agencies" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="agencies">
+                <FiHome size={14} className="text-success" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Agentury</span>
+              </div>
+            </Link>
+
+            <div className="nav-divider d-none d-md-block" style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
+
+            <Link href="/achievements" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="achievements">
+                <FiAward size={14} className="text-warning" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Achieve</span>
+              </div>
+            </Link>
+
+            <Link href="/roadmap" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="roadmap">
+                <FiMap size={14} className="text-success" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Roadmap</span>
+              </div>
+            </Link>
+
+            <Link href="/journey" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="journey">
+                <FiCompass size={14} className="text-info" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Journey</span>
+              </div>
+            </Link>
+
+            <div className="nav-divider d-none d-md-block" style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
+
+            <Link href="/career-advice" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="career-advice">
+                <FiHelpCircle size={14} className="text-warning" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Rady</span>
+              </div>
+            </Link>
+
+            <Link href="/recipes" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="recipes">
+                <FiCoffee size={14} className="text-success" />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Recepty</span>
+              </div>
+            </Link>
+
+            <Link href="/challenges" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="challenges">
+                <FiAward size={14} style={{ color: '#f472b6' }} />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Challenge</span>
+              </div>
+            </Link>
+
+            <div className="nav-divider d-none d-md-block" style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
+
+            <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="trendy" onClick={() => setShowTrendyModal(true)} style={{ cursor: 'pointer' }}>
+              <FiTrendingUp size={14} className="text-info" />
+              <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Trendy</span>
+            </div>
+
+            <div
+              className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1"
+              data-tour="tour-button"
+              onClick={() => { const tour = createBasicTour(); addDashboardSteps(tour); tour.start(); }}
+              style={{ cursor: 'pointer' }}
+            >
+              <FiCompass size={14} style={{ color: '#67e8f9' }} />
+              <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Tour</span>
+            </div>
+
+            {/* Spacer to push right items */}
+            <div className="flex-grow-1" />
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
+            {/* Logout */}
+            <Button
+              variant="link"
+              size="sm"
+              onClick={() => signOut()}
+              className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1 text-white-50"
+              style={{ textDecoration: 'none' }}
+            >
+              <FiLogOut size={14} />
+              <span className="d-none d-lg-inline" style={{ fontSize: '0.7rem' }}>Odhlásit</span>
+            </Button>
           </div>
 
-          <div className="text-white d-flex align-items-center gap-3">
-            <div className="d-none d-md-block text-white-50 small">
-              Level {stats.level} Developer • {stats.xp} XP
+          {/* Bottom Row: Level, XP, Premium, GitHub */}
+          <div
+            className="d-flex align-items-center gap-2 mt-2 py-1 px-2 flex-wrap"
+            style={{
+              background: 'rgba(0,0,0,0.25)',
+              borderRadius: '8px',
+            }}
+          >
+            {/* Level */}
+            <div className="d-flex align-items-center gap-1 px-2 py-1" style={{ background: 'rgba(251, 191, 36, 0.15)', borderRadius: '6px', border: '1px solid rgba(251, 191, 36, 0.3)' }}>
+              <FiStar size={12} className="text-warning" />
+              <span className="text-warning fw-bold" style={{ fontSize: '0.7rem' }}>Level {stats.level}</span>
+              <span className="text-white-50" style={{ fontSize: '0.65rem' }}>• {stats.xp} XP</span>
             </div>
-            <div>
-              <span className="me-2 text-white-50">Next Level:</span>
-              <Badge bg="success">{stats.xpToNext} XP</Badge>
+
+            {/* Next Level XP */}
+            <div className="d-flex align-items-center gap-1 px-2 py-1" style={{ background: 'rgba(16, 185, 129, 0.15)', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+              <span className="text-white-50" style={{ fontSize: '0.65rem' }}>Next:</span>
+              <Badge bg="transparent" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', fontSize: '0.65rem', padding: '2px 6px' }}>
+                {stats.xpToNext} XP
+              </Badge>
             </div>
-            <div className="d-flex align-items-center gap-3">
-              <ThemeToggle />
-              <Button
-                variant="outline-light"
-                size="sm"
-                onClick={() => signOut()}
-              >
-                Sign Out
-              </Button>
+
+            {/* Premium */}
+            <div
+              className="d-flex align-items-center gap-1 px-2 py-1"
+              style={{
+                background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%)',
+                borderRadius: '6px',
+                border: '1px solid rgba(251, 191, 36, 0.4)',
+                cursor: 'not-allowed',
+                opacity: 0.8
+              }}
+              title="Premium features coming soon!"
+            >
+              <FiStar size={12} className="text-warning" />
+              <span className="text-warning" style={{ fontSize: '0.7rem', fontWeight: 500 }}>Premium</span>
             </div>
+
+            {/* Spacer */}
+            <div className="flex-grow-1" />
+
+            {/* GitHub */}
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="d-flex align-items-center gap-1 px-2 py-1 text-decoration-none"
+              style={{
+                background: 'rgba(255,255,255,0.1)',
+                borderRadius: '6px',
+                border: '1px solid rgba(255,255,255,0.2)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <FiGithub size={14} className="text-white" />
+              <span className="text-white" style={{ fontSize: '0.7rem' }}>GitHub</span>
+            </a>
           </div>
         </Container>
       </nav>
 
+      {/* Navbar hover styles */}
+      <style jsx global>{`
+        .nav-icon-btn {
+          background: transparent;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          border: 1px solid transparent;
+        }
+        .nav-icon-btn:hover {
+          background: rgba(99, 102, 241, 0.25) !important;
+          border-color: rgba(99, 102, 241, 0.4) !important;
+        }
+      `}</style>
+
       <Container fluid className="px-4">
 
-        {/* 🔮 PROBABILITY INDICATOR */}
+        {/* 💰 FINANČNÍ PŘEHLED UČENÍ */}
+        <FinancialOverview />
+
+        {/* 📉 VÝDAJOVÉ OKNO (Hunger, Physical, Readiness, Intellect, Addiction) */}
+        <LifeStatusWidget
+          hunger={35}
+          physicalStrength={72}
+          readiness={58}
+          intellectualStrength={84}
+          addiction={12}
+        />
+
+        {/* ⛔ HABIT TRACKER - Sledování závislostí */}
+        <HabitTracker />
+
+        {/* 📋 JOB TRACKER - Sledování dokončených prací */}
+        <FinishedJobTracker />
+
+        {/* 👥 FRIEND TRUST - Sledování důvěry v přátele */}
+        <FriendTrustTracker />
+
+        {/* 👨‍👩‍👧 FAMILY TRUST - Sledování důvěry rodiny */}
+        <FamilyTrustTracker />
+
+        {/* 🔮 PROBABILITY INDICATORS */}
         <ProbabilityIndicator
           userStats={stats}
           courses={courses}
