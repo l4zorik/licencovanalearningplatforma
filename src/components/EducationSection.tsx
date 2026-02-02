@@ -226,15 +226,32 @@ const SKILL_CATEGORIES_HIERARCHY = {
     ]
   },
    'Creative': {
-     icon: '🎨',
-     subcategories: [
-       'Creative & Media',
-       'Writing & Content',
-       'Art & Creativity',
-       'Music Production',
-       'AI Tools',
-       'Video Editing'
-     ]
+      icon: '🎨',
+      subcategories: [
+        'Creative & Media',
+        'Writing & Content',
+        'Art & Creativity',
+        'Music Production',
+        'AI Tools',
+        'Video Editing'
+      ]
+    },
+   'Trading': {
+      icon: '📈',
+      subcategories: [
+        'Crypto Trading',
+        'Stock Trading',
+        'Forex Trading',
+        'Options Trading',
+        'Commodity Trading',
+        'Prediction Markets',
+        'Sports Betting',
+        'Business Trading Logic',
+        'Skill Trading',
+        'Arbitrage Trading',
+        'Day Trading',
+        'Swing Trading'
+      ]
     },
     'Trades': {
      icon: '🏗️',
@@ -406,6 +423,21 @@ const CATEGORY_STYLES: Record<string, { primary: string; secondary: string; grad
   'Data & Analytics': { primary: '#673AB7', secondary: '#512DA8', gradient: 'linear-gradient(135deg, #673AB7 0%, #512DA8 100%)' },
   'Security & Safety': { primary: '#F44336', secondary: '#D32F2F', gradient: 'linear-gradient(135deg, #F44336 0%, #D32F2F 100%)' },
   'Writing & Content': { primary: '#9E9E9E', secondary: '#757575', gradient: 'linear-gradient(135deg, #9E9E9E 0%, #757575 100%)' },
+  
+  // Trading Categories
+  'Crypto Trading': { primary: '#F7931A', secondary: '#C67912', gradient: 'linear-gradient(135deg, #F7931A 0%, #C67912 100%)' },
+  'Stock Trading': { primary: '#00C805', secondary: '#00A004', gradient: 'linear-gradient(135deg, #00C805 0%, #00A004 100%)' },
+  'Forex Trading': { primary: '#2196F3', secondary: '#1976D2', gradient: 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)' },
+  'Options Trading': { primary: '#9C27B0', secondary: '#7B1FA2', gradient: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)' },
+  'Commodity Trading': { primary: '#FF9800', secondary: '#F57C00', gradient: 'linear-gradient(135deg, #FF9800 0%, #F57C00 100%)' },
+  'Prediction Markets': { primary: '#E91E63', secondary: '#C2185B', gradient: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)' },
+  'Sports Betting': { primary: '#4CAF50', secondary: '#388E3C', gradient: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)' },
+  'Business Trading Logic': { primary: '#673AB7', secondary: '#512DA8', gradient: 'linear-gradient(135deg, #673AB7 0%, #512DA8 100%)' },
+  'Skill Trading': { primary: '#FF5722', secondary: '#D84315', gradient: 'linear-gradient(135deg, #FF5722 0%, #D84315 100%)' },
+  'Arbitrage Trading': { primary: '#00BCD4', secondary: '#0097A7', gradient: 'linear-gradient(135deg, #00BCD4 0%, #0097A7 100%)' },
+  'Day Trading': { primary: '#F44336', secondary: '#D32F2F', gradient: 'linear-gradient(135deg, #F44336 0%, #D32F2F 100%)' },
+  'Swing Trading': { primary: '#FFC107', secondary: '#FF8F00', gradient: 'linear-gradient(135deg, #FFC107 0%, #FF8F00 100%)' },
+  
   'default': { primary: '#6C757D', secondary: '#545B62', gradient: 'linear-gradient(135deg, #6C757D 0%, #545B62 100%)' }
 };
 
