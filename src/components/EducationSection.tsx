@@ -411,6 +411,297 @@ const CATEGORY_STYLES: Record<string, { primary: string; secondary: string; grad
 
 const getCategoryStyle = (category: string) => CATEGORY_STYLES[category] || CATEGORY_STYLES['default'];
 
+interface OpenClawWorkflowStep {
+  id: string;
+  title: string;
+  description: string;
+  skills: { name: string; icon: string; xp: number }[];
+  xpReward: number;
+  isMilestone?: boolean;
+}
+
+const OPENCLAW_WORKFLOW_STEPS: OpenClawWorkflowStep[] = [
+  {
+    id: 'env-setup',
+    title: '🌍 Environment Setup',
+    description: 'Node.js, Git, WSL2 (Windows)',
+    skills: [
+      { name: 'Node.js 22+', icon: '🟢', xp: 100 },
+      { name: 'Git & CLI', icon: '🔀', xp: 80 },
+      { name: 'WSL2 Ubuntu', icon: '🐧', xp: 120 }
+    ],
+    xpReward: 200
+  },
+  {
+    id: 'openclaw-install',
+    title: '⬇️ OpenClaw Installation',
+    description: 'Install CLI and verify setup',
+    skills: [
+      { name: 'Install Script', icon: '📦', xp: 100 },
+      { name: 'Terminal Usage', icon: '💻', xp: 80 },
+      { name: 'Path Config', icon: '⚙️', xp: 60 }
+    ],
+    xpReward: 250
+  },
+  {
+    id: 'llm-integration',
+    title: '🧠 LLM Integration',
+    description: 'Connect AI models (Anthropic/OpenAI)',
+    skills: [
+      { name: 'API Keys', icon: '🔑', xp: 150 },
+      { name: 'Anthropic Claude', icon: '🤖', xp: 200 },
+      { name: 'OpenAI GPT', icon: '🔮', xp: 180 }
+    ],
+    xpReward: 350
+  },
+  {
+    id: 'gateway-config',
+    title: '🚪 Gateway Configuration',
+    description: 'Setup gateway and authentication',
+    skills: [
+      { name: 'Gateway Setup', icon: '🚪', xp: 150 },
+      { name: 'Token Auth', icon: '🔐', xp: 120 },
+      { name: 'Security Audit', icon: '🛡️', xp: 180 }
+    ],
+    xpReward: 300,
+    isMilestone: true
+  },
+  {
+    id: 'channel-integration',
+    title: '💬 Channel Integration',
+    description: 'WhatsApp, Telegram, Discord, Slack',
+    skills: [
+      { name: 'WhatsApp QR', icon: '📱', xp: 150 },
+      { name: 'Telegram Bot', icon: '✈️', xp: 140 },
+      { name: 'Discord Bot', icon: '🎮', xp: 140 },
+      { name: 'Slack API', icon: '💼', xp: 130 }
+    ],
+    xpReward: 400
+  },
+  {
+    id: 'skills-system',
+    title: '🎯 Skills System',
+    description: 'Install and manage ClawdHub skills',
+    skills: [
+      { name: 'ClawdHub CLI', icon: '🛒', xp: 150 },
+      { name: 'Skill Installation', icon: '📦', xp: 120 },
+      { name: 'Custom Skills', icon: '✏️', xp: 250 }
+    ],
+    xpReward: 350,
+    isMilestone: true
+  },
+  {
+    id: 'automation',
+    title: '⚡ Automation & Cron Jobs',
+    description: 'Schedule tasks and workflows',
+    skills: [
+      { name: 'Cron Jobs', icon: '⏰', xp: 180 },
+      { name: 'Task Scheduling', icon: '📅', xp: 150 },
+      { name: 'Workflow Design', icon: '🔄', xp: 200 }
+    ],
+    xpReward: 400
+  },
+  {
+    id: 'security',
+    title: '🔒 Security & Sandboxing',
+    description: 'VM, Docker, threat models',
+    skills: [
+      { name: 'Docker Setup', icon: '🐳', xp: 200 },
+      { name: 'VM Isolation', icon: '🖥️', xp: 180 },
+      { name: 'Threat Modeling', icon: '🎯', xp: 250 },
+      { name: 'Prompt Injection', icon: '🛡️', xp: 200 }
+    ],
+    xpReward: 500,
+    isMilestone: true
+  },
+  {
+    id: 'advanced',
+    title: '🚀 Advanced Features',
+    description: 'Voice, Canvas, Multi-agent',
+    skills: [
+      { name: 'Voice Interaction', icon: '🎤', xp: 200 },
+      { name: 'Canvas Visual', icon: '🎨', xp: 220 },
+      { name: 'Multi-Agent', icon: '👥', xp: 300 },
+      { name: 'Memory Systems', icon: '🧠', xp: 280 }
+    ],
+    xpReward: 600
+  }
+];
+
+const OpenClawWorkflowTree = ({ 
+  onAddSkill 
+}: { 
+  onAddSkill: (skill: { name: string; xp: number; category: string }) => void 
+}) => {
+  const [expandedStep, setExpandedStep] = useState<string | null>(null);
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+
+  const toggleStep = (stepId: string) => {
+    setExpandedStep(expandedStep === stepId ? null : stepId);
+  };
+
+  const markComplete = (stepId: string) => {
+    const newCompleted = new Set(completedSteps);
+    if (newCompleted.has(stepId)) {
+      newCompleted.delete(stepId);
+    } else {
+      newCompleted.add(stepId);
+    }
+    setCompletedSteps(newCompleted);
+  };
+
+  const totalXp = OPENCLAW_WORKFLOW_STEPS.reduce((sum, step) => sum + step.xpReward, 0);
+
+  return (
+    <div className="openclaw-workflow">
+      <div className="text-center mb-4">
+        <h5 className="fw-bold">🦞 OpenClaw Skills Path</h5>
+        <p className="text-muted small">Postupný workflow k ovládnutí OpenClaw agenta</p>
+        <Badge bg="warning" text="dark" className="mb-2">
+          📊 Celkem {totalXp} XP k získání
+        </Badge>
+        <ProgressBar 
+          now={(completedSteps.size / OPENCLAW_WORKFLOW_STEPS.length) * 100} 
+          variant="success" 
+          className="mt-2" 
+          style={{ height: '8px' }}
+        />
+        <small className="text-muted">
+          {completedSteps.size}/{OPENCLAW_WORKFLOW_STEPS.length} kroků dokončeno
+        </small>
+      </div>
+
+      <div className="workflow-tree">
+        {OPENCLAW_WORKFLOW_STEPS.map((step, index) => {
+          const isExpanded = expandedStep === step.id;
+          const isCompleted = completedSteps.has(step.id);
+
+          return (
+            <div key={step.id} className="workflow-step mb-3">
+              <div 
+                className={`workflow-step-header d-flex align-items-center p-3 rounded cursor-pointer ${
+                  isCompleted ? 'bg-success bg-opacity-10 border-success' : 
+                  step.isMilestone ? 'bg-warning bg-opacity-10 border-warning' : 
+                  'bg-light border'
+                }`}
+                style={{ 
+                  border: '2px solid',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onClick={() => toggleStep(step.id)}
+              >
+                <div className="step-number me-3">
+                  <div 
+                    className={`rounded-circle d-flex align-items-center justify-content-center ${
+                      isCompleted ? 'bg-success text-white' : 'bg-secondary text-white'
+                    }`}
+                    style={{ width: '36px', height: '36px', fontWeight: 'bold' }}
+                  >
+                    {isCompleted ? '✓' : index + 1}
+                  </div>
+                </div>
+                
+                <div className="step-info flex-grow-1">
+                  <div className="d-flex align-items-center gap-2">
+                    <h6 className="mb-0 fw-bold">{step.title}</h6>
+                    {step.isMilestone && <Badge bg="warning" text="dark" style={{ fontSize: '0.65rem' }}>🏆 Milestone</Badge>}
+                    {isCompleted && <Badge bg="success" style={{ fontSize: '0.65rem'}}>✅ Hotovo</Badge>}
+                  </div>
+                  <small className="text-muted">{step.description}</small>
+                </div>
+
+                <div className="step-xp text-end">
+                  <Badge bg="primary" style={{ fontSize: '0.8rem' }}>+{step.xpReward} XP</Badge>
+                </div>
+
+                <div className="ms-2">
+                  <span style={{ 
+                    transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.2s',
+                    display: 'inline-block'
+                  }}>
+                    ▶
+                  </span>
+                </div>
+              </div>
+
+              <Collapse in={isExpanded}>
+                <div className="step-details mt-2 p-3 bg-light rounded" style={{ marginLeft: '44px' }}>
+                  <div className="mb-3">
+                    <small className="text-muted fw-bold">📚 Potřebné skills:</small>
+                    <div className="d-flex flex-wrap gap-2 mt-2">
+                      {step.skills.map((skill) => (
+                        <Card 
+                          key={skill.name} 
+                          className="skill-card"
+                          style={{ 
+                            minWidth: '140px', 
+                            cursor: 'pointer',
+                            transition: 'transform 0.2s, box-shadow 0.2s'
+                          }}
+                          onClick={() => onAddSkill({ 
+                            name: skill.name, 
+                            xp: skill.xp, 
+                            category: 'AI Tools - OpenClaw' 
+                          })}
+                        >
+                          <Card.Body className="p-2 text-center">
+                            <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
+                            <small className="fw-bold">{skill.name}</small>
+                            <div>
+                              <Badge bg="success" style={{ fontSize: '0.65rem' }}>+{skill.xp} XP</Badge>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="d-flex gap-2">
+                    <Button 
+                      variant={isCompleted ? 'outline-success' : 'success'} 
+                      size="sm"
+                      onClick={(e) => { e.stopPropagation(); markComplete(step.id); }}
+                    >
+                      {isCompleted ? '✅ Označit jako nedokončené' : '✅ Dokončeno'}
+                    </Button>
+                    <Button 
+                      variant="outline-primary" 
+                      size="sm"
+                      href="https://docs.openclaw.ai/"
+                      target="_blank"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      📖 Dokumentace
+                    </Button>
+                  </div>
+                </div>
+              </Collapse>
+
+              {index < OPENCLAW_WORKFLOW_STEPS.length - 1 && (
+                <div className="workflow-connector text-center" style={{ marginLeft: '17px' }}>
+                  <span className="text-muted" style={{ fontSize: '1.2rem' }}>│</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <style jsx>{`
+        .workflow-step-header:hover {
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .skill-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+      `}</style>
+    </div>
+  );
+};
+
 interface Props {
   myCourses: Course[];
   setCourses?: React.Dispatch<React.SetStateAction<Course[]>>;
@@ -1243,6 +1534,37 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
               <div className="text-center mt-3">
                 <small className="text-muted">🔥 {trendingSkills.length} trending skills</small>
               </div>
+            </Tab>
+
+            <Tab eventKey="OpenClaw" title={<span className="fw-bold">🦞 OpenClaw</span>}>
+              <OpenClawWorkflowTree 
+                onAddSkill={(skill) => {
+                  const newSkill: DisplaySkill = {
+                    id: `openclaw-${skill.name.toLowerCase().replace(/\s+/g, '-')}`,
+                    title: skill.name,
+                    platform: 'OpenClaw',
+                    category: 'AI Tools' as SkillCategory,
+                    totalHours: Math.ceil(skill.xp / 40),
+                    tags: ['OpenClaw', 'AI Agent', 'Automation'],
+                    description: `OpenClaw skill: ${skill.name}`,
+                    modules: [],
+                    resources: [
+                      { name: 'OpenClaw Docs', url: 'https://docs.openclaw.ai/', type: 'doc' },
+                      { name: 'ClawdHub', url: 'https://clawdhub.com/', type: 'repo' }
+                    ],
+                    difficulty: 3,
+                    careerPaths: ['AI Engineer', 'Automation Specialist'],
+                    iconColor: '#FF6B35',
+                    icon: '🦞',
+                    marketData: {
+                      demandIndex: 85,
+                      salaryRange: { junior: 70000, senior: 150000 },
+                      trend: 'rising'
+                    }
+                  };
+                  handleAddSkill(newSkill);
+                }}
+              />
             </Tab>
 
             {Object.entries(SKILL_CATEGORIES_HIERARCHY).map(([mainCategory, data]) => (
