@@ -582,6 +582,81 @@ const TREND_DATA: TrendingItem[] = [
       { month: 'Led', value: 95 },
       { month: 'Úno', value: 95 }
     ]
+  },
+  {
+    id: 'genie-3',
+    name: 'Genie 3 World Gen',
+    category: 'AI & Spatial Computing',
+    growth: 'rising',
+    growthPercent: 445,
+    description: 'Magic Leap\'s Genie 3 creates interactive 3D worlds from text/images, powering next-gen AR/VR spatial experiences.',
+    relatedSkills: ['Spatial Computing', '3D Generation', 'AR/VR', 'Neural Networks', 'Magic Leap'],
+    maturity: 'emerging',
+    opportunities: 92,
+    salary: '90k-160k',
+    why: 'Text-to-3D worlds, real-time generation, spatial AI, enterprise AR/VR',
+    resources: [
+      { name: 'Magic Leap Genie', url: 'https://www.magicleap.com/genie' },
+      { name: 'Spatial Computing', url: 'https://en.wikipedia.org/wiki/Spatial_computing' }
+    ],
+    growthHistory: [
+      { month: 'Led', value: 45 },
+      { month: 'Úno', value: 445 }
+    ]
+  },
+  {
+    id: 'ai-world-generators',
+    name: 'AI World Generators',
+    category: 'AI & Spatial Computing',
+    growth: 'rising',
+    growthPercent: 312,
+    description: 'AI systems that generate complete 3D worlds, terrains, cities from text prompts or images.',
+    relatedSkills: ['3D Generation', 'Procedural Content', 'Game Engines', 'Neural Radiance Fields', 'Gaussian Splatting'],
+    maturity: 'emerging',
+    opportunities: 88,
+    salary: '80k-150k',
+    why: 'Instant 3D worlds, procedural generation, game dev revolution, virtual production',
+    resources: [
+      { name: 'Luma AI', url: 'https://lumalabs.ai/' },
+      { name: 'CSM.ai', url: 'https://csm.ai/' },
+      { name: 'Meshy.ai', url: 'https://meshy.ai/' }
+    ],
+    growthHistory: [
+      { month: 'Zář', value: 55 },
+      { month: 'Říj', value: 98 },
+      { month: 'Lis', value: 165 },
+      { month: 'Pro', value: 225 },
+      { month: 'Led', value: 275 },
+      { month: 'Úno', value: 312 }
+    ]
+  },
+  {
+    id: 'gaussian-splatting',
+    name: 'Gaussian Splatting 3D',
+    category: 'AI & Spatial Computing',
+    growth: 'rising',
+    growthPercent: 245,
+    description: 'Neural rendering technique for real-time 3D scene reconstruction from photos with incredible quality.',
+    relatedSkills: ['3D Reconstruction', 'Neural Rendering', 'Computer Vision', 'WebGL', 'Real-Time Graphics'],
+    maturity: 'growing',
+    opportunities: 75,
+    salary: '75k-135k',
+    why: 'Real-time rendering, photo-to-3D, VR/AR, virtual tourism, heritage preservation',
+    resources: [
+      { name: 'Paper', url: 'https://arxiv.org/abs/2308.04079' },
+      { name: 'Viewer', url: 'https://playcanvas.com/gaussian-splatting' }
+    ],
+    growthHistory: [
+      { month: 'Čer', value: 45 },
+      { month: 'Čvc', value: 78 },
+      { month: 'Srp', value: 125 },
+      { month: 'Zář', value: 168 },
+      { month: 'Říj', value: 195 },
+      { month: 'Lis', value: 218 },
+      { month: 'Pro', value: 235 },
+      { month: 'Led', value: 242 },
+      { month: 'Úno', value: 245 }
+    ]
   }
 ];
 
