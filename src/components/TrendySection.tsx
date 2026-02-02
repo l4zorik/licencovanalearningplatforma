@@ -383,6 +383,80 @@ const TREND_DATA: TrendingItem[] = [
       { month: 'Led', value: 220 },
       { month: 'Úno', value: 245 }
     ]
+  },
+  {
+    id: 'claude-code-cli',
+    name: 'Claude Code CLI',
+    category: 'AI Development',
+    growth: 'rising',
+    growthPercent: 267,
+    description: 'Anthropic\'s official CLI for Claude with MCP support, 200K context window, and agentic coding capabilities.',
+    relatedSkills: ['Claude CLI', 'MCP Protocol', 'TypeScript', 'Terminal', 'Git'],
+    maturity: 'growing',
+    opportunities: 95,
+    salary: '75k-140k',
+    why: 'Official Anthropic CLI, MCP integration, premium coding agent, enterprise ready',
+    resources: [
+      { name: 'Claude Code', url: 'https://claude.com/claude-code' },
+      { name: 'MCP Registry', url: 'https://github.com/modelcontextprotocol' }
+    ],
+    growthHistory: [
+      { month: 'Zář', value: 45 },
+      { month: 'Říj', value: 89 },
+      { month: 'Lis', value: 145 },
+      { month: 'Pro', value: 198 },
+      { month: 'Led', value: 235 },
+      { month: 'Úno', value: 267 }
+    ]
+  },
+  {
+    id: 'openai-codex',
+    name: 'OpenAI Codex',
+    category: 'AI Development',
+    growth: 'rising',
+    growthPercent: 198,
+    description: 'OpenAI\'s AI system that translates natural language to code, powering GitHub Copilot and standalone Codex API.',
+    relatedSkills: ['Python', 'JavaScript', 'API Integration', 'Code Generation', 'GitHub Copilot'],
+    maturity: 'maturing',
+    opportunities: 88,
+    salary: '70k-125k',
+    why: 'Production-grade code generation, GitHub Copilot foundation, enterprise adoption',
+    resources: [
+      { name: 'OpenAI Codex', url: 'https://openai.com/blog/codex' },
+      { name: 'Copilot Docs', url: 'https://docs.github.com/copilot' }
+    ],
+    growthHistory: [
+      { month: 'Led', value: 55 },
+      { month: 'Úno', value: 72 },
+      { month: 'Bře', value: 95 },
+      { month: 'Dub', value: 125 },
+      { month: 'Kvě', value: 156 },
+      { month: 'Čer', value: 178 },
+      { month: 'Čvc', value: 198 }
+    ]
+  },
+  {
+    id: 'gemini-cli',
+    name: 'Gemini CLI',
+    category: 'AI Development',
+    growth: 'rising',
+    growthPercent: 312,
+    description: 'Google\'s free CLI tool with 1M context window, native MCP support, and Gemini model integration.',
+    relatedSkills: ['Gemini', 'Google Cloud', 'CLI', '1M Context', 'Free Tier'],
+    maturity: 'emerging',
+    opportunities: 82,
+    salary: '65k-115k',
+    why: '1000 free requests/day, 1M context, Google ecosystem integration, completely free',
+    resources: [
+      { name: 'GitHub Repo', url: 'https://github.com/google-gemini/gemini-cli' },
+      { name: 'Gemini API', url: 'https://ai.google.dev/gemini-api' }
+    ],
+    growthHistory: [
+      { month: 'Lis', value: 35 },
+      { month: 'Pro', value: 78 },
+      { month: 'Led', value: 156 },
+      { month: 'Úno', value: 312 }
+    ]
   }
 ];
 
