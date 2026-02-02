@@ -16,11 +16,14 @@ interface FamilyTrustTrackerProps {
   className?: string;
 }
 
+const MAX_VISIBLE_MEMBERS = 12;
+
 const FamilyTrustTracker: React.FC<FamilyTrustTrackerProps> = ({ className = '' }) => {
   const [members, setMembers] = useState<FamilyMember[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
+  const [showAllModal, setShowAllModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
   const [newMember, setNewMember] = useState<Partial<FamilyMember>>({
     role: 'parent',
@@ -217,7 +220,7 @@ const FamilyTrustTracker: React.FC<FamilyTrustTrackerProps> = ({ className = '' 
 
                 {/* Members Preview */}
                 <div className="d-flex align-items-center gap-3 flex-wrap justify-content-center">
-                  {members.slice(0, 5).map(member => {
+                  {members.slice(0, MAX_VISIBLE_MEMBERS).map(member => {
                     const role = FAMILY_ROLES.find(r => r.key === member.role);
                     const trustColor = getTrustColor(member.trustInMe);
                     const needsAttention = member.trustInMe < 50 || member.relationshipQuality < 50;
@@ -283,7 +286,7 @@ const FamilyTrustTracker: React.FC<FamilyTrustTrackerProps> = ({ className = '' 
                             <ProgressBar
                               now={member.trustInMe}
                               style={{ height: '5px', backgroundColor: 'rgba(255,255,255,0.1)' }}
-                              variant={member.trustInMe >= 70 ? 'success' : member.trustInMe >= 40 ? 'warning' : 'danger'}
+                          variant={member.trustInMe >= 70 ? 'success' : member.trustInMe >= 40 ? 'warning' : 'danger'}
                             />
                           </div>
                         </div>
@@ -291,9 +294,14 @@ const FamilyTrustTracker: React.FC<FamilyTrustTrackerProps> = ({ className = '' 
                     );
                   })}
 
-                  {members.length > 5 && (
-                    <Badge bg="secondary" className="px-2 py-1">
-                      +{members.length - 5}
+                  {members.length > MAX_VISIBLE_MEMBERS && (
+                    <Badge 
+                      bg="info" 
+                      className="px-2 py-1 cursor-pointer"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setShowAllModal(true)}
+                    >
+                      +{members.length - MAX_VISIBLE_MEMBERS} dalších
                     </Badge>
                   )}
                 </div>
@@ -718,6 +726,69 @@ const FamilyTrustTracker: React.FC<FamilyTrustTrackerProps> = ({ className = '' 
             Přidat událost
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* Show All Family Members Modal */}
+      <Modal show={showAllModal} onHide={() => setShowAllModal(false)} size="xl" centered>
+        <Modal.Header closeButton className="bg-primary text-white">
+          <Modal.Title>👨‍👩‍👧‍👦 Celá rodina ({members.length})</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-light p-4">
+          <Row className="g-3">
+            {members.map(member => {
+              const role = FAMILY_ROLES.find(r => r.key === member.role);
+              const trustColor = getTrustColor(member.trustInMe);
+              
+              return (
+                <Col xs={12} sm={6} md={4} lg={3} key={member.id}>
+                  <Card 
+                    className="h-100 cursor-pointer border-0 shadow-sm hover-shadow"
+                    onClick={() => { setSelectedMember(member); setShowAllModal(false); setShowModal(true); }}
+                  >
+                    <Card.Body className="d-flex flex-column align-items-center p-3 text-center">
+                      <div
+                        className="rounded-circle d-flex align-items-center justify-content-center mb-2"
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          background: `linear-gradient(135deg, ${trustColor}40, ${trustColor}20)`,
+                          border: `3px solid ${trustColor}`,
+                          fontSize: '1.5rem'
+                        }}
+                      >
+                        {member.avatar || role?.icon || '👤'}
+                      </div>
+                      <h6 className="mb-1 fw-bold">{member.name}</h6>
+                      <small className="text-muted">{role?.icon} {role?.label}</small>
+                      <div className="mt-2 w-100">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Důvěra ve mě</small>
+                          <small className="fw-bold" style={{ color: trustColor }}>{member.trustInMe}%</small>
+                        </div>
+                        <ProgressBar
+                          now={member.trustInMe}
+                          variant={member.trustInMe >= 70 ? 'success' : member.trustInMe >= 40 ? 'warning' : 'danger'}
+                          style={{ height: '8px' }}
+                        />
+                      </div>
+                      <div className="mt-2 w-100">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Kvalita vztahu</small>
+                          <small className="fw-bold">{member.relationshipQuality}%</small>
+                        </div>
+                        <ProgressBar
+                          now={member.relationshipQuality}
+                          variant="info"
+                          style={{ height: '8px' }}
+                        />
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Modal.Body>
       </Modal>
     </>
   );

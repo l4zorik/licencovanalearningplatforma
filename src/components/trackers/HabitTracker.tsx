@@ -17,10 +17,13 @@ interface HabitTrackerProps {
   className?: string;
 }
 
+const MAX_VISIBLE_HABITS = 12;
+
 const HabitTracker: React.FC<HabitTrackerProps> = ({ className = '' }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showAddHabitModal, setShowAddHabitModal] = useState(false);
+  const [showAllModal, setShowAllModal] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
   const [newEntry, setNewEntry] = useState<Partial<HabitEntry>>({
     occurred: false,
@@ -227,7 +230,7 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ className = '' }) => {
 
                 {/* Habits */}
                 <div className="d-flex align-items-center gap-3 flex-wrap justify-content-center">
-                  {habits.slice(0, 5).map(habit => {
+                  {habits.slice(0, MAX_VISIBLE_HABITS).map(habit => {
                     const todayEntry = getTodayEntry(habit);
                     const isCleanToday = !todayEntry || !todayEntry.occurred || todayEntry.resisted;
                     const progressToTarget = Math.min(100, (habit.currentStreak / habit.targetDaysClean) * 100);
@@ -285,18 +288,29 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ className = '' }) => {
                               style={{ height: '6px', backgroundColor: 'rgba(255,255,255,0.1)' }}
                             />
                           </div>
-                          {isCleanToday ? (
-                            <FiCheck className="text-success" size={14} />
-                          ) : (
-                            <FiAlertTriangle className="text-danger" size={14} />
-                          )}
-                        </div>
-                      </OverlayTrigger>
-                    );
-                  })}
-                </div>
+                            {isCleanToday ? (
+                              <FiCheck className="text-success" size={14} />
+                            ) : (
+                              <FiAlertTriangle className="text-danger" size={14} />
+                            )}
+                          </div>
+                        </OverlayTrigger>
+                      );
+                    })}
 
-                {/* Stats Summary */}
+                    {habits.length > MAX_VISIBLE_HABITS && (
+                      <Badge 
+                        bg="info" 
+                        className="px-2 py-1 cursor-pointer"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => setShowAllModal(true)}
+                      >
+                        +{habits.length - MAX_VISIBLE_HABITS} dalších
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Stats Summary */}
                 <div className="d-none d-xl-flex align-items-center gap-3">
                   <Badge bg="dark" className="border border-success px-2 py-1">
                     <FiCheck className="me-1" /> {stats.cleanToday}/{habits.length}
@@ -584,6 +598,62 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ className = '' }) => {
             Přidat závislost
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* Show All Habits Modal */}
+      <Modal show={showAllModal} onHide={() => setShowAllModal(false)} size="xl" centered>
+        <Modal.Header closeButton className="bg-dark border-secondary">
+          <Modal.Title className="text-white">🔥 Všechny návyky ({habits.length})</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-light p-4">
+          <Row className="g-3">
+            {habits.map(habit => {
+              const todayEntry = getTodayEntry(habit);
+              const isCleanToday = !todayEntry || !todayEntry.occurred || todayEntry.resisted;
+              const category = HABIT_CATEGORIES.find(c => c.key === habit.category);
+              
+              return (
+                <Col xs={12} sm={6} md={4} lg={3} key={habit.id}>
+                  <Card 
+                    className="h-100 cursor-pointer border-0 shadow-sm hover-shadow"
+                    onClick={() => { setSelectedHabit(habit); setShowAllModal(false); setShowModal(true); }}
+                  >
+                    <Card.Body className="d-flex flex-column align-items-center p-3 text-center">
+                      <div 
+                        style={{ 
+                          fontSize: '2rem',
+                          filter: isCleanToday ? 'none' : 'grayscale(50%)',
+                          opacity: isCleanToday ? 1 : 0.6
+                        }}
+                      >
+                        {habit.icon}
+                      </div>
+                      <h6 className="mb-1 fw-bold mt-2">{habit.name}</h6>
+                      <small className="text-muted">{category?.icon} {category?.label}</small>
+                      <div className="mt-2 d-flex gap-2">
+                        <Badge bg={isCleanToday ? 'success' : 'danger'}>
+                          {isCleanToday ? '✓ Čistý' : '⚠ Relaps'}
+                        </Badge>
+                      </div>
+                      <div className="mt-2 w-100">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Streak</small>
+                          <small className="fw-bold">{habit.currentStreak}d</small>
+                        </div>
+                        <ProgressBar
+                          now={Math.min(100, (habit.currentStreak / habit.targetDaysClean) * 100)}
+                          variant="success"
+                          style={{ height: '8px' }}
+                        />
+                        <small className="text-muted">{habit.targetDaysClean} dní cíl</small>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Modal.Body>
       </Modal>
     </>
   );

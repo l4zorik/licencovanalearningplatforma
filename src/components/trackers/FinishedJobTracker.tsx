@@ -20,10 +20,13 @@ interface FinishedJobTrackerProps {
   className?: string;
 }
 
+const MAX_VISIBLE_JOBS = 12;
+
 const FinishedJobTracker: React.FC<FinishedJobTrackerProps> = ({ className = '' }) => {
   const [jobs, setJobs] = useState<FinishedJob[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAllModal, setShowAllModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState<FinishedJob | null>(null);
   const [expandedMilestones, setExpandedMilestones] = useState<string[]>([]);
   const [newJob, setNewJob] = useState<Partial<FinishedJob>>({
@@ -349,7 +352,7 @@ const FinishedJobTracker: React.FC<FinishedJobTrackerProps> = ({ className = '' 
 
                 {/* Jobs Preview */}
                 <div className="d-flex align-items-center gap-3 flex-wrap justify-content-center">
-                  {activeJobs.slice(0, 4).map(job => {
+                  {activeJobs.slice(0, MAX_VISIBLE_JOBS).map(job => {
                     const jobType = JOB_TYPES.find(t => t.key === job.type);
                     const isOverdue = job.dueDate && new Date(job.dueDate) < new Date() && job.status !== 'completed';
                     const daysLeft = job.dueDate ? getDaysUntilDue(job.dueDate) : null;
@@ -432,9 +435,14 @@ const FinishedJobTracker: React.FC<FinishedJobTrackerProps> = ({ className = '' 
                     );
                   })}
 
-                  {activeJobs.length > 4 && (
-                    <Badge bg="secondary" className="px-2 py-1">
-                      +{activeJobs.length - 4}
+                  {activeJobs.length > MAX_VISIBLE_JOBS && (
+                    <Badge 
+                      bg="info" 
+                      className="px-2 py-1 cursor-pointer"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setShowAllModal(true)}
+                    >
+                      +{activeJobs.length - MAX_VISIBLE_JOBS} dalších
                     </Badge>
                   )}
                 </div>
@@ -940,6 +948,75 @@ const FinishedJobTracker: React.FC<FinishedJobTrackerProps> = ({ className = '' 
             Přidat práci
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* Show All Jobs Modal */}
+      <Modal show={showAllModal} onHide={() => setShowAllModal(false)} size="xl" centered>
+        <Modal.Header closeButton className="bg-primary text-white">
+          <Modal.Title>💼 Všechny práce ({activeJobs.length})</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-light p-4">
+          <Row className="g-3">
+            {activeJobs.map(job => {
+              const jobType = JOB_TYPES.find(t => t.key === job.type);
+              const jobStatus = JOB_STATUSES.find(s => s.key === job.status);
+              
+              return (
+                <Col xs={12} sm={6} md={4} lg={3} key={job.id}>
+                  <Card 
+                    className="h-100 cursor-pointer border-0 shadow-sm hover-shadow"
+                    onClick={() => { setSelectedJob(job); setShowAllModal(false); setShowModal(true); }}
+                  >
+                    <Card.Body className="d-flex flex-column p-3">
+                      <div className="d-flex align-items-center gap-2 mb-2">
+                        <div
+                          className="rounded d-flex align-items-center justify-content-center"
+                          style={{
+                            width: '40px',
+                            height: '40px',
+                            background: `linear-gradient(135deg, ${jobType?.color}40, ${jobType?.color}20)`,
+                            border: `2px solid ${job.status === 'completed' ? '#4CAF50' : getPriorityColor(job.priority)}`
+                          }}
+                        >
+                          {jobType?.icon}
+                        </div>
+                        <div className="flex-grow-1">
+                          <h6 className="mb-0 fw-bold" style={{ fontSize: '0.9rem' }}>{job.title}</h6>
+                          <small className="text-muted">{job.client || 'Bez klienta'}</small>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-2">
+                        <Badge 
+                          bg={job.status === 'completed' ? 'success' : job.status === 'in_progress' ? 'primary' : 'secondary'}
+                          style={{ fontSize: '0.7rem' }}
+                        >
+                          {jobStatus?.icon} {jobStatus?.label}
+                        </Badge>
+                      </div>
+
+                      <div className="mt-auto">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Progress</small>
+                          <small className="fw-bold">{job.progress}%</small>
+                        </div>
+                        <ProgressBar
+                          now={job.progress}
+                          variant={job.progress === 100 ? 'success' : job.progress >= 50 ? 'warning' : 'danger'}
+                          style={{ height: '8px' }}
+                        />
+                        <div className="d-flex justify-content-between mt-1">
+                          <small className="text-muted">{job.hoursSpent}h / {job.totalHoursEstimate}h</small>
+                          {job.payment && <small className="text-success fw-bold">{formatCurrency(job.payment)}</small>}
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Modal.Body>
       </Modal>
     </>
   );

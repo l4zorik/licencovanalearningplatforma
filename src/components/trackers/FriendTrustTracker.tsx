@@ -18,11 +18,14 @@ interface FriendTrustTrackerProps {
   className?: string;
 }
 
+const MAX_VISIBLE_FRIENDS = 12;
+
 const FriendTrustTracker: React.FC<FriendTrustTrackerProps> = ({ className = '' }) => {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
+  const [showAllModal, setShowAllModal] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
   const [newFriend, setNewFriend] = useState<Partial<Friend>>({
     category: 'regular',
@@ -238,7 +241,7 @@ const FriendTrustTracker: React.FC<FriendTrustTrackerProps> = ({ className = '' 
 
                 {/* Friends Preview */}
                 <div className="d-flex align-items-center gap-3 flex-wrap justify-content-center">
-                  {sortedFriends.slice(0, 5).map(friend => {
+                  {sortedFriends.slice(0, MAX_VISIBLE_FRIENDS).map(friend => {
                     const trustColor = getTrustColor(friend.trustScore);
                     const category = FRIEND_CATEGORIES.find(c => c.key === friend.category);
 
@@ -298,9 +301,14 @@ const FriendTrustTracker: React.FC<FriendTrustTrackerProps> = ({ className = '' 
                     );
                   })}
 
-                  {friends.length > 5 && (
-                    <Badge bg="secondary" className="px-2 py-1">
-                      +{friends.length - 5}
+                  {friends.length > MAX_VISIBLE_FRIENDS && (
+                    <Badge 
+                      bg="info" 
+                      className="px-2 py-1 cursor-pointer"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setShowAllModal(true)}
+                    >
+                      +{friends.length - MAX_VISIBLE_FRIENDS} dalších
                     </Badge>
                   )}
                 </div>
@@ -748,6 +756,62 @@ const FriendTrustTracker: React.FC<FriendTrustTrackerProps> = ({ className = '' 
             Přidat událost
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* Show All Friends Modal */}
+      <Modal show={showAllModal} onHide={() => setShowAllModal(false)} size="xl" centered>
+        <Modal.Header closeButton className="bg-primary text-white">
+          <Modal.Title>👥 Všichni přátelé ({friends.length})</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-light p-4">
+          <Row className="g-3">
+            {sortedFriends.map(friend => {
+              const trustColor = getTrustColor(friend.trustScore);
+              const category = FRIEND_CATEGORIES.find(c => c.key === friend.category);
+              
+              return (
+                <Col xs={12} sm={6} md={4} lg={3} key={friend.id}>
+                  <Card 
+                    className="h-100 cursor-pointer border-0 shadow-sm hover-shadow"
+                    onClick={() => { setSelectedFriend(friend); setShowAllModal(false); setShowModal(true); }}
+                  >
+                    <Card.Body className="d-flex flex-column align-items-center p-3 text-center">
+                      <div
+                        className="rounded-circle d-flex align-items-center justify-content-center mb-2"
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          background: `linear-gradient(135deg, ${trustColor}40, ${trustColor}20)`,
+                          border: `3px solid ${trustColor}`,
+                          fontSize: '1.5rem'
+                        }}
+                      >
+                        {friend.avatar || '👤'}
+                      </div>
+                      <h6 className="mb-1 fw-bold">{friend.name}</h6>
+                      <small className="text-muted">{category?.icon} {category?.label}</small>
+                      <div className="mt-2 w-100">
+                        <div className="d-flex justify-content-between mb-1">
+                          <small>Důvěra</small>
+                          <small className="fw-bold" style={{ color: trustColor }}>{friend.trustScore}%</small>
+                        </div>
+                        <ProgressBar
+                          now={friend.trustScore}
+                          variant={friend.trustScore >= 70 ? 'success' : friend.trustScore >= 40 ? 'warning' : 'danger'}
+                          style={{ height: '8px' }}
+                        />
+                      </div>
+                      <div className="mt-2 d-flex gap-3 small text-muted">
+                        <span>🤝 {friend.timesHelped}</span>
+                        <span>😔 {friend.timesLetDown}</span>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Modal.Body>
       </Modal>
     </>
   );
