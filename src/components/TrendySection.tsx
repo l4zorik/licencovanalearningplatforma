@@ -8,6 +8,11 @@ type TrendingItem = {
   id: string;
   name: string;
   category: string;
+  subcategory?: string;
+  previousNames?: string[];
+  openclawSkills?: string[];
+  cliCommands?: { command: string; description: string }[];
+  installationUrl?: string;
   growth: 'rising' | 'stable' | 'declining';
   growthPercent: number;
   description: string;
@@ -329,6 +334,55 @@ const TREND_DATA: TrendingItem[] = [
       { month: 'Čer', value: 110 },
       { month: 'Čvc', value: 123 }
     ]
+  },
+  {
+    id: 'openclaw-ai-assistant',
+    name: '🦞 Openclaw',
+    category: 'AI Development',
+    subcategory: 'AI Assistants',
+    previousNames: ['Clawdbot', 'Moltbot'],
+    growth: 'rising',
+    growthPercent: 245,
+    description: 'Self-hosted personal AI assistant that runs locally and integrates with messaging apps for 24/7 automation.',
+    relatedSkills: ['Node.js', 'CLI', 'LLM Integration', 'Automation', 'Self-hosting', 'WhatsApp', 'Telegram', 'Discord'],
+    openclawSkills: [
+      'Openclaw Installation & Setup',
+      'Gateway Configuration',
+      'Channel Integration',
+      'Skills System (ClawdHub)',
+      'Pairing & Security',
+      'Automation & Cron Jobs',
+      'Voice Interaction',
+      'Canvas Visual Workspace'
+    ],
+    cliCommands: [
+      { command: 'curl -fsSL https://openclaw.ai/install.sh | bash', description: 'Install Openclaw CLI' },
+      { command: 'openclaw onboard --install-daemon', description: 'Run onboarding wizard' },
+      { command: 'openclaw dashboard', description: 'Open Control UI' },
+      { command: 'openclaw gateway status', description: 'Check gateway status' },
+      { command: 'clawdhub install <skill>', description: 'Install community skills' },
+      { command: 'openclaw security audit --deep', description: 'Security audit' }
+    ],
+    installationUrl: 'https://openclaw.ai/',
+    maturity: 'growing',
+    opportunities: 88,
+    salary: 'Open Source',
+    why: 'Privacy-first AI, self-hosted, 700+ skills, 50+ integrations, 24/7 availability',
+    resources: [
+      { name: 'Official Website', url: 'https://openclaw.ai/' },
+      { name: 'GitHub Repository', url: 'https://github.com/openclaw/openclaw' },
+      { name: 'Documentation', url: 'https://docs.openclaw.ai/' },
+      { name: 'ClawdHub Skills Registry', url: 'https://clawdhub.com/' }
+    ],
+    growthHistory: [
+      { month: 'Srp', value: 45 },
+      { month: 'Zář', value: 78 },
+      { month: 'Říj', value: 125 },
+      { month: 'Lis', value: 168 },
+      { month: 'Pro', value: 195 },
+      { month: 'Led', value: 220 },
+      { month: 'Úno', value: 245 }
+    ]
   }
 ];
 
@@ -488,12 +542,35 @@ export default function TrendySection({ show, onHide }: Props) {
           <div className="border-top bg-light p-4">
             <Row>
               <Col md={8}>
-                <div className="d-flex align-items-center gap-3 mb-3">
+                <div className="d-flex align-items-center gap-3 mb-2 flex-wrap">
                   <h4 className="fw-bold mb-0">{selectedTrend.name}</h4>
                   <Badge bg={getMaturityColor(selectedTrend.maturity)} className="fs-6">{selectedTrend.maturity}</Badge>
                   <Badge bg="success" className="fs-6">📈 +{selectedTrend.growthPercent}% růst</Badge>
                 </div>
                 
+                {selectedTrend.subcategory && (
+                  <div className="mb-2">
+                    <Badge bg="info" className="me-2">📁 {selectedTrend.subcategory}</Badge>
+                  </div>
+                )}
+
+                {selectedTrend.previousNames && selectedTrend.previousNames.length > 0 && (
+                  <div className="name-evolution mb-3">
+                    <small className="text-muted me-2">Evolution:</small>
+                    <div className="d-flex align-items-center gap-2 flex-wrap">
+                      {selectedTrend.previousNames.map((name, idx) => (
+                        <Badge key={name} bg="secondary" className="small">
+                          {name}
+                        </Badge>
+                      ))}
+                      <span className="text-muted small">→</span>
+                      <Badge bg="primary" className="small fw-bold">
+                        {selectedTrend.name.replace('🦞 ', '')}
+                      </Badge>
+                    </div>
+                  </div>
+                )}
+
                 <p className="lead mb-3">{selectedTrend.description}</p>
 
                 <Row className="mb-4">
@@ -633,6 +710,43 @@ export default function TrendySection({ show, onHide }: Props) {
                     ))}
                   </div>
                 </div>
+
+                {selectedTrend.openclawSkills && selectedTrend.openclawSkills.length > 0 && (
+                  <div className="mb-3">
+                    <h6 className="fw-bold mb-2">🎯 Openclaw Skills (700+ dostupných):</h6>
+                    <div className="d-flex flex-wrap gap-2 mb-3">
+                      {selectedTrend.openclawSkills.map(skill => (
+                        <Badge key={skill} bg="primary" className="p-2" style={{ cursor: 'pointer' }}>
+                          ⭐ {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="d-flex flex-wrap gap-2">
+                      <Button variant="outline-primary" size="sm" href="https://clawdhub.com/" target="_blank">
+                        🛒 ClawdHub Skills Registry
+                      </Button>
+                      <Button variant="outline-secondary" size="sm" href="https://github.com/VoltAgent/awesome-openclaw-skills" target="_blank">
+                        📦 Awesome Openclaw Skills (GitHub)
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {selectedTrend.cliCommands && selectedTrend.cliCommands.length > 0 && (
+                  <div className="mb-3">
+                    <h6 className="fw-bold mb-2">💻 CLI Commands:</h6>
+                    <div className="bg-dark rounded p-2">
+                      {selectedTrend.cliCommands.map((cmd, idx) => (
+                        <div key={idx} className="mb-2">
+                          <code className="d-block text-light small" style={{ fontSize: '0.75rem' }}>
+                            {cmd.command}
+                          </code>
+                          <small className="text-muted">→ {cmd.description}</small>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 
                 <div>
                   <h6 className="fw-bold mb-2">📚 Zdroje:</h6>
