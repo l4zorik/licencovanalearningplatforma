@@ -433,6 +433,20 @@ const OPENCLAW_WORKFLOW_STEPS: OpenClawWorkflowStep[] = [
     xpReward: 200
   },
   {
+    id: 'vps-selection',
+    title: '🖥️ VPS Selection',
+    description: 'Choose and configure cloud server',
+    skills: [
+      { name: 'DigitalOcean', icon: '🌊', xp: 150 },
+      { name: 'Hetzner', icon: '🇩🇪', xp: 150 },
+      { name: 'AWS/Linode', icon: '☁️', xp: 140 },
+      { name: 'SSH Setup', icon: '🔑', xp: 120 },
+      { name: 'Firewall Config', icon: '🛡️', xp: 100 }
+    ],
+    xpReward: 400,
+    isMilestone: true
+  },
+  {
     id: 'openclaw-install',
     title: '⬇️ OpenClaw Installation',
     description: 'Install CLI and verify setup',
