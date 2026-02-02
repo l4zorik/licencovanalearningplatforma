@@ -457,6 +457,131 @@ const TREND_DATA: TrendingItem[] = [
       { month: 'Led', value: 156 },
       { month: 'Úno', value: 312 }
     ]
+  },
+  {
+    id: 'axiom-smart-money',
+    name: 'Axiom Smart Money',
+    category: 'Crypto & Trading',
+    growth: 'rising',
+    growthPercent: 285,
+    description: 'Platform for tracking smart money flows, whale wallet analysis, and real-time on-chain data.',
+    relatedSkills: ['On-Chain Analysis', 'Wallet Tracking', 'DeFi', 'Data Visualization', 'Crypto Trading'],
+    maturity: 'growing',
+    opportunities: 78,
+    salary: 'Variable',
+    why: 'Follow smart money, real-time alerts, whale tracking, copy trading signals',
+    resources: [
+      { name: 'Axiom', url: 'https://axiom.xyz/' },
+      { name: 'Documentation', url: 'https://docs.axiom.xyz/' }
+    ],
+    growthHistory: [
+      { month: 'Říj', value: 55 },
+      { month: 'Lis', value: 98 },
+      { month: 'Pro', value: 165 },
+      { month: 'Led', value: 220 },
+      { month: 'Úno', value: 285 }
+    ]
+  },
+  {
+    id: 'pump-fun-token-launch',
+    name: 'Pump.fun Launchpad',
+    category: 'Crypto & Trading',
+    growth: 'rising',
+    growthPercent: 425,
+    description: 'Fair launch platform for meme coins with bonding curves, instant liquidity, and viral mechanics.',
+    relatedSkills: ['Solana', 'Token Creation', 'DeFi', 'Bonding Curves', 'Community Building'],
+    maturity: 'growing',
+    opportunities: 92,
+    salary: 'Variable',
+    why: 'No rug pull mechanics, fair distribution, instant listings, viral token launches',
+    resources: [
+      { name: 'Pump.fun', url: 'https://pump.fun/' },
+      { name: 'How to Launch', url: 'https://docs.pump.fun/' }
+    ],
+    growthHistory: [
+      { month: 'Lis', value: 25 },
+      { month: 'Pro', value: 78 },
+      { month: 'Led', value: 185 },
+      { month: 'Úno', value: 425 }
+    ]
+  },
+  {
+    id: 'polymarket-prediction',
+    name: 'Polymarket Prediction Markets',
+    category: 'Betting & Prediction',
+    growth: 'rising',
+    growthPercent: 356,
+    description: 'Decentralized prediction market platform for forecasting real-world events with conditional tokens.',
+    relatedSkills: ['Prediction Markets', 'Conditional Tokens', 'Polygon', 'Market Making', 'Information Markets'],
+    maturity: 'growing',
+    opportunities: 85,
+    salary: 'Variable',
+    why: 'Real-money markets, global events, conditional NFTs, information arbitrage',
+    resources: [
+      { name: 'Polymarket', url: 'https://polymarket.com/' },
+      { name: 'Docs', url: 'https://docs.polymarket.com/' }
+    ],
+    growthHistory: [
+      { month: 'Zář', value: 35 },
+      { month: 'Říj', value: 68 },
+      { month: 'Lis', value: 125 },
+      { month: 'Pro', value: 198 },
+      { month: 'Led', value: 285 },
+      { month: 'Úno', value: 356 }
+    ]
+  },
+  {
+    id: 'meme-coin-trading',
+    name: 'Meme Coin Trading',
+    category: 'Crypto & Trading',
+    growth: 'rising',
+    growthPercent: 178,
+    description: 'High-volatility trading of community-driven cryptocurrencies with viral potential and rapid price action.',
+    relatedSkills: ['Technical Analysis', 'Sentiment Analysis', 'Risk Management', 'Crypto Wallets', 'DEX Trading'],
+    maturity: 'maturing',
+    opportunities: 88,
+    salary: 'Variable',
+    why: 'High leverage opportunities, community-driven gains, 24/7 markets, low entry barrier',
+    resources: [
+      { name: 'DEX Screener', url: 'https://dexscreener.com/' },
+      { name: 'Raydium', url: 'https://raydium.io/' },
+      { name: 'DexScreener', url: 'https://dexscreener.com/' }
+    ],
+    growthHistory: [
+      { month: 'Srp', value: 65 },
+      { month: 'Zář', value: 78 },
+      { month: 'Říj', value: 95 },
+      { month: 'Lis', value: 125 },
+      { month: 'Pro', value: 145 },
+      { month: 'Led', value: 158 },
+      { month: 'Úno', value: 178 }
+    ]
+  },
+  {
+    id: 'blur-NFT-trading',
+    name: 'Blur NFT Analytics',
+    category: 'Crypto & Trading',
+    growth: 'stable',
+    growthPercent: 95,
+    description: 'Professional NFT trading platform with real-time floor pricing, portfolio tracking, and market intelligence.',
+    relatedSkills: ['NFT Analysis', 'Floor Tracking', 'Portfolio Management', 'Market Data', 'Whale Tracking'],
+    maturity: 'established',
+    opportunities: 65,
+    salary: 'Variable',
+    why: 'Professional tools, real-time data, portfolio analytics, floor monitoring',
+    resources: [
+      { name: 'Blur', url: 'https://blur.io/' },
+      { name: 'Market Data', url: 'https://www.blur.io/market' }
+    ],
+    growthHistory: [
+      { month: 'Srp', value: 85 },
+      { month: 'Zář', value: 88 },
+      { month: 'Říj', value: 90 },
+      { month: 'Lis', value: 92 },
+      { month: 'Pro', value: 94 },
+      { month: 'Led', value: 95 },
+      { month: 'Úno', value: 95 }
+    ]
   }
 ];
 
