@@ -35,13 +35,42 @@
   --leading-relaxed: 1.625;
   --leading-loose: 2;
 
-  /* === EXTENDED COLOR PALETTE === */
-  
-  /* Brand Colors */
-  --color-brand-primary: #6366f1;
-  --color-brand-secondary: #8b5cf6;
-  --color-brand-tertiary: #ec4899;
-  
+/* === ORANGE-RED-YELLOW BRAND COLORS (Landing Page) === */
+  --color-orange-primary: #FF6B00;
+  --color-orange-light: #FF8C32;
+  --color-orange-dark: #E55C00;
+  --color-red-primary: #EE0979;
+  --color-red-light: #FF4D8D;
+  --color-red-dark: #D40065;
+  --color-yellow-primary: #FEE140;
+  --color-yellow-light: #FFE566;
+  --color-yellow-dark: #EBC824;
+
+  /* Landing Page Gradients */
+  --gradient-landing-primary: linear-gradient(135deg, #FF6B00 0%, #EE0979 50%, #FEE140 100%);
+  --gradient-landing-fire: linear-gradient(135deg, #FF6B00 0%, #EE0979 100%);
+  --gradient-landing-sunset: linear-gradient(180deg, #FF6B00 0%, #EE0979 50%, #FEE140 100%);
+  --gradient-landing-glow: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(238, 9, 121, 0.15) 100%);
+  --gradient-landing-card: linear-gradient(180deg, rgba(255, 107, 0, 0.05) 0%, rgba(238, 9, 121, 0.02) 100%);
+
+  /* Landing Page Glow Effects */
+  --glow-landing-orange: 0 0 40px rgba(255, 107, 0, 0.4);
+  --glow-landing-red: 0 0 40px rgba(238, 9, 121, 0.35);
+  --glow-landing-yellow: 0 0 30px rgba(254, 225, 64, 0.5);
+  --glow-landing-orange-subtle: 0 0 20px rgba(255, 107, 0, 0.25);
+
+  /* Landing Page Specific */
+  --landing-bg-dark: #0A0A0F;
+  --landing-bg-card: #14141F;
+  --landing-bg-card-hover: #1A1A2E;
+  --landing-border-subtle: rgba(255, 107, 0, 0.1);
+  --landing-text-primary: #FFFFFF;
+  --landing-text-secondary: rgba(255, 255, 255, 0.7);
+  --landing-text-muted: rgba(255, 255, 255, 0.5);
+  --landing-accent-orange: #FF6B00;
+  --landing-accent-red: #EE0979;
+  --landing-accent-yellow: #FEE140;
+
   /* Gradient Library */
   --gradient-cosmic: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --gradient-sunset: linear-gradient(135deg, #fa709a 0%, #fee140 100%);

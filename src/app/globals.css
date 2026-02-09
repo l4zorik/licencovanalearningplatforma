@@ -187,3 +187,31 @@ h6 {
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
 }
+
+/* ============================================================================
+   LANDING PAGE SPECIFIC STYLES
+   ============================================================================ */
+
+.landing-body {
+  margin: 0;
+  padding: 0;
+  background-color: #0A0A0F;
+  color: #FFFFFF;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.landing-body *, 
+.landing-body *::before, 
+.landing-body *::after {
+  box-sizing: border-box;
+}
+
+.landing-body html {
+  scroll-behavior: smooth;
+}
+
+.landing-body body {
+  overflow-x: hidden;
+}
