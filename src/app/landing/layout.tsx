@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import "../styles/landing.css";
 
 export const metadata: Metadata = {
   title: "Tomas Learning Platform - Vzdělávej se, roste, uspi se",

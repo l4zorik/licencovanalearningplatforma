@@ -23,7 +23,8 @@ import {
   checkAchievements,
   formatDate,
 } from '@/lib/life-missions/utils';
-import { MissionRoadmap, PhaseAccordion, MissionJournal } from '@/components/life-missions';
+import { MISSION_TEMPLATES } from '@/data/life-missions/templates';
+import { MissionRoadmap, PhaseAccordion, MissionJournal, MissionSettingsModal } from '@/components/life-missions';
 
 const DEFAULT_STREAK: LifeMissionStreak = { currentStreak: 0, longestStreak: 0, lastActivityDate: '' };
 
@@ -39,6 +40,7 @@ export default function MissionDetailPage() {
   const [showCelebration, setShowCelebration] = useState<string | null>(null);
   const [targetDate, setTargetDate] = useState('');
   const [editingPriority, setEditingPriority] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   // Load
   useEffect(() => {
@@ -155,6 +157,46 @@ export default function MissionDetailPage() {
     if (confirm('Opravdu chceš opustit tuto misi? Tuto akci nelze vrátit.')) {
       setMissions(prev => prev.map(m => m.id === missionId ? { ...m, status: 'abandoned' } : m));
     }
+  }, [missionId]);
+
+  const handleUpdateOptionalCategories = useCallback((categories: string[]) => {
+    setMissions(prev => prev.map(m => {
+      if (m.id !== missionId) return m;
+      
+      // Recalculate phases with new optional steps
+      const template = MISSION_TEMPLATES.find(t => t.id === m.templateId);
+      if (!template) return { ...m, enabledOptionalCategories: categories };
+      
+      // Rebuild phases with updated optional steps
+      const newPhases = template.phases.map((phase, phaseIdx) => {
+        const existingPhase = m.phases[phaseIdx];
+        const newSteps = phase.steps
+          .filter(step => !step.isOptional || categories.includes(step.category || ''))
+          .map((step, stepIdx) => {
+            // Try to find existing step to preserve completion state
+            const existingStep = existingPhase?.steps.find(s => s.title === step.title);
+            return {
+              ...step,
+              id: existingStep?.id || `step_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${stepIdx}`,
+              isCompleted: existingStep?.isCompleted || false,
+              completedAt: existingStep?.completedAt,
+              order: stepIdx,
+            };
+          });
+        
+        return {
+          ...phase,
+          id: existingPhase?.id || `phase_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${phaseIdx}`,
+          steps: newSteps,
+        };
+      });
+      
+      return {
+        ...m,
+        phases: newPhases,
+        enabledOptionalCategories: categories,
+      };
+    }));
   }, [missionId]);
 
   if (!isLoaded) {
@@ -396,6 +438,49 @@ export default function MissionDetailPage() {
             </div>
           </div>
 
+          {/* Optional Steps Settings */}
+          <div
+            style={{
+              borderRadius: '16px',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              padding: '16px 20px',
+              marginBottom: '16px',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>⚙️ Rozšířené kroky</span>
+              <Button
+                size="sm"
+                variant="outline-light"
+                onClick={() => setShowSettingsModal(true)}
+                style={{ borderRadius: '8px', fontSize: '0.75rem' }}
+              >
+                {(mission.enabledOptionalCategories?.length || 0) > 0 
+                  ? `${mission.enabledOptionalCategories?.length} aktivních` 
+                  : 'Nastavit'}
+              </Button>
+            </div>
+            {(mission.enabledOptionalCategories?.length || 0) > 0 && (
+              <div style={{ marginTop: '8px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                {mission.enabledOptionalCategories?.map(cat => (
+                  <Badge 
+                    key={cat} 
+                    bg="" 
+                    style={{ 
+                      background: `${mission.color}20`, 
+                      color: mission.color, 
+                      fontSize: '0.65rem',
+                      padding: '2px 6px'
+                    }}
+                  >
+                    {cat}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Actions */}
           {mission.status !== 'completed' && mission.status !== 'abandoned' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -431,6 +516,14 @@ export default function MissionDetailPage() {
           </Button>
         </Modal.Body>
       </Modal>
+
+      {/* Settings Modal */}
+      <MissionSettingsModal
+        show={showSettingsModal}
+        onHide={() => setShowSettingsModal(false)}
+        mission={mission}
+        onUpdateCategories={handleUpdateOptionalCategories}
+      />
     </Container>
   );
 }

@@ -9,3 +9,4 @@ export { default as MissionJournal } from './MissionJournal';
 export { default as CreateMissionModal } from './CreateMissionModal';
 export { default as MissionAchievements } from './MissionAchievements';
 export { default as ActiveMissionsWidget } from './ActiveMissionsWidget';
+export { default as MissionSettingsModal } from './MissionSettingsModal';

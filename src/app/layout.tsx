@@ -5,6 +5,8 @@ import "./globals.css";
 import "../styles/design-system.css";
 import { Providers } from "@/components/Providers";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SmartCoachProvider } from "@/components/smart-coach";
+import { SmartCoach } from "@/components/smart-coach";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +33,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
           <Providers>
-            {children}
+            <SmartCoachProvider>
+              {children}
+              <SmartCoach />
+            </SmartCoachProvider>
           </Providers>
         </ThemeProvider>
       </body>

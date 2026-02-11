@@ -21,6 +21,8 @@ export interface LifeMissionStep {
   notes?: string;
   dueDate?: string;
   order: number;
+  isOptional?: boolean;
+  category?: string;
 }
 
 export interface LifeMissionPhase {
@@ -60,6 +62,26 @@ export interface LifeMission {
   completedAt?: string;
   targetDate?: string;
   linkedGoalIds?: string[];
+  enabledOptionalCategories?: string[];
+}
+
+export interface LifeMissionTemplateStep {
+  title: string;
+  description: string;
+  type: StepType;
+  xpReward: number;
+  estimatedDays?: number;
+  isOptional?: boolean;
+  category?: string;
+}
+
+export interface LifeMissionTemplatePhase {
+  title: string;
+  description: string;
+  icon: string;
+  order: number;
+  bonusXp: number;
+  steps: LifeMissionTemplateStep[];
 }
 
 export interface LifeMissionTemplate {
@@ -69,7 +91,7 @@ export interface LifeMissionTemplate {
   category: MissionCategory;
   icon: string;
   color: string;
-  phases: Omit<LifeMissionPhase, 'id'>[];
+  phases: LifeMissionTemplatePhase[];
   totalXp: number;
   completionBonusXp: number;
   difficulty: number;

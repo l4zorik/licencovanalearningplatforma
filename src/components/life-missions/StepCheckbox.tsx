@@ -75,6 +75,19 @@ export default function StepCheckbox({ step, disabled = false, onToggle }: StepC
           <span style={{ fontSize: '0.7rem', color: typeConfig.color }}>
             {typeConfig.icon} {typeConfig.label}
           </span>
+          {step.isOptional && (
+            <Badge 
+              bg="" 
+              style={{ 
+                background: 'rgba(156, 39, 176, 0.2)', 
+                color: '#9C27B0', 
+                fontSize: '0.65rem',
+                padding: '1px 5px'
+              }}
+            >
+              ✨ volitelné
+            </Badge>
+          )}
         </div>
         {step.description && (
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', margin: '4px 0 0 0' }}>

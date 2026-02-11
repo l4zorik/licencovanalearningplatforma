@@ -43,6 +43,7 @@ export const CATEGORY_IMAGES: Record<string, string> = {
   'Zvířata': 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800',
   'Auta': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800',
   'AI': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
+  'Novinky': 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800',
 };
 
 export const GARDEN_ARTICLES = [

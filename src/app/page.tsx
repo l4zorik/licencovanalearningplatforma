@@ -1202,82 +1202,7 @@ export default function Home() {
           </Col>
         </Row>
 
-        {/* Achievement Map */}
-        <Row className="mb-4">
-          <Col>
-            <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(255,193,7,0.1) 0%, rgba(40,167,69,0.1) 100%)' }}>
-              <Card.Header className="bg-transparent border-bottom border-warning text-dark py-3">
-                <div className="d-flex align-items-center gap-3">
-                  <span style={{ fontSize: '1.5rem' }}>🏆</span>
-                  <h4 className="mb-0 fw-bold">Mapa Achievementů</h4>
-                </div>
-              </Card.Header>
-              <Card.Body className="p-4">
-                <AchievementRoadmap
-                  unlockedIds={['first_step', 'first_job', 'mission_starter', 'xp_collector_100', 'level_5']}
-                  userProgress={{
-                    first_step: 100,
-                    first_job: 100,
-                    mission_starter: 100,
-                    xp_collector_100: 75,
-                    level_5: 100,
-                    learning_hero: 10,
-                    streak_week: 42,
-                    job_hunter: 10,
-                    mission_master: 0,
-                    skill_builder: 15,
-                    xp_collector_1000: 7,
-                  }}
-                  currentLevel={stats.level}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* ✨ PREMIUM DASHBOARD OVERVIEW */}
-        <Row className="g-4 mb-4 animate-fade-in">
-          <Col md={6} lg={3}>
-            <DashboardCard
-              title="Aktivní Projekty"
-              value={projects.filter(p => p.status === 'active').length}
-              subtitle={`${projects.length} celkem`}
-              icon={<FiTarget />}
-              gradient="cosmic"
-              trend={{ value: 12, label: 'tento týden' }}
-            />
-          </Col>
-          <Col md={6} lg={3}>
-            <DashboardCard
-              title="Celkové XP"
-              value={stats.xp.toLocaleString()}
-              subtitle={`Level ${stats.level}`}
-              icon={<FiTrendingUp />}
-              gradient="sunset"
-              trend={{ value: 24, label: 'dnes' }}
-            />
-          </Col>
-          <Col md={6} lg={3}>
-            <DashboardCard
-              title="Zbývá XP"
-              value={stats.xpToNext.toLocaleString()}
-              subtitle="Do dalšího levelu"
-              icon={<FiClock />}
-              gradient="ocean"
-            />
-          </Col>
-          <Col md={6} lg={3}>
-            <DashboardCard
-              title="Achievementy"
-              value="42"
-              subtitle="8 odemčeno tento měsíc"
-              icon={<FiAward />}
-              gradient="fire"
-            />
-          </Col>
-        </Row>
-
-        {/* 🚀 PROJEKTY - Collapsible Dashboard */}
+        {/* 🚀 PROJEKTY - Moved here right after Job Board */}
         <Row className="mb-4">
           <Col>
             <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%)' }}>
@@ -1453,86 +1378,86 @@ export default function Home() {
           </Col>
         </Row>
 
-        {/* 📋 ŠABLONY PROJEKTŮ - Quick Access to Templates */}
+        {/* 🎯 CÍLE - Life Goals Section moved here */}
+        <div data-tour="goals-section" className="mb-4">
+          <LifeGoalsSection projects={projects} />
+        </div>
+
+        {/* Achievement Map */}
         <Row className="mb-4">
           <Col>
-            <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(156,39,176,0.2) 0%, rgba(103,58,183,0.2) 100%)' }}>
-              <Card.Header className="bg-transparent border-bottom border-secondary text-dark py-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center gap-3">
-                    <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
-                      📋 Šablony Projektů
-                    </h4>
-                    <Badge bg="info" className="fs-6">
-                      {PROJECT_TEMPLATES.length} Šablon
-                    </Badge>
-                  </div>
-                  <Link href="/projects">
-                    <Button variant="info" size="sm">
-                      📊 Všechny Šablony
-                    </Button>
-                  </Link>
+            <Card className="glass-effect border-0" style={{ background: 'linear-gradient(135deg, rgba(255,193,7,0.1) 0%, rgba(40,167,69,0.1) 100%)' }}>
+              <Card.Header className="bg-transparent border-bottom border-warning text-dark py-3">
+                <div className="d-flex align-items-center gap-3">
+                  <span style={{ fontSize: '1.5rem' }}>🏆</span>
+                  <h4 className="mb-0 fw-bold">Mapa Achievementů</h4>
                 </div>
               </Card.Header>
-              <Card.Body className="p-3">
-                <Row xs={2} md={3} lg={4} className="g-2">
-                  {PROJECT_TEMPLATES.slice(0, 8).map((template) => {
-                    const completedMilestones = templateMilestonesProgress[template.id]?.length || 0;
-                    const totalMilestones = template.suggestedMilestones.length;
-                    const progress = Math.round((completedMilestones / totalMilestones) * 100);
-
-                    return (
-                      <Col key={template.id}>
-                        <Card
-                          style={{
-                            background: `${template.color}20`,
-                            border: `1px solid ${template.color}50`,
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease'
-                          }}
-                          className="h-100 hover-card"
-                          onClick={() => handleOpenTemplateDetail(template)}
-                        >
-                          <Card.Body className="p-2">
-                            <div className="d-flex justify-content-between align-items-start mb-1">
-                              <span style={{ fontSize: '1.5rem' }}>{template.icon}</span>
-                              {completedMilestones === totalMilestones && totalMilestones > 0 && (
-                                <Badge bg="success" style={{ fontSize: '0.6rem' }}>✅</Badge>
-                              )}
-                            </div>
-                            <h6 style={{ color: '#fff', fontSize: '0.85rem', marginBottom: '5px' }}>{template.title}</h6>
-
-                            {totalMilestones > 0 && (
-                              <>
-                                <ProgressBar
-                                  now={progress}
-                                  variant={progress === 100 ? 'success' : 'info'}
-                                  style={{ height: '4px' }}
-                                />
-                                <small style={{ color: '#888', fontSize: '0.7rem' }}>
-                                  {completedMilestones}/{totalMilestones} úkolů
-                                </small>
-                              </>
-                            )}
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    );
-                  })}
-                </Row>
-                <div className="text-center mt-3">
-                  <small style={{ color: '#8892b0' }}>
-                    💡 Klikni na šablonu pro zobrazení checklistu úkolů
-                  </small>
-                </div>
+              <Card.Body className="p-4">
+                <AchievementRoadmap
+                  unlockedIds={['first_step', 'first_job', 'mission_starter', 'xp_collector_100', 'level_5']}
+                  userProgress={{
+                    first_step: 100,
+                    first_job: 100,
+                    mission_starter: 100,
+                    xp_collector_100: 75,
+                    level_5: 100,
+                    learning_hero: 10,
+                    streak_week: 42,
+                    job_hunter: 10,
+                    mission_master: 0,
+                    skill_builder: 15,
+                    xp_collector_1000: 7,
+                  }}
+                  currentLevel={stats.level}
+                />
               </Card.Body>
             </Card>
           </Col>
         </Row>
 
-        <div data-tour="goals-section">
-          <LifeGoalsSection projects={projects} />
-        </div>
+        {/* ✨ PREMIUM DASHBOARD OVERVIEW */}
+        <Row className="g-4 mb-4 animate-fade-in">
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Aktivní Projekty"
+              value={projects.filter(p => p.status === 'active').length}
+              subtitle={`${projects.length} celkem`}
+              icon={<FiTarget />}
+              gradient="cosmic"
+              trend={{ value: 12, label: 'tento týden' }}
+            />
+          </Col>
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Celkové XP"
+              value={stats.xp.toLocaleString()}
+              subtitle={`Level ${stats.level}`}
+              icon={<FiTrendingUp />}
+              gradient="sunset"
+              trend={{ value: 24, label: 'dnes' }}
+            />
+          </Col>
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Zbývá XP"
+              value={stats.xpToNext.toLocaleString()}
+              subtitle="Do dalšího levelu"
+              icon={<FiClock />}
+              gradient="ocean"
+            />
+          </Col>
+          <Col md={6} lg={3}>
+            <DashboardCard
+              title="Achievementy"
+              value="42"
+              subtitle="8 odemčeno tento měsíc"
+              icon={<FiAward />}
+              gradient="fire"
+            />
+          </Col>
+        </Row>
+
 
         {/* 💡 Career Advice & 👨‍🍳 Recipes Sections */}
         <Row className="mb-4">

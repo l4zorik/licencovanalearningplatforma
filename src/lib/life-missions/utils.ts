@@ -15,7 +15,7 @@ export function generateId(): string {
   return `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-export function cloneTemplate(template: LifeMissionTemplate): LifeMission {
+export function cloneTemplate(template: LifeMissionTemplate, enabledCategories?: string[]): LifeMission {
   const now = new Date().toISOString();
   return {
     id: generateId(),
@@ -28,12 +28,14 @@ export function cloneTemplate(template: LifeMissionTemplate): LifeMission {
     phases: template.phases.map((phase, phaseIdx) => ({
       ...phase,
       id: `phase_${generateId()}_${phaseIdx}`,
-      steps: phase.steps.map((step, stepIdx) => ({
-        ...step,
-        id: `step_${generateId()}_${stepIdx}`,
-        isCompleted: false,
-        order: stepIdx,
-      })),
+      steps: phase.steps
+        .filter(step => !step.isOptional || !enabledCategories || enabledCategories.includes(step.category || ''))
+        .map((step, stepIdx) => ({
+          ...step,
+          id: `step_${generateId()}_${stepIdx}`,
+          isCompleted: false,
+          order: stepIdx,
+        })),
     })),
     journal: [],
     status: 'active',
@@ -43,6 +45,7 @@ export function cloneTemplate(template: LifeMissionTemplate): LifeMission {
     completionBonusXp: template.completionBonusXp,
     createdAt: now,
     startedAt: now,
+    enabledOptionalCategories: enabledCategories || [],
   };
 }
 
