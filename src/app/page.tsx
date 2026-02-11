@@ -23,11 +23,12 @@ import { createBasicTour, addDashboardSteps } from '@/lib/tours';
 // NEW: Premium UI Components (Aliased to avoid conflict)
 import { Card as PremiumCard, Button as PremiumButton, Progress as PremiumProgress, Badge as PremiumBadge } from '@/components/ui';
 import DashboardCard from '@/components/dashboard/DashboardCard';
-import { FiTarget, FiTrendingUp, FiAward, FiBook, FiClock, FiCheckCircle, FiUser, FiBarChart2, FiBookOpen, FiBriefcase, FiMap, FiCompass, FiLayers, FiTool, FiHome, FiZap, FiFileText, FiCoffee, FiStar, FiHelpCircle, FiLogOut, FiMenu, FiGithub } from 'react-icons/fi';
+import { FiTarget, FiTrendingUp, FiAward, FiBook, FiClock, FiCheckCircle, FiUser, FiBarChart2, FiBookOpen, FiBriefcase, FiMap, FiCompass, FiLayers, FiTool, FiHome, FiZap, FiFileText, FiCoffee, FiStar, FiHelpCircle, FiLogOut, FiMenu, FiGithub, FiSettings } from 'react-icons/fi';
 import LifeStatusWidget from '@/components/life/LifeStatusWidget';
 import FinancialOverview from '@/components/finance/FinancialOverview';
 import { HabitTracker, FriendTrustTracker, FamilyTrustTracker, FinishedJobTracker } from '@/components/trackers';
 import { ActiveMissionsWidget } from '@/components/life-missions';
+import { DashboardSettingsModal, useDashboardConfig } from '@/components/dashboard';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -606,6 +607,11 @@ export default function Home() {
   });
   const [showNextStepModal, setShowNextStepModal] = useState(false);
   const [showBenefitsLibraryModal, setShowBenefitsLibraryModal] = useState(false);
+  
+  // Dashboard configuration with drag & drop
+  const { config, updateOrder, toggleVisibility, resetToDefault, getVisibleSections } = useDashboardConfig();
+  const [showDashboardSettings, setShowDashboardSettings] = useState(false);
+  const visibleSections = getVisibleSections();
 
   const getFocusedProject = () => {
     if (!focusedProjectId) return null;
@@ -1040,6 +1046,16 @@ export default function Home() {
             >
               <FiCompass size={14} style={{ color: '#67e8f9' }} />
               <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Tour</span>
+            </div>
+
+            <div
+              className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1"
+              data-tour="dashboard-settings"
+              onClick={() => setShowDashboardSettings(true)}
+              style={{ cursor: 'pointer' }}
+            >
+              <FiSettings size={14} style={{ color: '#a78bfa' }} />
+              <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Layout</span>
             </div>
 
             {/* Spacer to push right items */}
@@ -1964,6 +1980,16 @@ export default function Home() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Dashboard Settings Modal */}
+      <DashboardSettingsModal
+        show={showDashboardSettings}
+        onHide={() => setShowDashboardSettings(false)}
+        config={config}
+        onUpdateOrder={updateOrder}
+        onToggleVisibility={toggleVisibility}
+        onReset={resetToDefault}
+      />
 
     </main>
   );
