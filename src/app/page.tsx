@@ -1143,6 +1143,15 @@ export default function Home() {
         {/* 🗺️ ŽIVOTNÍ MISE - vždy nahoře */}
         <ActiveMissionsWidget />
 
+        {/* 💼 JOB BOARD - Pracovní příležitosti */}
+        <Row className="mb-4">
+          <Col>
+            <div data-tour="work-section">
+              <WorkSection myCourses={courses} setCourses={setCourses} />
+            </div>
+          </Col>
+        </Row>
+
         {/* 💰 FINANČNÍ PŘEHLED UČENÍ */}
         <FinancialOverview />
 
@@ -1189,15 +1198,6 @@ export default function Home() {
                 myCourses={courses}
                 setCourses={setCourses}
               />
-            </div>
-          </Col>
-        </Row>
-
-        {/* Work - Job Board */}
-        <Row className="mb-4">
-          <Col>
-            <div data-tour="work-section">
-              <WorkSection myCourses={courses} setCourses={setCourses} />
             </div>
           </Col>
         </Row>
