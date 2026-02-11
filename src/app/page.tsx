@@ -994,6 +994,13 @@ export default function Home() {
               </div>
             </Link>
 
+            <Link href="/life-missions" className="text-decoration-none">
+              <div className="nav-icon-btn d-flex align-items-center gap-1 px-2 py-1" data-tour="life-missions">
+                <FiTarget size={14} style={{ color: '#f59e0b' }} />
+                <span className="text-white d-none d-xl-inline" style={{ fontSize: '0.7rem' }}>Mise</span>
+              </div>
+            </Link>
+
             <div className="nav-divider d-none d-md-block" style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
 
             <Link href="/career-advice" className="text-decoration-none">

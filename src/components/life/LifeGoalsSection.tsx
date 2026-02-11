@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Card, Row, Col, ProgressBar, Badge, Button, Collapse, ListGroup, Form, Modal } from 'react-bootstrap';
+import Link from 'next/link';
 import { LifeGoal, GoalMilestone, GoalStats, LifeCategory, LIFE_CATEGORIES, PROJECT_GOAL_MAPPING } from '@/types/life';
 import { Project } from '@/types/projects';
 import { calculateProjectStats } from '@/data/projects/data';
@@ -161,6 +162,11 @@ export default function LifeGoalsSection({ projects }: LifeGoalsSectionProps) {
                   <Badge bg="success" className="fs-6">
                     {localGoals.filter(g => g.milestones.every(m => m.isCompleted)).length}/{localGoals.length} Dokončeno
                   </Badge>
+                  <Link href="/life-missions" className="text-decoration-none">
+                    <Badge bg="warning" className="fs-6" style={{ cursor: 'pointer' }}>
+                      🗺️ Životní mise →
+                    </Badge>
+                  </Link>
                 </div>
                 <div className="d-flex align-items-center gap-3">
                   <div className="text-end">
