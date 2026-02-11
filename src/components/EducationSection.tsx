@@ -254,19 +254,44 @@ const SKILL_CATEGORIES_HIERARCHY = {
       ]
     },
     'Trades': {
-     icon: '🏗️',
-     subcategories: [
-       'CNC & Engineering',
-       'Construction & Trades',
-       'Manufacturing & Production',
-       'Automechanic',
-       'Agriculture & Environment',
-       'Hospitality & Tourism',
-       'Retail & Sales',
-       'Transportation & Logistics'
-     ]
-   },
-  'Professional': {
+      icon: '🏗️',
+      subcategories: [
+        'CNC & Engineering',
+        'Construction & Trades',
+        'Manufacturing & Production',
+        'Automechanic',
+        'Agriculture & Environment',
+        'Hospitality & Tourism',
+        'Retail & Sales',
+        'Transportation & Logistics'
+      ]
+    },
+    'Autotuning & Car Modification': {
+      icon: '🏎️',
+      subcategories: [
+        'Engine Tuning & Performance',
+        'ECU Remapping & Programming',
+        'Forced Induction (Turbo/Supercharger)',
+        'Exhaust Systems & Tuning',
+        'Suspension Tuning & Lowering',
+        'Brake Upgrades & Tuning',
+        'Transmission & Drivetrain Mods',
+        'Body Kits & Aerodynamics',
+        'Car Wrapping & Styling',
+        'Wheel & Tire Setup',
+        'Racing & Track Preparation',
+        'Drift Car Setup',
+        'Drag Racing Setup',
+        'Autocross & Time Attack',
+        'Car Audio & Interior Mods',
+        'Lighting Upgrades',
+        'Weight Reduction',
+        'Roll Cages & Safety',
+        'Nitrous Oxide Systems',
+        'Standalone Engine Management'
+      ]
+    },
+   'Professional': {
     icon: '🏥',
     subcategories: [
       'Healthcare & Medical',
