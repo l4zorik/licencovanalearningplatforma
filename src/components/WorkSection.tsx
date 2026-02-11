@@ -2670,32 +2670,32 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
 <Tabs defaultActiveKey="Programming" className="mb-4 custom-tabs" fill variant="pills">
                    {[
                      // 💻 IT & Technologie
-                     '💻 Programming',
-                     '🎮 3D & GameDev', 
-                     '🤖 Data Science & AI',
-                     '🔒 Cybersecurity',
+                     { key: 'Programming', label: '💻 Programming' },
+                     { key: '3D & GameDev', label: '🎮 3D & GameDev' },
+                     { key: 'Data Science & AI', label: '🤖 Data Science & AI' },
+                     { key: 'Cybersecurity', label: '🔒 Cybersecurity' },
                      // 🏭 Průmysl & Strojírenství
-                     '🏭 CNC & Engineering',
-                     '🔧 Automechanic',
-                     '⚙️ 3D Tisk',
+                     { key: 'CNC & Engineering', label: '🏭 CNC & Engineering' },
+                     { key: 'Automechanic', label: '🔧 Automechanic' },
+                     { key: '3D Tisk', label: '⚙️ 3D Tisk' },
                      // 🔨 Řemeslné profese
-                     '🔨 Stavebnictví',
-                     '⚡ Elektro',
-                     '🚿 Instalatérství',
-                     'Kovářství & Kovovýroba',
-                     'Dřevo & Truhlářství',
-                     'Údržbářské práce',
+                     { key: 'Stavebnictví', label: '🔨 Stavebnictví' },
+                     { key: 'Elektro', label: '⚡ Elektro' },
+                     { key: 'Instalatérství', label: '🚿 Instalatérství' },
+                     { key: 'Kovářství & Kovovýroba', label: '🛠️ Kovářství & Kovovýroba' },
+                     { key: 'Dřevo & Truhlářství', label: '🪚 Dřevo & Truhlářství' },
+                     { key: 'Údržbářské práce', label: '🏠 Údržbářské práce' },
                      // 🎨 Kreativní obory
-                     '🎨 Art & Creativity',
-                     '🎵 Music Production',
+                     { key: 'Art & Creativity', label: '🎨 Art & Creativity' },
+                     { key: 'Music Production', label: '🎵 Music Production' },
                      // 💪 Ostatní
-                     '💪 Fitness & Health',
-                     '🏪 Reselling & Business',
-                     '🔬 Science & Education'
-                   ].map(cat => (
-                     <Tab eventKey={cat} title={<span className="fw-bold">{cat}</span>} key={cat}>
-                        <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
-                            {JOB_TEMPLATES.filter(tpl => tpl.category === cat).map((tpl, idx) => {
+                     { key: 'Fitness & Health', label: '💪 Fitness & Health' },
+                     { key: 'Reselling & Business', label: '🏪 Reselling & Business' },
+                     { key: 'Science & Education', label: '🔬 Science & Education' }
+                   ].map(({ key, label }) => (
+<Tab eventKey={key} title={<span className="fw-bold">{label}</span>} key={key}>
+                         <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
+                             {JOB_TEMPLATES.filter(tpl => tpl.category === key).map((tpl, idx) => {
                                 const matchPercent = calculateMatch(tpl.requiredSkills || []);
                                 let matchColor = 'danger';
                                 if (matchPercent >= 50) matchColor = 'warning';
@@ -2739,7 +2739,7 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
                             })}
                         </Row>
                         {/* Empty state for category if needed */}
-                        {JOB_TEMPLATES.filter(tpl => tpl.category === cat).length === 0 && (
+                        {JOB_TEMPLATES.filter(tpl => tpl.category === key).length === 0 && (
                             <div className="text-center text-muted py-5">
                                 Žádné mise v této kategorii.
                             </div>
