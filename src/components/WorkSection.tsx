@@ -1784,6 +1784,348 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
       salaryRange: "45k - 70k CZK",
       difficulty: 4,
       perks: ["Kvalifikace", "Příplatky za směny", "Závodní stravování"]
+    },
+
+    // --- STAVEBNICTVÍ ---
+    {
+      title: "Zedník",
+      company: "Stavby Novák",
+      category: "Stavebnictví",
+      requiredSkills: ["Zednické práce", "Omítky", "Míchání malty", "Čtení výkresů", "Zdravotní průkaz"],
+      location: "Praha a okolí",
+      salaryRange: "40k - 65k CZK",
+      difficulty: 3,
+      perks: ["Prémie za výkon", "Ubytování", "Zálohy na mzdu"]
+    },
+    {
+      title: "Obkladač",
+      company: "Obklady ProFi",
+      category: "Stavebnictví",
+      requiredSkills: ["Obklady", "Dlažby", "Řezání dlaždic", "Systémové lišty", "Hydroizolace"],
+      location: "Brno",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 4,
+      perks: ["Vyšší sazba za metr", "Nářadí", "Školení"]
+    },
+    {
+      title: "Betonář / Železobetonář",
+      company: "BetonPraha",
+      category: "Stavebnictví",
+      requiredSkills: ["Betonářské práce", "Armování", "Bednění", "Beton", "Vibrování"],
+      location: "Praha",
+      salaryRange: "42k - 68k CZK",
+      difficulty: 3,
+      perks: ["Celoroční práce", "Ochranné pomůcky", "Svozy"]
+    },
+    {
+      title: "Střechy - Klempíř / Pokrývač",
+      company: "Střechy Kovář",
+      category: "Stavebnictví",
+      requiredSkills: ["Klempířské práce", "Pokrývačství", "Tesařství", "Práce ve výšce", "IZOP"],
+      location: "Celá ČR",
+      salaryRange: "45k - 80k CZK",
+      difficulty: 4,
+      perks: ["Sezónní bonusy", "Příplatek za výšku", "Nářadí"]
+    },
+    {
+      title: "Izolatér",
+      company: "Izolace Top",
+      category: "Stavebnictví",
+      requiredSkills: ["Hydroizolace", "Tepelné izolace", "Pěny", "Fasádní systémy", "Armovací tkaniny"],
+      location: "Praha",
+      salaryRange: "40k - 65k CZK",
+      difficulty: 3,
+      perks: ["Stabilní zakázky", "Školení", "Výstroj"]
+    },
+    {
+      title: "Malíř / Natěrač",
+      company: "Malíři Praha",
+      category: "Stavebnictví",
+      requiredSkills: ["Malování", "Nátěry", "Penetrace", "Tapetování", "Příprava povrchů"],
+      location: "Praha",
+      salaryRange: "38k - 60k CZK",
+      difficulty: 2,
+      perks: ["Pravidelná práce", "Flexibilní hodiny", "Prémie"]
+    },
+    {
+      title: "Sádrokartonář",
+      company: "SDK Profi",
+      category: "Stavebnictví",
+      requiredSkills: ["Sádrokarton", "Příčky", "Podhledy", "Ostrovy", "Tmelení"],
+      location: "Brno",
+      salaryRange: "42k - 68k CZK",
+      difficulty: 3,
+      perks: ["Speciální nářadí", "Školení", "Bonusy"]
+    },
+
+    // --- ELEKTRO ---
+    {
+      title: "Elektrikář - Silnoproud",
+      company: "ElektroServis Plus",
+      category: "Elektro",
+      requiredSkills: ["Silnoproud", "Elektroinstalace", "Rozvody", "Revize", "Vyhláška 50"],
+      location: "Praha",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 4,
+      perks: ["Služební auto", "Stravenky", "Vzdělávání"]
+    },
+    {
+      title: "Elektrikář - Slaboproud",
+      company: "SmartHome Solutions",
+      category: "Elektro",
+      requiredSkills: ["Slaboproud", "Zabezpečovací systémy", "Kamerové systémy", "Domácí automatizace", "Datové sítě"],
+      location: "Praha / Brno",
+      salaryRange: "50k - 85k CZK",
+      difficulty: 4,
+      perks: ["Moderní technologie", "Školení", "Nářadí"]
+    },
+    {
+      title: "Elektromontér",
+      company: "Průmyslové Elektro",
+      category: "Elektro",
+      requiredSkills: ["Elektromontáže", "Výrobní linky", "PLC", "Průmyslová automatizace", "Údržba"],
+      location: "Ostrava",
+      salaryRange: "48k - 78k CZK",
+      difficulty: 4,
+      perks: ["Stabilní firma", "13. plat", "Příspěvek na penzi"]
+    },
+    {
+      title: "Revizní Technik Elektro",
+      company: "ElektroRevize",
+      category: "Elektro",
+      requiredSkills: ["Revize", "Měření", "Zákon 250/2011", "Certifikace", "Dokumentace"],
+      location: "Celá ČR",
+      salaryRange: "55k - 90k CZK",
+      difficulty: 5,
+      perks: ["Samostatná práce", "Auto", "Služební telefon"]
+    },
+    {
+      title: "Montér fotovoltaických systémů",
+      company: "SolarInstall",
+      category: "Elektro",
+      requiredSkills: ["FVE", "Střešní konstrukce", "Elektro", "Práce ve výšce", "DC/AC"],
+      location: "Celá ČR",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 4,
+      perks: ["Rostoucí odvětví", "Školení", "Příspěvek na ubytování"]
+    },
+    {
+      title: "Chladící Technik",
+      company: "KlimaServis",
+      category: "Elektro",
+      requiredSkills: ["Klimatizace", "Chlazení", "Tepelná čerpadla", "Chladiva", "Elektro"],
+      location: "Brno",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 4,
+      perks: ["Certifikace", "Nářadí", "Služební auto"]
+    },
+
+    // --- INSTALATÉRSTVÍ ---
+    {
+      title: "Instalatér",
+      company: "VodoTopo Servis",
+      category: "Instalatérství",
+      requiredSkills: ["Vodoinstalace", "Topení", "Plynovody", "Sváření", "Čtení výkresů"],
+      location: "Praha",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 4,
+      perks: ["Pohotovostní služby", "Auto", "Stravenky"]
+    },
+    {
+      title: "Topenář",
+      company: "Tepelná Čerpadla ProFi",
+      category: "Instalatérství",
+      requiredSkills: ["Topení", "Kotle", "Tepelná čerpadla", "Regulace", "Hydraulika"],
+      location: "Praha / Brno",
+      salaryRange: "50k - 85k CZK",
+      difficulty: 4,
+      perks: ["Moderní technologie", "Školení", "Nářadí"]
+    },
+    {
+      title: "Plynař",
+      company: "PlynoServis",
+      category: "Instalatérství",
+      requiredSkills: ["Plynovody", "Kotle", "Plynové spotřebiče", "Revize", "Těsnost"],
+      location: "Praha",
+      salaryRange: "48k - 80k CZK",
+      difficulty: 4,
+      perks: ["Stálá zakázka", "Služební auto", "Příspěvek na vzdělání"]
+    },
+    {
+      title: "Kanalizační Technik",
+      company: "KanalServis",
+      category: "Instalatérství",
+      requiredSkills: ["Kanalizace", "Čištění", "Kamerový systém", "Opravy", "ČOV"],
+      location: "Praha",
+      salaryRange: "42k - 70k CZK",
+      difficulty: 3,
+      perks: ["Stabilní práce", "Auto", "Bonusy"]
+    },
+
+    // --- KOVÁŘSTVÍ A KOVOVÝROBA ---
+    {
+      title: "Kovář",
+      company: "Umělecká Kovárna",
+      category: "Kovářství & Kovovýroba",
+      requiredSkills: ["Kovářství", "Kování", "Umělecké zpracování", "Sváření", "Brus"],
+      location: "Praha",
+      salaryRange: "45k - 80k CZK",
+      difficulty: 5,
+      perks: ["Umělecká práce", "Vlastní výrobky", "Prestiž"]
+    },
+    {
+      title: "Svářeč - Zámečník",
+      company: "Kovovýroba Metal",
+      category: "Kovářství & Kovovýroba",
+      requiredSkills: ["MIG/MAG", "TIG", "Čtení výkresů", "Zámečnictví", "Měření"],
+      location: "Praha / Brno",
+      salaryRange: "48k - 80k CZK",
+      difficulty: 4,
+      perks: ["Certifikace", "Nářadí", "Příplatky za směny"]
+    },
+    {
+      title: "CNC Ohraňovač",
+      company: "PlechProfil",
+      category: "Kovářství & Kovovýroba",
+      requiredSkills: ["CNC ohraňování", "TruBend", "Amada", "Čtení výkresů", "Měření"],
+      location: "Praha",
+      salaryRange: "50k - 85k CZK",
+      difficulty: 4,
+      perks: ["Moderní stroje", "Nářadí", "Školení"]
+    },
+    {
+      title: "Pásovkař / Děrovač",
+      company: "PlechServis",
+      category: "Kovářství & Kovovýroba",
+      requiredSkills: ["CNC pásové pily", "Děrování", "TruPunch", "Nástroje", "Kontrola"],
+      location: "Brno",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 4,
+      perks: ["Kvalitní stroje", "Školení", "Bonusy"]
+    },
+    {
+      title: "Lakýrník - Kov",
+      company: "Průmyslové Lakýrnictví",
+      category: "Kovářství & Kovovýroba",
+      requiredSkills: ["Práškové lakování", "Mokré lakování", "Příprava povrchů", "Barvy", "Zinkování"],
+      location: "Praha",
+      salaryRange: "42k - 70k CZK",
+      difficulty: 3,
+      perks: ["Čisté prostředí", "Ochranné pomůcky", "Vzdělávání"]
+    },
+    {
+      title: "Brusič",
+      company: "Brusírna Kovů",
+      category: "Kovářství & Kovovýroba",
+      requiredSkills: ["Brusné práce", "Kotouče", "Pásy", "Leštění", "Kontrola"],
+      location: "Praha",
+      salaryRange: "40k - 65k CZK",
+      difficulty: 3,
+      perks: ["Pravidelná práce", "Ochranné pomůcky", "Stravenky"]
+    },
+
+    // --- DŘEVO A TRUHLÁŘSTVÍ ---
+    {
+      title: "Truhlář",
+      company: "Truhlářství Novák",
+      category: "Dřevo & Truhlářství",
+      requiredSkills: ["Truhlářství", "Nábytek", "Kuchyně", "Schodiště", "CNC"],
+      location: "Praha",
+      salaryRange: "45k - 80k CZK",
+      difficulty: 4,
+      perks: ["Řemeslná práce", "Nářadí", "Vlastní realizace"]
+    },
+    {
+      title: "Stolař",
+      company: "Stolařství ProFi",
+      category: "Dřevo & Truhlářství",
+      requiredSkills: ["Stolařství", "Okna", "Dveře", "Parapety", "Lakování"],
+      location: "Brno",
+      salaryRange: "42k - 75k CZK",
+      difficulty: 4,
+      perks: ["Precizní práce", "Nářadí", "Bonusy"]
+    },
+    {
+      title: "Tesař",
+      company: "Tesařství Střechy",
+      category: "Dřevo & Truhlářství",
+      requiredSkills: ["Tesařství", "Krovy", "Vazníky", "Dřevostavby", "Práce ve výšce"],
+      location: "Celá ČR",
+      salaryRange: "48k - 85k CZK",
+      difficulty: 4,
+      perks: ["Příplatek za výšku", "Sezónní bonusy", "Ubytování"]
+    },
+    {
+      title: "Podlahář",
+      company: "Podlahy Expert",
+      category: "Dřevo & Truhlářství",
+      requiredSkills: ["Podlahy", "Parkety", "Laminát", "Vinyl", "Lepení", "Broušení"],
+      location: "Praha",
+      salaryRange: "42k - 70k CZK",
+      difficulty: 3,
+      perks: ["Nářadí", "Materiál", "Pravidelná práce"]
+    },
+    {
+      title: "Restaurátor - Dřevo",
+      company: "Restaurování Starožitností",
+      category: "Dřevo & Truhlářství",
+      requiredSkills: ["Restaurování", "Dřevo", "Řemeslo", "Historie", "Umění"],
+      location: "Praha",
+      salaryRange: "45k - 85k CZK",
+      difficulty: 5,
+      perks: ["Prestižní práce", "Unikátní projekty", "Odbornost"]
+    },
+
+    // --- ÚDRŽBÁŘSKÉ PRÁCE ---
+    {
+      title: "Údržbář - Budovy",
+      company: "Správa Nemovitostí",
+      category: "Údržbářské práce",
+      requiredSkills: ["Údržba", "Zednické práce", "Malování", "Instalace", "Opravy"],
+      location: "Praha",
+      salaryRange: "38k - 65k CZK",
+      difficulty: 3,
+      perks: ["Stabilní práce", "Služební auto", "Stravenky"]
+    },
+    {
+      title: "Technik Údržby",
+      company: "Průmyslový Areál",
+      category: "Údržbářské práce",
+      requiredSkills: ["Údržba strojů", "Mechanika", "Elektro", "Hydraulika", "Pneumatika"],
+      location: "Praha / Brno",
+      salaryRange: "50k - 85k CZK",
+      difficulty: 4,
+      perks: ["Moderní zázemí", "Školení", "Kariérní růst"]
+    },
+    {
+      title: "Domovník / Správce",
+      company: "Bytové Družstvo",
+      category: "Údržbářské práce",
+      requiredSkills: ["Údržba domu", "Zahrada", "Zimní údržba", "Komunikace", "Organizace"],
+      location: "Praha",
+      salaryRange: "35k - 55k CZK",
+      difficulty: 2,
+      perks: ["Byt v domě", "Stabilní práce", "Příspěvek na telefon"]
+    },
+    {
+      title: "Zahradník",
+      company: "Zahradní Architektura",
+      category: "Údržbářské práce",
+      requiredSkills: ["Zahradnictví", "Úprava zeleně", "Řez", "Zavlažování", "Rostliny"],
+      location: "Praha",
+      salaryRange: "35k - 60k CZK",
+      difficulty: 3,
+      perks: ["Práce venku", "Nářadí", "Sezónní bonusy"]
+    },
+    {
+      title: "Úklidový Technik",
+      company: "Úklidové Služby ProFi",
+      category: "Údržbářské práce",
+      requiredSkills: ["Úklid", "Čištění strojů", "Mytí oken", "Dezinfekce", "Chemie"],
+      location: "Praha",
+      salaryRange: "32k - 50k CZK",
+      difficulty: 2,
+      perks: ["Pravidelná práce", "Čisté prostředí", "Flexibilita"]
     }
     ];
 
@@ -2325,8 +2667,32 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
             </div>
         </Modal.Header>
         <Modal.Body className="bg-light p-4">
-              <Tabs defaultActiveKey="Programming" className="mb-4 custom-tabs" fill variant="pills">
-                  {['Programming', '3D & GameDev', 'CNC & Engineering', 'Automechanic', 'Data Science & AI', '3D Tisk', 'Cybersecurity', 'Music Production', 'Art & Creativity', 'Fitness & Health', 'Reselling & Business', 'Science & Education'].map(cat => (
+<Tabs defaultActiveKey="Programming" className="mb-4 custom-tabs" fill variant="pills">
+                   {[
+                     // 💻 IT & Technologie
+                     '💻 Programming',
+                     '🎮 3D & GameDev', 
+                     '🤖 Data Science & AI',
+                     '🔒 Cybersecurity',
+                     // 🏭 Průmysl & Strojírenství
+                     '🏭 CNC & Engineering',
+                     '🔧 Automechanic',
+                     '⚙️ 3D Tisk',
+                     // 🔨 Řemeslné profese
+                     '🔨 Stavebnictví',
+                     '⚡ Elektro',
+                     '🚿 Instalatérství',
+                     'Kovářství & Kovovýroba',
+                     'Dřevo & Truhlářství',
+                     'Údržbářské práce',
+                     // 🎨 Kreativní obory
+                     '🎨 Art & Creativity',
+                     '🎵 Music Production',
+                     // 💪 Ostatní
+                     '💪 Fitness & Health',
+                     '🏪 Reselling & Business',
+                     '🔬 Science & Education'
+                   ].map(cat => (
                      <Tab eventKey={cat} title={<span className="fw-bold">{cat}</span>} key={cat}>
                         <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
                             {JOB_TEMPLATES.filter(tpl => tpl.category === cat).map((tpl, idx) => {
