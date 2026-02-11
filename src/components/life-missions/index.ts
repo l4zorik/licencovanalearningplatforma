@@ -8,3 +8,4 @@ export type { MissionFilterState } from './MissionFilters';
 export { default as MissionJournal } from './MissionJournal';
 export { default as CreateMissionModal } from './CreateMissionModal';
 export { default as MissionAchievements } from './MissionAchievements';
+export { default as ActiveMissionsWidget } from './ActiveMissionsWidget';

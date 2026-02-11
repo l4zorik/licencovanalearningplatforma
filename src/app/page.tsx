@@ -27,6 +27,7 @@ import { FiTarget, FiTrendingUp, FiAward, FiBook, FiClock, FiCheckCircle, FiUser
 import LifeStatusWidget from '@/components/life/LifeStatusWidget';
 import FinancialOverview from '@/components/finance/FinancialOverview';
 import { HabitTracker, FriendTrustTracker, FamilyTrustTracker, FinishedJobTracker } from '@/components/trackers';
+import { ActiveMissionsWidget } from '@/components/life-missions';
 
 // Ad component placeholder for future implementation
 const AdBanner = ({ position, size = "medium" }: { position: string, size?: string }) => {
@@ -1138,6 +1139,9 @@ export default function Home() {
       `}</style>
 
       <Container fluid className="px-4">
+
+        {/* 🗺️ ŽIVOTNÍ MISE - vždy nahoře */}
+        <ActiveMissionsWidget />
 
         {/* 💰 FINANČNÍ PŘEHLED UČENÍ */}
         <FinancialOverview />
