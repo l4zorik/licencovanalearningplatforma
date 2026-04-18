@@ -1206,6 +1206,114 @@ export default function Home() {
           courses={courses}
         />
 
+        {/* 💕 VZTAHY & LÁSKA - Platform driven by love */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="border-0" style={{ 
+              background: 'linear-gradient(135deg, rgba(233, 30, 99, 0.2) 0%, rgba(255, 152, 0, 0.15) 50%, rgba(233, 30, 99, 0.1) 100%)',
+              borderRadius: '20px',
+              overflow: 'hidden'
+            }}>
+              <Card.Body className="p-4">
+                <div className="text-center mb-4">
+                  <h3 style={{ color: '#fff', fontWeight: 700, marginBottom: '8px' }}>
+                    💕 Vzdělávání hnáno láskou
+                  </h3>
+                  <p style={{ color: 'rgba(255,255,255,0.7)', maxWidth: '600px', margin: '0 auto' }}>
+                    Naše platforma věří, že láska je nejsilnější motivace k růstu. 
+                    Buduj vztahy, uč se pro sebe i pro ty, které miluješ.
+                  </p>
+                </div>
+
+                <Row className="g-3">
+                  <Col xs={6} md={3}>
+                    <Link href="/rodina" style={{ textDecoration: 'none' }}>
+                      <Card 
+                        className="h-100 border-0 text-center"
+                        style={{ 
+                          background: 'rgba(255, 152, 0, 0.15)',
+                          borderRadius: '15px',
+                          transition: 'all 0.3s',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Card.Body className="d-flex flex-column align-items-center justify-content-center p-3">
+                          <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>👨‍👩‍👧‍👦</div>
+                          <h6 style={{ color: '#fff', margin: 0 }}>Rodina</h6>
+                          <small style={{ color: 'rgba(255,255,255,0.6)' }}>Buduj silné vazby</small>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                  <Col xs={6} md={3}>
+                    <Link href="/laska" style={{ textDecoration: 'none' }}>
+                      <Card 
+                        className="h-100 border-0 text-center"
+                        style={{ 
+                          background: 'rgba(233, 30, 99, 0.15)',
+                          borderRadius: '15px',
+                          transition: 'all 0.3s',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Card.Body className="d-flex flex-column align-items-center justify-content-center p-3">
+                          <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>💕</div>
+                          <h6 style={{ color: '#fff', margin: 0 }}>Láska</h6>
+                          <small style={{ color: 'rgba(255,255,255,0.6)' }}>Romantické vztahy</small>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                  <Col xs={6} md={3}>
+                    <Link href="/pratele" style={{ textDecoration: 'none' }}>
+                      <Card 
+                        className="h-100 border-0 text-center"
+                        style={{ 
+                          background: 'rgba(156, 39, 176, 0.15)',
+                          borderRadius: '15px',
+                          transition: 'all 0.3s',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Card.Body className="d-flex flex-column align-items-center justify-content-center p-3">
+                          <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>👯</div>
+                          <h6 style={{ color: '#fff', margin: 0 }}>Přátelství</h6>
+                          <small style={{ color: 'rgba(255,255,255,0.6)' }}>Kvalitní vazby</small>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                  <Col xs={6} md={3}>
+                    <Link href="/pritelkyně" style={{ textDecoration: 'none' }}>
+                      <Card 
+                        className="h-100 border-0 text-center"
+                        style={{ 
+                          background: 'rgba(233, 30, 99, 0.2)',
+                          borderRadius: '15px',
+                          transition: 'all 0.3s',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Card.Body className="d-flex flex-column align-items-center justify-content-center p-3">
+                          <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>💑</div>
+                          <h6 style={{ color: '#fff', margin: 0 }}>Přítelkyně</h6>
+                          <small style={{ color: 'rgba(255,255,255,0.6)' }}>Partnerský vztah</small>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                </Row>
+
+                <div className="text-center mt-4">
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', margin: 0 }}>
+                    💡 <em>"Láska je nejlepší učitel. Když miluješ, učíš se nejrychleji."</em>
+                  </p>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
         {/* Education - Skill Board */}
         <Row className="mb-4">
           <Col>
