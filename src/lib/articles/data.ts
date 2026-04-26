@@ -44,6 +44,7 @@ export const CATEGORY_IMAGES: Record<string, string> = {
   'Auta': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800',
   'AI': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
   'Novinky': 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800',
+  'Náboženství': 'https://images.unsplash.com/photo-1509191442429-c495fb2c3f54?w=800',
 };
 
 export const GARDEN_ARTICLES = [
@@ -543,6 +544,58 @@ export const ARTICLES: Article[] = [
     featured: true,
   },
 
+  // Religion articles
+  {
+    id: "svetova-nabozenstvi-prehled",
+    title: "🌍 Světová náboženství: Průvodce hlavními vírami lidstva",
+    excerpt: "Křesťanství, islám, hinduismus, buddhismus a judaismus - pět největších náboženství světa. Jejich historie, učení, rituály a vliv na miliardy lidí.",
+    category: "Náboženství",
+    readTime: "18 min",
+    publishedAt: "2026-04-15",
+    tags: ["Náboženství", "Křesťanství", "Islám", "Hinduismus", "Buddhismus", "Judaismus", "Kultura"],
+    featured: true,
+  },
+  {
+    id: "historie-krestanstvi",
+    title: "✝️ Křesťanství: Od Golgoty k miliardě věřících",
+    excerpt: "Dva tisíce let historie nejrozšířenějšího náboženství. Od apoštolů přes středověké scholastiky až po současnou globalizovanou cirkev.",
+    category: "Náboženství",
+    readTime: "15 min",
+    publishedAt: "2026-04-10",
+    tags: ["Křesťanství", "Historie", "Bible", "Církev", "Vatikán"],
+    featured: false,
+  },
+  {
+    id: "islam-historie-a-kultura",
+    title: "☪️ Islám: Víra, tradice a moderní svět",
+    excerpt: "Původ islámu, prorok Muhammad, Korán a pět pilířů islámu. Jak islám formoval kulturu a civilizace po celém světě.",
+    category: "Náboženství",
+    readTime: "16 min",
+    publishedAt: "2026-04-05",
+    tags: ["Islám", "Korán", "Muhammad", "Arabská kultura", "Blízký východ"],
+    featured: false,
+  },
+  {
+    id: "buddhismus-cesta-k-osvobozeni",
+    title: "🧘 Buddhismus: Cesta k osvobození od utrpení",
+    excerpt: "Buddha, čtyři ušlechtilé pravdy, meditace a mindfulness. Jak buddhistická filozofie ovlivnila západní psychologii a populární kulturu.",
+    category: "Náboženství",
+    readTime: "14 min",
+    publishedAt: "2026-03-28",
+    tags: ["Buddhismus", "Meditace", "Buddha", "Mindfulness", "Filozofie"],
+    featured: false,
+  },
+  {
+    id: "bible-kniha-knih",
+    title: "📖 Bible: Nejvlivnější kniha v dějinách lidstva",
+    excerpt: "Starý a Nový zákon, bible jako literární dílo a náboženský text. Její vliv na literaturu, umění, filozofii a západní civilizaci.",
+    category: "Náboženství",
+    readTime: "12 min",
+    publishedAt: "2026-03-20",
+    tags: ["Bible", "Starý zákon", "Nový zákon", "Literatura", "Historie"],
+    featured: false,
+  },
+
   // Add garden articles to main list too
   ...GARDEN_ARTICLES,
 ];
@@ -564,6 +617,7 @@ export function getCategoryPriority(category: string): number {
     'Modeling': 13,
     'Zdraví': 14,
     'Hardware': 15,
+    'Náboženství': 16,
   };
   return priority[category] || 99;
 }

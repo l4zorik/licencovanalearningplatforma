@@ -53,6 +53,23 @@ const AdBanner = ({ position, size = "medium" }: { position: string, size?: stri
   );
 };
 
+// Dynamically import sections to avoid SSR issues
+const EducationSection = dynamic(() => import('@/components/EducationSection'), {
+  ssr: false
+});
+const WorkSection = dynamic(() => import('@/components/WorkSection'), {
+  ssr: false
+});
+const CertificationSection = dynamic(() => import('@/components/CertificationSection'), {
+  ssr: false
+});
+const AkizeGuide = dynamic(() => import('@/components/AkizeGuide'), {
+  ssr: false
+});
+const TrendySection = dynamic(() => import('@/components/TrendySection'), {
+  ssr: false
+});
+
 import WaveBackground from '@/components/WaveBackground';
 
 export default function Home() {

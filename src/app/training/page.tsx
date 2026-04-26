@@ -223,6 +223,46 @@ const TRAINING_MODULES = [
     status: "Coming Soon",
     link: "#",
     tags: ["První pomoc", "Chování", "Veterina"]
+  },
+  {
+    id: "world-religions",
+    title: "Světová Náboženství",
+    category: "Religion",
+    difficulty: "Beginner",
+    description: "Přehled hlavních světových náboženství - křesťanství, islám, hinduismus, buddhismus, judaismus. Historie, tradice a vliv na společnost.",
+    status: "Available",
+    link: "/training/world-religions",
+    tags: ["Historie", "Kultura", "Filozofie", "Společnost"]
+  },
+  {
+    id: "bible-studies",
+    title: "Úvod do Bible",
+    category: "Religion",
+    difficulty: "Beginner",
+    description: "Základní kurz o Bibli - Starý a Nový zákon, knihy, příběhy a poselství. Pochopení nejvlivnější knihy v dějinách.",
+    status: "Coming Soon",
+    link: "#",
+    tags: ["Bible", "Křesťanství", "Historie", "Literatura"]
+  },
+  {
+    id: "religious-history",
+    title: "Dějiny Náboženství",
+    category: "Religion",
+    difficulty: "Intermediate",
+    description: "Od primitivních rituálů po moderní denominace. Vývoj náboenského myšlení a jeho vliv na civilizaci.",
+    status: "Coming Soon",
+    link: "#",
+    tags: ["Dějiny", "Kulturní antropologie", "Evoluce", "Civilizace"]
+  },
+  {
+    id: "religious-ethics",
+    title: "Náboženská Etika a Morálka",
+    category: "Religion",
+    difficulty: "Intermediate",
+    description: "Morální systémy v různých náboženstvích. Etické hodnoty, přikázání a jejich aplikace v moderním světě.",
+    status: "Coming Soon",
+    link: "#",
+    tags: ["Etika", "Morálka", "Filozofie", "Hodnoty"]
   }
 ];
 
