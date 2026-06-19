@@ -4,6 +4,57 @@ Všechny podstatné změny v projektu jsou zde zdokumentovány.
 
 ---
 
+## [v0.4.0] - 2026-06-19
+
+### 🛠️ Skill Board — Kompletní overhaul
+
+#### Opravy kategorií
+- 10 skills přesunuto do `Legal & Compliance` (živnostenské listy, GDPR, ISO)
+- 5 skills do `Cloud & DevOps` (Docker, K8s, AWS, Git, DevOps)
+- 3 databáze (SQL, PostgreSQL, MongoDB) → `Data & Analytics`
+- Engineering → `Architecture & Engineering`, Education → `Education & Training`, Science → `Science & Research`
+- **Duplicitní kategorie** v `SKILL_CATEGORIES` odstraněny (Robotics, Crypto, Vibe Coding)
+
+#### Nové kategorie a skills (+32)
+- **Robotics** (8): ROS, PLC, robotické vidění, coboty, simulace...
+- **Crypto & Blockchain** (8): Solidity, Web3, DeFi, NFT, security...
+- **Vibe Coding** (8): Cursor, Copilot, prompt engineering, agentic AI...
+- **Investing** (8): technická/fundamentální analýza, portfolio, opce...
+- 4 nové FACTS arrays (ROBOTICS_FACTS, CRYPTO_FACTS, VIBE_CODING_FACTS, INVESTING_FACTS)
+
+#### Vylepšení UI
+- Grid layout pro Skill Board, Certification Board i Job Board
+- Fancy skill karty s gradient top bordery, rounded rohy (14px), salary range, kategoriovými badges
+- Hover efekty (translateY + scale) s cubic-bezier transitions
+- Vyhledávání napříč všemi kategoriemi v modálním okně
+- Barevné left bordery podle kategorie v hlavním přehledu
+- CATEGORY_STYLES doplněny pro všech 26 kategorií v EducationSection
+
+#### Refactoring
+- `CNCSkillsWithFacts` → `TradeSkillsWithFacts` (parametric, 100+ řádků duplicity odstraněno)
+- `renderSkillCard` helper (eliminuje 35 řádků duplicitního JSX)
+- `crypto.randomUUID()` místo `Date.now()` pro ID kurzů
+- Dynamická priorita podle difficulty (1-2 Low, 3 Medium, 4-5 High)
+- Archiv perzistentní přes localStorage
+
+### 🤖 AI Prompt Manager (AkizeGuide)
+- 15 default promptů v 6 kategoriích (Programování, Kariéra, Vzdělávání, Finance, Motivace, Life OS)
+- localStorage persistence s CRUD operacemi
+- Search, category filter, usage counter
+- Editor modálního okna (title, content, category, icon, tags)
+- "Použít" — vyplní chat a odešle
+
+### 🎨 Vizuální vylepšení
+- **Hot News Ticker** — animovaný scrolling strip nad navbar, duplikovaný obsah pro seamless loop
+- **Navbar overflow fix** — scrollovatelný wrapper s `mask-image` gradient fade
+- **Skill modal redesign** — větší (95vw / 1400px), gradient header, fancy taby
+
+### 🐛 Opravy
+- `Col is not defined` v AkizeGuide (chybějící import)
+- `useEffect is not defined` v EducationSection (chybějící import)
+- Duplicitní taby v modal okně (odstraněny duplicitní kategorie)
+- Nepoužité FACTS importy nyní aktivně využívány
+
 ## [v0.3.1] - 2026-01-15
 
 ### 🎮 Rozšířený Gamifikace Systém
