@@ -403,6 +403,9 @@ const CertificationSection = dynamic(() => import('@/components/CertificationSec
 const AkizeGuide = dynamic(() => import('@/components/AkizeGuide'), {
   ssr: false
 });
+const LandingPage = dynamic(() => import('@/components/LandingPage'), {
+  ssr: false
+});
 const TrendySection = dynamic(() => import('@/components/TrendySection'), {
   ssr: false
 });
@@ -783,18 +786,7 @@ export default function Home() {
   }
 
   if (!session) {
-    return (
-      <Container className="d-flex justify-content-center align-items-center min-vh-100">
-        <WaveBackground />
-        <Card className="shadow-sm position-relative z-1">
-          <Card.Body className="text-center p-5">
-            <h2>Welcome to Educational Platform 2026</h2>
-            <p>Please sign in to continue.</p>
-            <Button href="/auth/signin" variant="primary">Sign In</Button>
-          </Card.Body>
-        </Card>
-      </Container>
-    );
+    return <LandingPage />;
   }
 
   // Calculate generic stats for Mission Logic
