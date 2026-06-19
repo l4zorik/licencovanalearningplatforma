@@ -406,6 +406,9 @@ const AkizeGuide = dynamic(() => import('@/components/AkizeGuide'), {
 const TrendySection = dynamic(() => import('@/components/TrendySection'), {
   ssr: false
 });
+const StudentProfileOverview = dynamic(() => import('@/components/StudentProfileOverview'), {
+  ssr: false
+});
 
 const FINANCIAL_GOALS = [
   "Finanční nezávislost (F.I.R.E.)",
@@ -808,135 +811,134 @@ export default function Home() {
         <WaveBackground />
 
         {/* Header / Navbar */}
-        <nav className="navbar navbar-dark navbar-glass mb-4 sticky-top shadow-sm">
+        {/* 🎯 News Ticker */}
+        <div style={{ 
+          background: 'linear-gradient(90deg, #1a1a2e, #16213e, #1a1a2e)',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          padding: '3px 0',
+          fontSize: '0.75rem',
+          color: '#e0e0e0',
+          position: 'relative',
+          zIndex: 1031
+        }}>
+          <div style={{
+            display: 'inline-block',
+            animation: 'ticker-scroll 40s linear infinite',
+            paddingLeft: '100%'
+          }}>
+            <span style={{ color: '#ff6b6b', fontWeight: 'bold', marginRight: '24px' }}>🔴 HOT</span>
+            <span style={{ marginRight: '40px' }}>🎯 AI Coding Boom: Vibe Coding skills +250% poptávka v 2026</span>
+            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
+            <span style={{ marginRight: '40px' }}>🤖 Robotika: Česká republika v TOP 10 robotizace světa</span>
+            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
+            <span style={{ marginRight: '40px' }}>🔗 Bitcoin ETF schváleny - Krypto trading rekordní objemy</span>
+            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
+            <span style={{ marginRight: '40px' }}>📈 Nové RVP: Programování a robotika povinné na ZŠ od 2027</span>
+            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
+            <span style={{ marginRight: '40px' }}>⚡ CNC obrábění: Průměrná mzda programátora CNC přes 70 000 Kč</span>
+            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
+            <span style={{ marginRight: '40px' }}>💡 Investice do AI startupů v ČR vzrostly o 340% meziročně</span>
+          </div>
+        </div>
+        <style>{`
+          @keyframes ticker-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+          }
+        `}</style>
+
+        <nav className="navbar navbar-dark navbar-glass mb-4 sticky-top shadow-sm" style={{ zIndex: 1030 }}>
            <Container fluid>
-             <div className="d-flex align-items-center">
-                <span className="navbar-brand mb-0 h1 me-4">🚀 Tomas Learning Platform</span>
-                 <div className="d-flex gap-2">
-                   <Link href="/profile" className="text-decoration-none">
-                      <Button variant="outline-primary" size="sm" className="fw-bold">
-                        👤 PROFILE
-                      </Button>
+             <div className="d-flex align-items-center w-100" style={{ minWidth: 0 }}>
+                <span className="navbar-brand mb-0 h1 me-3 flex-shrink-0">🚀 TLP</span>
+                <div className="nav-scroll-wrapper" style={{
+                  flex: '1 1 auto',
+                  minWidth: 0,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  maskImage: 'linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%)'
+                }}>
+                  <div className="d-flex gap-1" style={{
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    flexWrap: 'nowrap',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                    paddingBottom: '2px'
+                  }}>
+                    <Link href="/profile" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-primary" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>👤 PROFILE</Button>
                     </Link>
-                    <Link href="/analytics" className="text-decoration-none">
-                     <Button variant="outline-info" size="sm" className="fw-bold">
-                       📊 ANALYTICS
-                     </Button>
-                   </Link>
-                   <Button
-                      variant="outline-warning"
-                      size="sm"
-                      className="fw-bold d-flex align-items-center gap-2"
-                      onClick={() => setShowMissionModal(true)}
-                   >
+                    <Link href="/analytics" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-info" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>📊 ANALYTICS</Button>
+                    </Link>
+                    <Button variant="outline-warning" size="sm" className="fw-bold d-flex align-items-center gap-1 flex-shrink-0 py-0 px-2" style={{fontSize:'0.72rem'}} onClick={() => setShowMissionModal(true)}>
                       <span>🎯 MISE</span>
-                      <Badge bg="warning" text="dark" pill>2 Active</Badge>
-                   </Button>
-                   <Link href="/training" className="text-decoration-none">
-                     <Button variant="outline-primary" size="sm" className="fw-bold">
-                       🎓 TRAINING
-                     </Button>
-                   </Link>
-                   <Link href="/career-report" className="text-decoration-none">
-                     <Button variant="outline-success" size="sm" className="fw-bold">
-                       📈 CAREER REPORT
-                     </Button>
-                   </Link>
-                    <Link href="/courses" className="text-decoration-none">
-                       <Button variant="outline-success" size="sm" className="fw-bold">
-                         🎓 KURZY
-                       </Button>
-                     </Link>
-                     <Link href="/quick-courses" className="text-decoration-none">
-                       <Button variant="outline-warning" size="sm" className="fw-bold">
-                         ⚡ RYCHLOKURZY
-                       </Button>
-                     </Link>
-                     <Link href="/articles" className="text-decoration-none">
-                       <Button variant="outline-primary" size="sm" className="fw-bold">
-                         📝 ČLÁNKY
-                       </Button>
-                     </Link>
-<Link href="/tools" className="text-decoration-none">
-                        <Button variant="outline-warning" size="sm" className="fw-bold">
-                          🛠️ TOOLS
-                        </Button>
-                      </Link>
-                      <Link href="/agencies" className="text-decoration-none">
-                        <Button variant="outline-success" size="sm" className="fw-bold">
-                          🏢 AGENTURY
-                        </Button>
-                      </Link>
-                      <Link href="/colleagues" className="text-decoration-none">
-                         <Button variant="outline-info" size="sm" className="fw-bold">
-                           👥 KOLEGOVÉ
-                         </Button>
-                       </Link>
-                       <Link href="/achievements" className="text-decoration-none">
-                         <Button variant="outline-warning" size="sm" className="fw-bold">
-                           🏆 ACHIEVEMENTS
-                         </Button>
-                       </Link>
-                        <Link href="/roadmap" className="text-decoration-none">
-                          <Button variant="outline-success" size="sm" className="fw-bold">
-                            🗺️ ROADMAP
-                          </Button>
-                        </Link>
-                        <Link href="/journey" className="text-decoration-none">
-                          <Button variant="outline-primary" size="sm" className="fw-bold">
-                            🎯 JOURNEY
-                          </Button>
-                        </Link>
-                        <Link href="/career-advice" className="text-decoration-none">
-                          <Button variant="outline-warning" size="sm" className="fw-bold">
-                            💡 RADY
-                          </Button>
-                        </Link>
-                        <Link href="/recipes" className="text-decoration-none">
-                          <Button variant="outline-success" size="sm" className="fw-bold">
-                            👨‍🍳 RECEPTY
-                          </Button>
-                        </Link>
-                       <Button
-                      variant="outline-info"
-                      size="sm"
-                      className="fw-bold d-flex align-items-center gap-2"
-                      onClick={() => setShowTrendyModal(true)}
-                    >
+                      <Badge bg="warning" text="dark" pill style={{fontSize:'0.6rem'}}>2</Badge>
+                    </Button>
+                    <Link href="/training" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-primary" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🎓 TRAINING</Button>
+                    </Link>
+                    <Link href="/career-report" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-success" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>📈 CAREER</Button>
+                    </Link>
+                    <Link href="/courses" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-success" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🎓 KURZY</Button>
+                    </Link>
+                    <Link href="/quick-courses" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-warning" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>⚡ RYCHLO</Button>
+                    </Link>
+                    <Link href="/articles" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-primary" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>📝 ČLÁNKY</Button>
+                    </Link>
+                    <Link href="/tools" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-warning" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🛠️ TOOLS</Button>
+                    </Link>
+                    <Link href="/agencies" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-success" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🏢 AGENTURY</Button>
+                    </Link>
+                    <Link href="/colleagues" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-info" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>👥 KOLEGOVÉ</Button>
+                    </Link>
+                    <Link href="/achievements" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-warning" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🏆 ACHIEVE</Button>
+                    </Link>
+                    <Link href="/roadmap" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-success" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🗺️ ROADMAP</Button>
+                    </Link>
+                    <Link href="/journey" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-primary" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>🎯 JOURNEY</Button>
+                    </Link>
+                    <Link href="/career-advice" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-warning" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>💡 RADY</Button>
+                    </Link>
+                    <Link href="/recipes" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-success" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>👨‍🍳 RECEPTY</Button>
+                    </Link>
+                    <Link href="/wiki" className="text-decoration-none flex-shrink-0">
+                      <Button variant="outline-light" size="sm" className="fw-bold py-0 px-2" style={{fontSize:'0.72rem'}}>📖 WIKI</Button>
+                    </Link>
+                    <Button variant="outline-info" size="sm" className="fw-bold d-flex align-items-center gap-1 flex-shrink-0 py-0 px-2" style={{fontSize:'0.72rem'}} onClick={() => setShowTrendyModal(true)}>
                       <span>📈 TRENDY</span>
                     </Button>
-                   {/* Premium features toggle - for future monetization */}
-                   <Button
-                     variant="outline-gold"
-                     size="sm"
-                     className="fw-bold"
-                     disabled
-                     title="Premium features coming soon!"
-                   >
-                     ⭐ PREMIUM
-                   </Button>
-                 </div>
+                    <Button variant="outline-gold" size="sm" className="fw-bold flex-shrink-0 py-0 px-2" style={{fontSize:'0.72rem'}} disabled title="Premium features coming soon!">⭐ PREMIUM</Button>
+                  </div>
+                </div>
              </div>
 
-             <div className="text-white d-flex align-items-center gap-3">
-                <div className="d-none d-md-block text-white-50 small">
-                    Level {stats.level} Developer • {stats.xp} XP
+             <div className="text-white d-flex align-items-center gap-3 flex-shrink-0 ms-2">
+                <div className="d-none d-md-block text-white-50 small" style={{fontSize:'0.7rem', lineHeight:1.2}}>
+                    Lv.{stats.level} • {stats.xp} XP
                 </div>
-                 <div>
-                     <span className="me-2 text-white-50">Next Level:</span>
-                     <Badge bg="success">{stats.xpToNext} XP</Badge>
-                 </div>
-                 <div className="d-flex align-items-center gap-3">
-                   <ThemeToggle />
-                   <Button
-                     variant="outline-light"
-                     size="sm"
-                     onClick={() => signOut()}
-                   >
-                     Sign Out
-                   </Button>
-                 </div>
-              </div>
+                <Badge bg="success" style={{fontSize:'0.65rem'}}>+{stats.xpToNext}</Badge>
+                <div className="d-flex align-items-center gap-2">
+                  <ThemeToggle />
+                  <Button variant="outline-light" size="sm" className="py-0 px-2" style={{fontSize:'0.7rem'}} onClick={() => signOut()}>Odhlásit</Button>
+                </div>
+             </div>
            </Container>
         </nav>
 
@@ -1196,6 +1198,11 @@ export default function Home() {
                 <WorkSection myCourses={courses} setCourses={setCourses} />
               </Col>
             </Row>
+
+            {/* Student Profile Overview */}
+            <div className="mb-5">
+              <StudentProfileOverview courses={courses} />
+            </div>
         </Container>
 
         {/* --- MISSION CONTROL MODAL --- */}

@@ -22,6 +22,17 @@ interface Article {
 
 const ARTICLES: Article[] = [
   {
+    id: "svoboda-vs-otroctvi",
+    title: "Svoboda vs. Otroctví",
+    excerpt: "Esej o rozdílu mezi svobodou a otroctvím: historické, psychologické a institucionální perspektivy a praktické kroky k posílení svobody.",
+    category: "Esej",
+    readTime: "8 min",
+    publishedAt: "2026-05-26",
+    tags: ["svoboda", "otroctví", "etika", "společnost"],
+    featured: false,
+    color: "info"
+  },
+  {
     id: "nvidia-groq-acquisition",
     title: "💥 NVIDIA kupuje Groq za miliardy: Největší akvizice AI čipů",
     excerpt: "NVIDIA oznámila akvizici startupu Groq zabývajícího se AI akcelerátory. Hodnota transakce přesahuje 20 miliard dolarů a představuje největší akvizici v historii AI čipového průmyslu. Groq se zaměřuje na inference čipy pro velké jazykové modely.",

@@ -35,6 +35,51 @@ interface Article {
 
 const ARTICLES: Article[] = [
   {
+    id: "svoboda-vs-otroctvi",
+    title: "Svoboda vs. Otroctví",
+    excerpt: "Esej o rozdílu mezi svobodou a otroctvím: historické, psychologické a institucionální perspektivy a praktické kroky k posílení svobody.",
+    category: "Esej",
+    readTime: "8 min",
+    publishedAt: "2026-05-26",
+    tags: ["svoboda", "otroctví", "etika", "společnost"],
+    featured: false,
+    color: "info",
+    content: {
+      introduction: "Svoboda a otroctví jsou základními pojmy, které formují lidskou zkušenost — svoboda znamená možnost volby, důstojnost a schopnost utvářet vlastní život; otroctví znamená ztrátu těchto práv, ať už fyzicky, ekonomicky nebo psychicky.",
+      sections: [
+        {
+          title: "Historická perspektiva",
+          content: "Otroctví mělo v historii mnohé podoby: od starověkých civilizací přes transatlantický obchod až po moderní formy nucené práce a obchodování s lidmi. Odstranění institucionálního otroctví je důležité, ale nezaručuje konečné osvobození — strukturální nerovnosti a kulturní předsudky mohou svobodu nadále omezovat."
+        },
+        {
+          title: "Psychologická dimenze",
+          content: "Svoboda není jen právní stav, ale také stav mysli. Strach, závislosti, dezinformace nebo osvojené přesvědčení mohou jedince ‚otročit‘ i v prostředí formálně svobodném. Vzdělání a kritické myšlení jsou klíčové nástroje pro osvobození mysli."
+        },
+        {
+          title: "Institucionální a ekonomické faktory",
+          content: "Reálná svoboda je o přístupu ke zdrojům a příležitostem. Nerovný přístup k práci, vzdělání, zdravotní péči a právům může učinit svobodu pouze teoretickou. Boj proti novodobým formám otroctví proto musí zahrnovat zlepšení pracovních podmínek, sociální zabezpečení a politiku rozšiřující skutečné možnosti volby."
+        },
+        {
+          title: "Etická odpovědnost a praktické kroky",
+          content: "Odpovědnost nese jak jednotlivec, tak společnost. Konkrétní kroky zahrnují vzdělávání, volbu politik podporujících lidská práva, podporu organizací bojujících proti vykořisťování a odmítání produktů spojených s nucenou prací. Instituce musí zajistit transparentnost, dohled a právní ochranu zranitelných skupin."
+        },
+        {
+          title: "Svoboda jako dynamický proces",
+          content: "Svoboda není jednorázový cíl, ale neustálá obrana a obnova. Vyžaduje aktivní instituce, kulturu solidarity a nástroje pro odhalování jemných forem podřízení — ekonomických, sociálních i psychologických — a cílené zásahy proti nim."
+        }
+      ],
+      conclusion: "Rozdíl mezi svobodou a otroctvím přesahuje historii a zákony: projevuje se v každodenních rozhodnutích a společenských strukturách. K opravdové svobodě vede kombinace právní ochrany, systémových reforem a kultury vzdělání a solidarity. Každý krok k větší informovanosti a spravedlnosti posouvá společnost od otroctví ke svobodě.",
+      keyTakeaways: [
+        "Svoboda zahrnuje právní, ekonomické i psychologické složky",
+        "Historické zrušení otroctví nestačí — strukturální nerovnosti musí být řešeny",
+        "Vzdělání a kritické myšlení jsou klíčové pro osvobození mysli",
+        "Praktické kroky zahrnují politiku, transparentnost a podporu organizací bojujících proti vykořisťování",
+        "Svoboda je dynamický proces, který vyžaduje stálou obranu"
+      ]
+    }
+  },
+
+  {
     id: "humanoidni-roboty-2026",
     title: "Humanoidní Roboti 2026: Nová éra robotiky",
     excerpt: "Přehled nejnovějších humanoidních robotů od Figure AI, Boston Dynamics, Tesla a dalších. Jak se mění průmysl a co přinese budoucnost.",

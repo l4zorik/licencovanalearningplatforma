@@ -346,105 +346,81 @@ export default function CertificationSection({ myCourses }: Props) {
             </div>
           ) : (
             <div className="certification-list">
-              {filteredCerts.map(cert => {
-                const statusConfig = STATUS_CONFIG[cert.status];
-                const progress = cert.status === 'Passed' ? 100 : cert.status === 'In Progress' ? 50 : 0;
+              <Row className="g-2">
+                {filteredCerts.map(cert => {
+                  const statusConfig = STATUS_CONFIG[cert.status];
+                  const progress = cert.status === 'Passed' ? 100 : cert.status === 'In Progress' ? 50 : 0;
 
-                return (
-                  <Card
-                    key={cert.id}
-                    className="mb-2 certification-card"
-                    style={{ cursor: 'context-menu' }}
-                    draggable
-                    onDragStart={(e) => { e.dataTransfer.setData('text/plain', cert.id); }}
-                    onContextMenu={(e) => handleContextMenu(e, cert)}
-                  >
-                    <Card.Body className="p-3">
-                      <div className="d-flex justify-content-between align-items-start mb-2">
-                        <div>
-                          <h6 className="mb-1 fw-bold">{cert.name}</h6>
-                          <small className="text-muted">{cert.provider}</small>
-                        </div>
-                        <Dropdown>
-                          <Dropdown.Toggle
-                            variant={statusConfig.variant}
-                            size="sm"
-                            className="fw-bold"
-                          >
-                            {statusConfig.label}
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu>
-                            {(['Not Started', 'In Progress', 'Scheduled', 'Passed', 'Failed'] as CertificationStatus[]).map(status => (
-                              <Dropdown.Item
-                                key={status}
-                                onClick={() => updateCertStatus(cert.id, status)}
+                  return (
+                    <Col key={cert.id} xs={12} sm={6}>
+                      <Card
+                        className="certification-card h-100 border-0 shadow-sm"
+                        style={{ cursor: 'context-menu', borderRadius: '8px', borderLeft: `4px solid ${statusConfig.color || '#6c757d'}` }}
+                        draggable
+                        onDragStart={(e) => { e.dataTransfer.setData('text/plain', cert.id); }}
+                        onContextMenu={(e) => handleContextMenu(e, cert)}
+                      >
+                        <Card.Body className="p-3">
+                          <div className="d-flex justify-content-between align-items-start mb-2">
+                            <div className="min-w-0" style={{ flex: 1 }}>
+                              <h6 className="mb-1 fw-bold text-truncate">{cert.name}</h6>
+                              <small className="text-muted">{cert.provider}</small>
+                            </div>
+                            <Dropdown>
+                              <Dropdown.Toggle
+                                variant={statusConfig.variant}
+                                size="sm"
+                                className="fw-bold border-0 shadow-sm"
                               >
-                                {STATUS_CONFIG[status].label}
-                              </Dropdown.Item>
-                            ))}
-                            <Dropdown.Divider />
-                            <Dropdown.Item
-                              onClick={() => archiveCertification(cert.id)}
-                              className="text-warning"
-                            >
-                              📁 Archive
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              onClick={() => removeCertification(cert.id)}
-                              className="text-danger"
-                            >
-                              🗑️ Remove
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </div>
+                                {statusConfig.label}
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                {(['Not Started', 'In Progress', 'Scheduled', 'Passed', 'Failed'] as CertificationStatus[]).map(status => (
+                                  <Dropdown.Item
+                                    key={status}
+                                    onClick={() => updateCertStatus(cert.id, status)}
+                                  >
+                                    {STATUS_CONFIG[status].label}
+                                  </Dropdown.Item>
+                                ))}
+                                <Dropdown.Divider />
+                                <Dropdown.Item onClick={() => archiveCertification(cert.id)} className="text-warning">
+                                  📁 Archive
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => removeCertification(cert.id)} className="text-danger">
+                                  🗑️ Remove
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
 
-                      <div className="mb-2">
-                        <Badge
-                          bg="light"
-                          text="dark"
-                          className="me-1"
-                          style={{ backgroundColor: '#e9ecef' }}
-                        >
-                          {cert.category}
-                        </Badge>
-                        <Badge
-                          bg="light"
-                          text="dark"
-                          className="me-1"
-                          style={{ backgroundColor: '#e9ecef' }}
-                        >
-                          ⚡ {cert.difficulty}/5
-                        </Badge>
-                        {cert.cost > 0 && (
-                          <Badge bg="light" text="dark">
-                            💰 ${cert.cost}
-                          </Badge>
-                        )}
-                      </div>
+                          <div className="mb-2">
+                            <Badge bg="light" text="dark" className="me-1 small" style={{ backgroundColor: '#e9ecef' }}>
+                              {cert.category}
+                            </Badge>
+                            <Badge bg="light" text="dark" className="me-1 small" style={{ backgroundColor: '#e9ecef' }}>
+                              ⚡ {cert.difficulty}/5
+                            </Badge>
+                            {cert.cost > 0 && (
+                              <Badge bg="light" text="dark" className="small">💰 ${cert.cost}</Badge>
+                            )}
+                          </div>
 
-                      <ProgressBar
-                        now={progress}
-                        variant={statusConfig.variant}
-                        style={{ height: '6px' }}
-                        className="mb-2"
-                      />
+                          <ProgressBar now={progress} variant={statusConfig.variant} style={{ height: '4px' }} className="mb-2" />
 
-                      {cert.notes && (
-                        <small className="text-muted d-block mt-2">
-                          📝 {cert.notes.length > 50 ? cert.notes.substring(0, 50) + '...' : cert.notes}
-                        </small>
-                      )}
+                          {cert.notes && (
+                            <small className="text-muted d-block mt-1">📝 {cert.notes.substring(0, 40)}...</small>
+                          )}
 
-                      {cert.attemptCount > 0 && (
-                        <small className="text-muted">
-                          🔄 Attempts: {cert.attemptCount}
-                        </small>
-                      )}
-                    </Card.Body>
-                  </Card>
-                );
-              })}
+                          {cert.attemptCount > 0 && (
+                            <small className="text-muted mt-1 d-block">🔄 Attempts: {cert.attemptCount}</small>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                })}
+              </Row>
             </div>
           )}
 

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Card, Button, Form, Modal, ProgressBar, Badge, Toast, ToastContainer, Accordion, ListGroup } from 'react-bootstrap';
+import { Card, Button, Form, Modal, ProgressBar, Badge, Toast, ToastContainer, Accordion, ListGroup, Row, Col } from 'react-bootstrap';
 import { Course, Job, UserStats, Achievement } from '@/types';
 
 interface AkizeGuideProps {
@@ -23,6 +23,38 @@ interface CommandOption {
   category: string;
   action: string;
 }
+
+interface PromptTemplate {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  icon: string;
+  tags: string[];
+  createdAt: number;
+  updatedAt: number;
+  usageCount: number;
+}
+
+const PROMPT_STORAGE_KEY = 'akize-prompts';
+
+const DEFAULT_PROMPTS: PromptTemplate[] = [
+  { id: 'p1', title: 'Generátor CV', content: 'Pomoz mi vytvořit profesionální CV pro pozici {position}. Mám zkušenosti v {experience} a chci zdůraznit {focus}.', category: 'Kariéra', icon: '📄', tags: ['cv', 'career', 'job'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 25 },
+  { id: 'p2', title: 'Skill Gap Analysis', content: 'Analyzuj skill gap pro pozici {position}. Aktuálně umím: {skills}. Které dovednosti mi chybí a jak je mám nejrychleji získat?', category: 'Kariéra', icon: '🎯', tags: ['skills', 'gap', 'analysis'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 18 },
+  { id: 'p3', title: 'Code Review', content: 'Proveď code review tohoto kódu: {code}. Hledej bezpečnostní chyby, performance problémy a porušení best practices v {language}.', category: 'Programování', icon: '🔍', tags: ['code', 'review', 'security'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 42 },
+  { id: 'p4', title: 'Debug Assistant', content: 'Mám problém s kódem v {language}. Kód: {code}. Chybová hláška: {error}. Co dělám špatně a jak to opravit?', category: 'Programování', icon: '🐛', tags: ['debug', 'error', 'fix'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 55 },
+  { id: 'p5', title: 'Explain Like I\'m 5', content: 'Vysvětli mi {topic} jako bych byl úplný začátečník. Použij jednoduchá slova, analogie a příklady z reálného světa.', category: 'Vzdělávání', icon: '🧠', tags: ['explain', 'beginner', 'learning'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 33 },
+  { id: 'p6', title: 'Study Planner', content: 'Vytvoř mi týdenní studijní plán na {topic}. Mám k dispozici {hoursPerDay} hodin denně. Chci se dostat na úroveň {level} do {deadline}.', category: 'Vzdělávání', icon: '📅', tags: ['plan', 'study', 'schedule'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 12 },
+  { id: 'p7', title: 'Investment Strategy', content: 'Mám {amount} Kč na investování na {timeHorizon} let. Můj risk profil je {riskProfile}. Navrhni mi diverzifikované portfolio včetně konkrétních ETF a poměrů.', category: 'Finance', icon: '📈', tags: ['invest', 'portfolio', 'finance'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 8 },
+  { id: 'p8', title: 'AI Prompt Optimalizace', content: 'Pomoz mi optimalizovat tento prompt pro AI: {prompt}. Chci dosáhnout {goal}. Navrhni vylepšení pro lepší výsledky.', category: 'Programování', icon: '✨', tags: ['prompt', 'ai', 'optimization'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 30 },
+  { id: 'p9', title: 'Career Change Roadmap', content: 'Chci změnit kariéru z {currentField} na {targetField}. Moje aktuální dovednosti: {skills}. Vytvoř mi detailní roadmapu včetně kurzů, certifikací a časového harmonogramu.', category: 'Kariéra', icon: '🛤️', tags: ['career', 'change', 'roadmap'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 15 },
+  { id: 'p10', title: 'Vibe Coding Session', content: 'Pojďme spolu vibe coding! Chci vytvořit {project} pomocí {techStack}. Začneme od nápadu a budeme iterovat. První: navrhni architekturu a strukturu souborů.', category: 'Programování', icon: '✨', tags: ['vibe', 'coding', 'ai'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 20 },
+  { id: 'p11', title: 'Mentoring Session', content: 'Představ si, že jsi můj mentor v oboru {field}. Mám {experience} zkušeností. Potřebuji radu ohledně {question}. Odpovídej jako zkušený senior, který chce předat know-how.', category: 'Motivace', icon: '👨‍🏫', tags: ['mentor', 'career', 'advice'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 10 },
+  { id: 'p12', title: 'Life OS Review', content: 'Proveď review mého Life OS systému. Mám tyto oblasti: {areas}. Aktuální skóre spokojenosti: {score}/10. Navrhni zlepšení pro work-life balance a osobní růst.', category: 'Life OS', icon: '🌱', tags: ['life', 'os', 'balance'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 5 },
+  { id: 'p13', title: 'Krypto Analýza', content: 'Analyzuj kryptoměnu {coin}. Zajímá mě fundament projektu, tokenomika, tým, roadmapa, konkurence a aktuální sentiment na trhu. Je to dobrá investice na {timeframe}?', category: 'Finance', icon: '🔗', tags: ['crypto', 'analysis', 'blockchain'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 7 },
+  { id: 'p14', title: 'Motivační Letter', content: 'Napiš mi motivační dopis na pozici {position} ve firmě {company}. Moje klíčové dovednosti: {skills}. Zdůrazni, proč jsem ideální kandidát.', category: 'Kariéra', icon: '✉️', tags: ['motivation', 'letter', 'job'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 11 },
+  { id: 'p15', title: 'Rapid Prototype', content: 'Pojďme rychle prototypovat: {idea}. Chci během {timeframe} vytvořit MVP. Jaké technologie použít, jaká je kritická cesta a co můžeme osekávat?', category: 'Programování', icon: '⚡', tags: ['prototype', 'mvp', 'rapid'], createdAt: Date.now(), updatedAt: Date.now(), usageCount: 9 },
+];
 
 const COMMAND_MENU: CommandOption[] = [
   // 🎯 Kariéra & Práce
@@ -119,6 +151,70 @@ export default function AkizeGuide({ courses = [], jobs = [], userStats, achieve
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Prompt Manager state
+  const [showPrompts, setShowPrompts] = useState(false);
+  const [prompts, setPrompts] = useState<PromptTemplate[]>(() => {
+    if (typeof window === 'undefined') return DEFAULT_PROMPTS;
+    const saved = localStorage.getItem(PROMPT_STORAGE_KEY);
+    if (saved) {
+      try { return JSON.parse(saved); } catch { return DEFAULT_PROMPTS; }
+    }
+    return DEFAULT_PROMPTS;
+  });
+  const [promptSearch, setPromptSearch] = useState('');
+  const [promptCategory, setPromptCategory] = useState<string | null>(null);
+  const [editingPrompt, setEditingPrompt] = useState<PromptTemplate | null>(null);
+  const [showPromptEditor, setShowPromptEditor] = useState(false);
+  const [promptEditForm, setPromptEditForm] = useState<{ title: string; content: string; category: string; icon: string; tags: string }>({ title: '', content: '', category: 'Programování', icon: '📝', tags: '' });
+
+  useEffect(() => {
+    localStorage.setItem(PROMPT_STORAGE_KEY, JSON.stringify(prompts));
+  }, [prompts]);
+
+  const getPromptCategories = () => [...new Set(prompts.map(p => p.category))];
+  
+  const getFilteredPrompts = () => {
+    let filtered = prompts;
+    if (promptSearch) {
+      const lower = promptSearch.toLowerCase();
+      filtered = filtered.filter(p => p.title.toLowerCase().includes(lower) || p.content.toLowerCase().includes(lower) || p.tags.some(t => t.toLowerCase().includes(lower)));
+    }
+    if (promptCategory) filtered = filtered.filter(p => p.category === promptCategory);
+    return filtered.sort((a, b) => b.usageCount - a.usageCount || b.updatedAt - a.updatedAt);
+  };
+
+  const usePrompt = (prompt: PromptTemplate) => {
+    const updated = { ...prompt, usageCount: prompt.usageCount + 1, updatedAt: Date.now() };
+    setPrompts(prev => prev.map(p => p.id === prompt.id ? updated : p));
+    const message = prompt.content.includes('{') ? prompt.content.replace(/\{(\w+)\}/g, (_, key) => `[${key}]`) : prompt.content;
+    setUserInput(message);
+    setShowPrompts(false);
+  };
+
+  const savePrompt = () => {
+    const { title, content, category, icon, tags } = promptEditForm;
+    if (!title.trim() || !content.trim()) return;
+    const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
+    if (editingPrompt) {
+      setPrompts(prev => prev.map(p => p.id === editingPrompt.id ? { ...p, title, content, category, icon, tags: tagList, updatedAt: Date.now() } : p));
+    } else {
+      const newPrompt: PromptTemplate = { id: `p-${Date.now()}`, title, content, category, icon, tags: tagList, createdAt: Date.now(), updatedAt: Date.now(), usageCount: 0 };
+      setPrompts(prev => [newPrompt, ...prev]);
+    }
+    setShowPromptEditor(false);
+    setEditingPrompt(null);
+  };
+
+  const deletePrompt = (id: string) => {
+    if (confirm('Smazat tento prompt?')) setPrompts(prev => prev.filter(p => p.id !== id));
+  };
+
+  const openEditPrompt = (prompt: PromptTemplate) => {
+    setEditingPrompt(prompt);
+    setPromptEditForm({ title: prompt.title, content: prompt.content, category: prompt.category, icon: prompt.icon, tags: prompt.tags.join(', ') });
+    setShowPromptEditor(true);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -476,10 +572,19 @@ Měj se krásně a hodně úspěchů! 🌟
               <span>{jobs.length}</span>
             </Badge>
             <Button
+              variant={showPrompts ? 'light' : 'link'}
+              size="sm"
+              className={`text-white ${showPrompts ? 'text-dark' : ''}`}
+              onClick={() => { setShowPrompts(!showPrompts); setShowCommandMenu(false); }}
+              title="Správce promptů"
+            >
+              📝 Prompty ({prompts.length})
+            </Button>
+            <Button
               variant="link"
-              className="text-white p-0 ms-2"
+              className="text-white p-0 ms-1"
               onClick={() => setShowGuide(false)}
-              style={{ fontSize: '1.5rem' }}
+              style={{ fontSize: '1.5rem', lineHeight: 1 }}
             >
               ×
             </Button>
@@ -488,7 +593,7 @@ Měj se krásně a hodně úspěchů! 🌟
 
         <Modal.Body className="p-0" style={{ height: '600px', display: 'flex', flexDirection: 'column', background: '#f8f9fa' }}>
           {/* Command Menu Panel */}
-          {showCommandMenu && (
+          {showCommandMenu && !showPrompts && (
             <div className="p-3 border-bottom bg-white" style={{ flexShrink: 0 }}>
               <div className="d-flex align-items-center gap-2 mb-3">
                 <span className="fw-bold text-dark">⚡ Rychlé příkazy</span>
@@ -496,9 +601,16 @@ Měj se krásně a hodně úspěchů! 🌟
                   {COMMAND_MENU.length} možností
                 </Badge>
                 <Button
-                  variant="outline-secondary"
+                  variant="outline-primary"
                   size="sm"
                   className="ms-auto"
+                  onClick={() => { setShowPrompts(true); setShowCommandMenu(false); }}
+                >
+                  📝 Prompty
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
                   onClick={() => setShowCommandMenu(false)}
                 >
                   ✕ Skrýt
@@ -563,6 +675,109 @@ Měj se krásně a hodně úspěchů! 🌟
               </div>
             </div>
           )}
+
+          {/* Prompt Manager Panel */}
+          {showPrompts && (
+            <div className="p-3 border-bottom bg-white" style={{ flexShrink: 0 }}>
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <span className="fw-bold text-dark">📝 Správce promptů</span>
+                <Badge bg="primary">{prompts.length} promptů</Badge>
+                <Button variant="outline-primary" size="sm" className="ms-auto" onClick={() => { setEditingPrompt(null); setPromptEditForm({ title: '', content: '', category: 'Programování', icon: '📝', tags: '' }); setShowPromptEditor(true); }}>
+                  + Nový prompt
+                </Button>
+                <Button variant="outline-secondary" size="sm" onClick={() => { setShowPrompts(false); setShowCommandMenu(true); }}>
+                  ⚡ Příkazy
+                </Button>
+                <Button variant="outline-secondary" size="sm" onClick={() => setShowPrompts(false)}>✕</Button>
+              </div>
+
+              <Form.Control type="text" placeholder="🔍 Hledat v promptech..." value={promptSearch} onChange={(e) => setPromptSearch(e.target.value)} className="mb-2" size="sm" />
+
+              <div className="d-flex flex-wrap gap-1 mb-2">
+                <Button variant={promptCategory === null ? 'primary' : 'outline-secondary'} size="sm" onClick={() => setPromptCategory(null)}>Vše</Button>
+                {getPromptCategories().map(cat => (
+                  <Button key={cat} variant={promptCategory === cat ? 'primary' : 'outline-secondary'} size="sm" onClick={() => setPromptCategory(cat)}>{cat}</Button>
+                ))}
+              </div>
+
+              <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
+                <Row className="g-2">
+                  {getFilteredPrompts().map(p => (
+                    <Col key={p.id} xs={6} md={4}>
+                      <Card className="command-card border h-100" onClick={() => usePrompt(p)}>
+                        <Card.Body className="p-2" style={{ cursor: 'pointer' }}>
+                          <div className="d-flex justify-content-between align-items-start mb-1">
+                            <div className="d-flex align-items-center gap-1">
+                              <span>{p.icon}</span>
+                              <span className="fw-bold small text-truncate d-inline-block" style={{ maxWidth: '100px' }}>{p.title}</span>
+                            </div>
+                            <div className="d-flex gap-1 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                              <Button variant="link" size="sm" className="p-0 text-primary" style={{fontSize:'0.65rem'}} onClick={() => openEditPrompt(p)} title="Upravit">✏️</Button>
+                              <Button variant="link" size="sm" className="p-0 text-danger" style={{fontSize:'0.65rem'}} onClick={() => deletePrompt(p.id)} title="Smazat">🗑️</Button>
+                            </div>
+                          </div>
+                          <small className="text-muted d-block text-truncate" style={{ fontSize: '0.65rem' }}>
+                            {p.content.substring(0, 60)}...
+                          </small>
+                          <div className="d-flex justify-content-between align-items-center mt-1">
+                            <Badge bg="light" text="dark" style={{ fontSize: '0.55rem' }}>{p.category}</Badge>
+                            <small className="text-muted" style={{ fontSize: '0.6rem' }}>🔄 {p.usageCount}</small>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            </div>
+          )}
+
+          {/* Prompt Editor Modal */}
+          <Modal show={showPromptEditor} onHide={() => setShowPromptEditor(false)} size="lg" centered>
+            <Modal.Header closeButton className="bg-primary text-white">
+              <Modal.Title>{editingPrompt ? '✏️ Upravit prompt' : '📝 Nový prompt'}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-2">
+                  <Form.Label className="fw-bold small">Název</Form.Label>
+                  <Form.Control type="text" value={promptEditForm.title} onChange={(e) => setPromptEditForm({...promptEditForm, title: e.target.value})} placeholder="Např. Code Review Expert" />
+                </Form.Group>
+                <Form.Group className="mb-2">
+                  <Form.Label className="fw-bold small">Prompt text <span className="text-muted">(použij {'{proměnná}'} pro dynamické hodnoty)</span></Form.Label>
+                  <Form.Control as="textarea" rows={4} value={promptEditForm.content} onChange={(e) => setPromptEditForm({...promptEditForm, content: e.target.value})} placeholder="Napiš prompt..." />
+                </Form.Group>
+                <Row>
+                  <Col xs={4}>
+                    <Form.Group className="mb-2">
+                      <Form.Label className="fw-bold small">Kategorie</Form.Label>
+                      <Form.Select value={promptEditForm.category} onChange={(e) => setPromptEditForm({...promptEditForm, category: e.target.value})}>
+                        <option>Programování</option><option>Kariéra</option><option>Vzdělávání</option><option>Finance</option><option>Motivace</option><option>Life OS</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col xs={2}>
+                    <Form.Group className="mb-2">
+                      <Form.Label className="fw-bold small">Ikona</Form.Label>
+                      <Form.Control type="text" value={promptEditForm.icon} onChange={(e) => setPromptEditForm({...promptEditForm, icon: e.target.value})} />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={6}>
+                    <Form.Group className="mb-2">
+                      <Form.Label className="fw-bold small">Tagy <span className="text-muted">(čárkou)</span></Form.Label>
+                      <Form.Control type="text" value={promptEditForm.tags} onChange={(e) => setPromptEditForm({...promptEditForm, tags: e.target.value})} placeholder="ai, coding, review" />
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowPromptEditor(false)}>Zrušit</Button>
+              <Button variant="primary" onClick={savePrompt} disabled={!promptEditForm.title.trim() || !promptEditForm.content.trim()}>
+                {editingPrompt ? '💾 Uložit změny' : '➕ Vytvořit prompt'}
+              </Button>
+            </Modal.Footer>
+          </Modal>
           
           {/* Chat Messages */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>

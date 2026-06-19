@@ -70,6 +70,57 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
     difficulty: 4,
     perks: ["Stock Options", "Gym", "Hybrid", "Conferences"]
   },
+  // --- REMOTE IT / WEBDESIGN ---
+  {
+    title: "Remote Fullstack Developer",
+    company: "GlobalTech EU",
+    category: "Programming",
+    requiredSkills: ["React", "Node.js", "TypeScript", "PostgreSQL", "AWS"],
+    location: "Remote (EU)",
+    salaryRange: "90k - 140k CZK",
+    difficulty: 4,
+    perks: ["100% Remote", "Flexible Hours", "Home Office Budget", "Conferences"]
+  },
+  {
+    title: "Senior Web Designer (Remote)",
+    company: "CreativeHub",
+    category: "Web Design",
+    requiredSkills: ["Figma", "Webflow", "UI/UX", "HTML/CSS", "Adobe XD"],
+    location: "Remote",
+    salaryRange: "65k - 95k CZK",
+    difficulty: 3,
+    perks: ["Remote First", "Design Tools Stipend", "Portfolio Projects"]
+  },
+  {
+    title: "Remote Frontend Engineer - React/Next",
+    company: "ScaleUp Digital",
+    category: "Programming",
+    requiredSkills: ["React", "Next.js", "Tailwind", "TypeScript", "Vercel"],
+    location: "Remote",
+    salaryRange: "85k - 130k CZK",
+    difficulty: 4,
+    perks: ["Fully Remote", "Stock Options", "Learning Budget"]
+  },
+  {
+    title: "UI/UX Web Designer",
+    company: "PixelPerfect Agency",
+    category: "Web Design",
+    requiredSkills: ["Figma", "Prototyping", "User Research", "Webflow", "Motion"],
+    location: "Remote / Hybrid",
+    salaryRange: "70k - 110k CZK",
+    difficulty: 3,
+    perks: ["Remote Work", "Creative Freedom", "International Clients"]
+  },
+  {
+    title: "Remote DevOps Engineer",
+    company: "CloudNative Labs",
+    category: "Programming",
+    requiredSkills: ["Docker", "Kubernetes", "CI/CD", "Terraform", "AWS/GCP"],
+    location: "Remote",
+    salaryRange: "100k - 160k CZK",
+    difficulty: 5,
+    perks: ["100% Remote", "On-call Bonus", "Certification Reimbursement"]
+  },
   
   // --- PROGRAMMING: BACKEND ---
   {
@@ -1622,6 +1673,590 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
       salaryRange: "80k - 130k CZK",
       difficulty: 4,
       perks: ["APM Focus", "Remote", "Innovation"]
+    },
+
+    // --- WEBDESIGN & UI/UX (Czech Market) ---
+    {
+      title: "Web Developer - WordPress",
+      company: "WebStudio Praha",
+      category: "Web Design",
+      requiredSkills: ["WordPress", "PHP", "JavaScript", "CSS", "SEO"],
+      location: "Praha / Remote",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 3,
+      perks: ["Kreativní tým", "Flexibilní hodiny", "Souběžný přístup"]
+    },
+    {
+      title: "Frontend Developer - Vue.js",
+      company: "Digital Agency",
+      category: "Programming",
+      requiredSkills: ["Vue.js", "JavaScript", "TypeScript", "Vuex", "Tailwind"],
+      location: "Brno / Remote",
+      salaryRange: "70k - 100k CZK",
+      difficulty: 4,
+      perks: ["Moderní stack", "Home office", "Roční bonus"]
+    },
+    {
+      title: "UI Designer - Mobile Apps",
+      company: "AppStartup",
+      category: "Web Design",
+      requiredSkills: ["Figma", "Mobile Design", "Prototyping", "User Research", "iOS/Android"],
+      location: "Praha",
+      salaryRange: "65k - 95k CZK",
+      difficulty: 4,
+      perks: ["Mobile first", "Design systémy", "User testing"]
+    },
+    {
+      title: "Web Designer - E-commerce",
+      company: "Shopify Expert",
+      category: "Web Design",
+      requiredSkills: ["Shopify", "Liquid", "HTML/CSS", "Conversion Optimization", "Analytics"],
+      location: "Remote",
+      salaryRange: "55k - 85k CZK",
+      difficulty: 3,
+      perks: ["E-commerce specialista", "100% remote", "Výdělkové bonusy"]
+    },
+    {
+      title: "UX Researcher",
+      company: "User Experience Lab",
+      category: "Web Design",
+      requiredSkills: ["UX Research", "User Testing", "Analytics", "Figma", "Interviewing"],
+      location: "Praha / Hybrid",
+      salaryRange: "70k - 110k CZK",
+      difficulty: 4,
+      perks: ["User centrum", "Research nástroje", "Konference"]
+    },
+    {
+      title: "Grafický designér - Branding",
+      company: "Brand Studio",
+      category: "Art & Creativity",
+      requiredSkills: ["Adobe CC", "Branding", "Logo Design", "Corporate Identity", "Typography"],
+      location: "Praha",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 3,
+      perks: ["Branding projekty", "Kreativní prostředí", "Mac Studio"]
+    },
+    {
+      title: "Motion Graphics Designer",
+      company: "Video Production",
+      category: "Art & Creativity",
+      requiredSkills: ["After Effects", "Animation", "Premiere Pro", "Motion Design", "Storyboarding"],
+      location: "Brno / Remote",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 3,
+      perks: ["Video produkce", "Kreativní projekty", "Trendy technologie"]
+    },
+    {
+      title: "Photo Retoucher",
+      company: "Fashion Studio",
+      category: "Art & Creativity",
+      requiredSkills: ["Photoshop", "Lightroom", "Photo Editing", "Color Correction", "Beauty Retouching"],
+      location: "Praha",
+      salaryRange: "40k - 70k CZK",
+      difficulty: 2,
+      perks: ["Módní fotky", "Profesionální vybavení", "Flexible hodiny"]
+    },
+    {
+      title: "3D Vizualizační Artist",
+      company: "Architectural Studio",
+      category: "3D & GameDev",
+      requiredSkills: ["3ds Max", "Corona Renderer", "V-Ray", "Photoshop", "Architecture"],
+      location: "Praha",
+      salaryRange: "60k - 90k CZK",
+      difficulty: 4,
+      perks: ["Architektoní projekty", "High-end render", "Portfolio rozvoj"]
+    },
+    {
+      title: "WebGL Developer",
+      company: "Interactive Agency",
+      category: "Programming",
+      requiredSkills: ["WebGL", "Three.js", "JavaScript", "React", "3D Math"],
+      location: "Remote",
+      salaryRange: "80k - 120k CZK",
+      difficulty: 5,
+      perks: ["Interaktivní 3D", "Cutting edge tech", "100% remote"]
+    },
+    {
+      title: "Shopify Developer",
+      company: "E-commerce Solutions",
+      category: "Programming",
+      requiredSkills: ["Shopify", "Liquid", "JavaScript", "AJAX", "API Integration"],
+      location: "Remote",
+      salaryRange: "65k - 110k CZK",
+      difficulty: 4,
+      perks: ["E-commerce specialista", "Remote first", "Growth projekty"]
+    },
+
+    // --- GAME DEV - CZECH STUDIOS ---
+    {
+      title: "Game Designer",
+      company: "Czech Game Studio",
+      category: "3D & GameDev",
+      requiredSkills: ["Game Design", "Unity", "Level Design", "Game Mechanics", "Documentation"],
+      location: "Praha",
+      salaryRange: "60k - 90k CZK",
+      difficulty: 4,
+      perks: ["Game industry", "Creative freedom", "Game jams"]
+    },
+    {
+      title: "VFX Artist",
+      company: "GameVFX Studio",
+      category: "3D & GameDev",
+      requiredSkills: ["Houdini", "Unreal Engine", "VFX", "Particle Systems", "Shaders"],
+      location: "Brno / Remote",
+      salaryRange: "65k - 100k CZK",
+      difficulty: 5,
+      perks: ["AAA projekty", "VFX specialista", "Modern software"]
+    },
+    {
+      title: "Technical Artist",
+      company: "Mobile Games Dev",
+      category: "3D & GameDev",
+      requiredSkills: ["Unity", "Technical Art", "Shaders", "Pipeline", "C#", "Tools"],
+      location: "Remote",
+      salaryRange: "80k - 130k CZK",
+      difficulty: 5,
+      perks: ["Tech art role", "Tool development", "Creative tech"]
+    },
+    {
+      title: "Mobile Game Designer",
+      company: "Indie Game Studio",
+      category: "3D & GameDev",
+      requiredSkills: ["Mobile Games", "Game Design", "Unity", "Monetization", "Analytics"],
+      location: "Praha / Remote",
+      salaryRange: "60k - 95k CZK",
+      difficulty: 4,
+      perks: ["Indie studio", "Creative control", "Revenue share"]
+    },
+
+    // --- APP DEVELOPMENT ---
+    {
+      title: "iOS Developer - Swift",
+      company: "iOS Development Studio",
+      category: "Programming",
+      requiredSkills: ["Swift", "iOS", "Xcode", "UIKit", "SwiftUI"],
+      location: "Praha / Remote",
+      salaryRange: "80k - 130k CZK",
+      difficulty: 4,
+      perks: ["Apple ecosystem", "App Store publish", "Mac hardware"]
+    },
+    {
+      title: "Android Developer - Kotlin",
+      company: "Mobile Dev Company",
+      category: "Programming",
+      requiredSkills: ["Kotlin", "Android", "Jetpack Compose", "MVVM", "Firebase"],
+      location: "Brno / Remote",
+      salaryRange: "75k - 120k CZK",
+      difficulty: 4,
+      perks: ["Kotlin native", "Modern stack", "Google Play"]
+    },
+    {
+      title: "Cross-platform Developer - React Native",
+      company: "Mobile Solutions",
+      category: "Programming",
+      requiredSkills: ["React Native", "JavaScript", "Mobile", "iOS/Android", "Redux"],
+      location: "Remote",
+      salaryRange: "70k - 115k CZK",
+      difficulty: 4,
+      perks: ["Cross-platform", "Code sharing", "Fast iteration"]
+    },
+    {
+      title: "Flutter Developer",
+      company: "App Development Agency",
+      category: "Programming",
+      requiredSkills: ["Flutter", "Dart", "Mobile", "Firebase", "Riverpod"],
+      location: "Praha / Remote",
+      salaryRange: "65k - 100k CZK",
+      difficulty: 3,
+      perks: ["Single codebase", "Hot reload", "Google certified"]
+    },
+
+    // --- DESIGN - CZECH MARKET FOCUS ---
+    {
+      title: "Digitální designér",
+      company: "Digitální agentura",
+      category: "Art & Creativity",
+      requiredSkills: ["Adobe CC", "Digital Design", "Branding", "Social Media", "Illustrations"],
+      location: "Praha / Remote",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 3,
+      perks: ["Digitální projekty", "Mladý tým", "Kreativní prostředí"]
+    },
+    {
+      title: "Ilustrátor - Web & App",
+      company: "Design Studio",
+      category: "Art & Creativity",
+      requiredSkills: ["Illustration", "Vector Art", "Characters", "Icons", "Procreate"],
+      location: "Brno",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 3,
+      perks: ["Ilustrační projekty", "Klient satisfaction", "Portfolio rozvoj"]
+    },
+    {
+      title: "Designér digitálních her",
+      company: "Game Studio",
+      category: "3D & GameDev",
+      requiredSkills: ["Game UI", "Figma", "Unity UI", "User Flow", "Prototyping"],
+      location: "Praha",
+      salaryRange: "55k - 85k CZK",
+      difficulty: 4,
+      perks: ["Game industry", "UI/UX focus", "Playable prototypes"]
+    },
+    {
+      title: "Packaging Designér",
+      company: "Brand Packaging",
+      category: "Art & Creativity",
+      requiredSkills: ["Packaging Design", "3D Mockups", "Illustrator", "Brand Strategy", "Print"],
+      location: "Remote",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 3,
+      perks: ["Produktové designy", "Real world impact", "Print expertise"]
+    },
+    {
+      title: "Social Media Designér",
+      company: "Social Media Agency",
+      category: "Art & Creativity",
+      requiredSkills: ["Social Design", "Instagram", "Facebook", "TikTok", "Canva"],
+      location: "Praha",
+      salaryRange: "40k - 65k CZK",
+      difficulty: 2,
+      perks: ["Daily content", "Trendy designy", "Viral content"]
+    },
+
+    // --- DATA SCIENCE & AI - CZECH MARKET ---
+    {
+      title: "Data Analyst - Business Intelligence",
+      company: "BI Solutions",
+      category: "Data Science & AI",
+      requiredSkills: ["SQL", "Tableau", "Python", "Business Intelligence", "Reporting"],
+      location: "Brno / Hybrid",
+      salaryRange: "60k - 90k CZK",
+      difficulty: 3,
+      perks: ["BI tools", "Business impact", "Dashboard development"]
+    },
+    {
+      title: "AI Research Engineer",
+      company: "AI Startup",
+      category: "Data Science & AI",
+      requiredSkills: ["Python", "Machine Learning", "Research", "PyTorch", "NLP"],
+      location: "Praha / Remote",
+      salaryRange: "90k - 150k CZK",
+      difficulty: 5,
+      perks: ["AI research", "Patent work", "Conference publications"]
+    },
+    {
+      title: "Business Intelligence Developer",
+      company: "Corporate BI Team",
+      category: "Data Science & AI",
+      requiredSkills: ["Power BI", "SQL", "DAX", "Data Modeling", "ETL"],
+      location: "Praha",
+      salaryRange: "70k - 110k CZK",
+      difficulty: 4,
+      perks: ["Enterprise data", "Stakeholder work", "Certifications"]
+    },
+    {
+      title: "ML Engineer - Computer Vision",
+      company: "Vision AI Company",
+      category: "Data Science & AI",
+      requiredSkills: ["Python", "Computer Vision", "OpenCV", "TensorFlow", "Docker"],
+      location: "Remote",
+      salaryRange: "95k - 160k CZK",
+      difficulty: 5,
+      perks: ["CV specialization", "Edge deployment", "AI for good"]
+    },
+
+    // --- GAME DESIGN & FILM INDUSTRY ---
+    {
+      title: "Level Designér - Videohry",
+      company: "Game Studio Praha",
+      category: "3D & GameDev",
+      requiredSkills: ["Level Design", "Unity", "Unreal Engine", "Gameplay", "Scripting"],
+      location: "Praha",
+      salaryRange: "55k - 85k CZK",
+      difficulty: 4,
+      perks: ["Level design", "Gameplay testing", "Projektování"]
+    },
+    {
+      title: "Narrativní Designér - Hry",
+      company: "Story-Driven Games",
+      category: "3D & GameDev",
+      requiredSkills: ["Storytelling", "Writing", "Dialogue", "Quest Design", "RPG"],
+      location: "Remote",
+      salaryRange: "50k - 80k CZK",
+      difficulty: 4,
+      perks: ["Story focus", "Creative writing", "World building"]
+    },
+    {
+      title: "Filmový editor",
+      company: "Post Production House",
+      category: "Art & Creativity",
+      requiredSkills: ["Premiere Pro", "DaVinci Resolve", "Color Grading", "Sound Design", "Storytelling"],
+      location: "Praha",
+      salaryRange: "45k - 75k CZK",
+      difficulty: 4,
+      perks: ["Film projekty", "Spolupráce s režiséry", "Festivaly"]
+    },
+    {
+      title: "VFX Supervisor",
+      company: "Film VFX Studio",
+      category: "3D & GameDev",
+      requiredSkills: ["Houdini", "Nuke", "Python", "Pipeline", "Project Management"],
+      location: "Praha / Remote",
+      salaryRange: "80k - 130k CZK",
+      difficulty: 5,
+      perks: ["VFX lead", "International projekty", "Technické řešení"]
+    },
+    {
+      title: "Colorist",
+      company: "Post Production",
+      category: "Art & Creativity",
+      requiredSkills: ["DaVinci Resolve", "Color Theory", "HDR", "Film Analysis", "Calibration"],
+      location: "Praha",
+      salaryRange: "50k - 90k CZK",
+      difficulty: 4,
+      perks: ["Film postprodukce", "Barvy a atmosféra", "Kreativní proces"]
+    },
+
+    // --- CYBERSECURITY - CZECH MARKET ---
+    {
+      title: "Bezpečnostní analytik",
+      company: "Security Operations Center",
+      category: "Cybersecurity",
+      requiredSkills: ["SIEM", "Log Analysis", "Incident Response", "Threat Hunting", "Splunk"],
+      location: "Praha",
+      salaryRange: "60k - 90k CZK",
+      difficulty: 4,
+      perks: ["SOC tým", "24/7 operace", "Certifikace zdarma"]
+    },
+    {
+      title: "Penetrační testér",
+      company: "Cyber Security Ltd.",
+      category: "Cybersecurity",
+      requiredSkills: ["Pentesting", "Kali Linux", "Burp Suite", "OWASP", "Network Security"],
+      location: "Brno / Remote",
+      salaryRange: "70k - 110k CZK",
+      difficulty: 5,
+      perks: ["Penetrační testy", "Bug bounty", "Bezpečnostní nástroje"]
+    },
+    {
+      title: "Security Architect",
+      company: "Enterprise Security",
+      category: "Cybersecurity",
+      requiredSkills: ["Security Architecture", "Zero Trust", "Cloud Security", "Compliance", "Risk Assessment"],
+      location: "Praha",
+      salaryRange: "100k - 150k CZK",
+      difficulty: 5,
+      perks: ["Architektura", "Enterprise projekty", "Vedení týmu"]
+    },
+    {
+      title: "Incident Response Specialist",
+      company: "SOC Provider",
+      category: "Cybersecurity",
+      requiredSkills: ["DFIR", "Digital Forensics", "Malware Analysis", "Memory Analysis", "Chain of Custody"],
+      location: "Praha",
+      salaryRange: "65k - 100k CZK",
+      difficulty: 4,
+      perks: ["IR tým", "24/7 on-call", "Forenzní nástroje"]
+    },
+
+    // --- DOCTORS & HEALTHCARE ---
+    {
+      title: "Lékař - Praktická medicína",
+      company: "Nemocnice České Budějovice",
+      category: "Science & Education",
+      requiredSkills: ["Medicína", "Diagnostika", "Léčba", "Pacient care", "EMR"],
+      location: "České Budějovice",
+      salaryRange: "80000-120000 Kč",
+      difficulty: 5,
+      perks: ["Zdravotnická pojišťovna", "Firmy vybavení", "Možnost specializace"]
+    },
+    {
+      title: "Zubař",
+      company: "Zubní ordinace",
+      category: "Science & Education",
+      requiredSkills: ["Zubařství", "Endodoncie", "Protetika", "Laser", "CAD/CAM"],
+      location: "Praha",
+      salaryRange: "60000-100000 Kč",
+      difficulty: 4,
+      perks: ["Ordinační diagnostika", "Implantologie", "Digitální zubní technika"]
+    },
+    {
+      title: "Psycholož",
+      company: "Psychologická klinika",
+      category: "Science & Education",
+      requiredSkills: ["Psychologie", "Terapie", "Diagnostika", "Klinická praxe", "Empatie"],
+      location: "Brno",
+      salaryRange: "50000-80000 Kč",
+      difficulty: 4,
+      perks: ["Terapeutické seskupení", "Kariéra rozvoj", "Flexibilní hodiny"]
+    },
+    {
+      title: "Fyzioterapeut",
+      company: "Rehabilitační centrum",
+      category: "Science & Education",
+      requiredSkills: ["Fyzioterapie", "Rehabilitace", "Manual therapy", "Sport injury", "Pain management"],
+      location: "Ostrava",
+      salaryRange: "40000-65000 Kč",
+      difficulty: 3,
+      perks: ["Rehab zařízení", "Sportovní tým", "Edukační workshopy"]
+    },
+
+    // --- IT TEACHERS ---
+    {
+      title: "Učitel informatiky - SŠ",
+      company: "Střední škola",
+      category: "Science & Education",
+      requiredSkills: ["Programming", "Python", "Java", "Web Dev", "Teaching"],
+      location: "Praha",
+      salaryRange: "40000-55000 Kč",
+      difficulty: 3,
+      perks: ["Vzdělávací doba", " Studentské projekty", "Možnost programování"]
+    },
+    {
+      title: "Učitel programování",
+      company: "IT Bootcamp",
+      category: "Science & Education",
+      requiredSkills: ["JavaScript", "React", "Node.js", "Teaching", "Mentoring"],
+      location: "Remote / Brno",
+      salaryRange: "50000-80000 Kč",
+      difficulty: 4,
+      perks: ["Bootcamp prostředí", "Průměrné studenty", "Online výukou"]
+    },
+    {
+      title: "Kurér vývojářů - Junior Mentor",
+      company: "Tech Academy",
+      category: "Science & Education",
+      requiredSkills: ["Full-stack", "Mentoring", "Career coaching", "CV review", "Interview prep"],
+      location: "Praha / Remote",
+      salaryRange: "55000-75000 Kč",
+      difficulty: 4,
+      perks: ["Kariérní poradenství", "Networking eventy", "Průzkum trhu práce"]
+    },
+
+    // --- REMOTE PHOTOGRAPHER ---
+    {
+      title: "Fotograf - Product Photography",
+      company: "E-commerce studio",
+      category: "Art & Creativity",
+      requiredSkills: ["Product Photography", "Lighting", "Photoshop", "Studio stroje", "E-commerce"],
+      location: "Remote / Praha",
+      salaryRange: "40k - 70k CZK",
+      difficulty: 3,
+      perks: ["Studio v Praze", "Běžný harmonogram", "Bleskové dodání"]
+    },
+    {
+      title: "Fotograf - Portrét a eventy",
+      company: "Event Photography",
+      category: "Art & Creativity",
+      requiredSkills: ["Portrait Photography", "Event coverage", "Lightroom", "Retouching", "Client relations"],
+      location: "Celá ČR / Remote",
+      salaryRange: "30k - 60k CZK",
+      difficulty: 3,
+      perks: ["Flexibilní termíny", "Kreativní projekty", "Sociální sítě"]
+    },
+    {
+      title: "Fotograf - Reklamní studio",
+      company: "Advertising Photography",
+      category: "Art & Creativity",
+      requiredSkills: ["Commercial Photography", "Studio lighting", "Photoshop", "Client brief", "Brand photography"],
+      location: "Praha",
+      salaryRange: "50k - 90k CZK",
+      difficulty: 4,
+      perks: ["Reklamní kampaně", "Velké značky", "Creative direction"]
+    },
+
+    // --- REMOTE ENTREPRENEUR ---
+    {
+      title: "E-commerce podnikatel",
+      company: "Vlastní projekt",
+      category: "Reselling & Business",
+      requiredSkills: ["Shopify", "Dropshipping", "Marketing", "Customer Service", "Analytics"],
+      location: "Remote",
+      salaryRange: "0 - 200k CZK (příspěvek)",
+      difficulty: 5,
+      perks: ["Vlastní čas", "Neomezený přínos", "Flexibilita"]
+    },
+    {
+      title: "Online konzultant",
+      company: "Konzultační služba",
+      category: "Reselling & Business",
+      requiredSkills: ["Consulting", "Expertise", "Online meeting", "Proposal writing", "Negotiation"],
+      location: "Remote",
+      salaryRange: "80k - 300k CZK",
+      difficulty: 4,
+      perks: ["High-ticket služby", "Mezinárodní klienti", "Časová svoboda"]
+    },
+    {
+      title: "Content creator / Influencer",
+      company: "Vlastní značka",
+      category: "Art & Creativity",
+      requiredSkills: ["Content creation", "SEO", "Social media", "Brand partnerships", "Video editing"],
+      location: "Remote",
+      salaryRange: "0 - 150k CZK (příspěvek)",
+      difficulty: 3,
+      perks: ["Kreativní svoboda", "Brand spolupráce", "Autentičnost"]
+    },
+    {
+      title: "Online kouč",
+      company: "Koučinková praxe",
+      category: "Science & Education",
+      requiredSkills: ["Coaching", "Communication", "Goal setting", "Motivation", "Online sessions"],
+      location: "Remote",
+      salaryRange: "50k - 150k CZK",
+      difficulty: 4,
+      perks: ["Life changing work", "Klient transforms", "Flexibilní rozvrh"]
+    },
+
+    // --- NUTRITION & COUNSELING ---
+    {
+      title: "Nutriční poradce",
+      company: "Wellness Centrum",
+      category: "Science & Education",
+      requiredSkills: ["Nutrition", "Dietetics", "Meal planning", "Health assessment", "Coaching"],
+      location: "Praha / Remote",
+      salaryRange: "40k - 70k CZK",
+      difficulty: 3,
+      perks: ["Health focus", "Individual sessions", "Work-life balance"]
+    },
+    {
+      title: "Kariérní poradce",
+      company: "HR Consulting",
+      category: "Science & Education",
+      requiredSkills: ["Career coaching", "HR", "Interview prep", "Resume writing", "LinkedIn"],
+      location: "Remote",
+      salaryRange: "45k - 80k CZK",
+      difficulty: 3,
+      perks: ["Career growth", "Networking access", "Flexible schedule"]
+    },
+    {
+      title: "Life coach",
+      company: "Personal Development",
+      category: "Science & Education",
+      requiredSkills: ["Coaching", "Communication", "Goal setting", "Motivation", "Active listening"],
+      location: "Praha / Remote",
+      salaryRange: "35k - 60k CZK",
+      difficulty: 3,
+      perks: ["Transform lives", "Meaningful work", "Own schedule"]
+    },
+    {
+      title: "Sportovní výživač",
+      company: "Fitness Centrum",
+      category: "Science & Education",
+      requiredSkills: ["Sports nutrition", "Supplementation", "Meal prep", "Performance", "Athlete coaching"],
+      location: "Brno",
+      salaryRange: "35k - 55k CZK",
+      difficulty: 3,
+      perks: ["Sports environment", "Athlete network", "Event participation"]
+    },
+    {
+      title: "Wellness konzultant",
+      company: "Corporate Wellness",
+      category: "Science & Education",
+      requiredSkills: ["Wellness", "Stress management", "Workplace health", "Workshops", "Mindfulness"],
+      location: "Praha",
+      salaryRange: "40k - 65k CZK",
+      difficulty: 3,
+      perks: ["Corporate clients", "Group sessions", "Health benefits"]
     }
     ];
 
@@ -1639,6 +2274,8 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
 
   // Company filter
   const [filterCompany, setFilterCompany] = useState<string>('all');
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Programming');
   
   // Toast notification state
   const [showToast, setShowToast] = useState(false);
@@ -1780,6 +2417,12 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
         ? prev.filter(id => id !== jobId)
         : [...prev, jobId]
     );
+  };
+
+  const toggleFavorite = (jobId: number) => {
+    setJobs(prev => prev.map(job =>
+      job.id === jobId ? { ...job, isFavorite: !job.isFavorite } : job
+    ));
   };
 
   // Remove job from selection
@@ -1975,14 +2618,21 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
             >
               Applied
             </Button>
-            <Button
-              variant={filterStatus === 'Interview' ? 'dark' : 'outline-dark'}
-              size="sm"
-              onClick={() => setFilterStatus('Interview')}
-            >
-              Interview
-            </Button>
-          </div>
+             <Button
+               variant={filterStatus === 'Interview' ? 'dark' : 'outline-dark'}
+               size="sm"
+               onClick={() => setFilterStatus('Interview')}
+             >
+               Interview
+             </Button>
+             <Button
+               variant={showFavoritesOnly ? 'warning' : 'outline-warning'}
+               size="sm"
+               onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+             >
+               ★ Favorites
+             </Button>
+           </div>
 
           <div className="d-flex gap-2 mt-2">
             <span className="text-muted small me-2 align-self-center">Firma:</span>
@@ -2036,112 +2686,106 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
         </div>
 
         <div className="p-0 flex-grow-1" style={{ minHeight: 'auto' }}>
-          <div className="m-0" style={{ display: 'block' }}>
+          <Row className="g-2 m-0">
             {jobs.filter(job =>
               (filterStatus === 'all' || job.status === filterStatus) &&
-              (filterCompany === 'all' || job.company === filterCompany)
+              (filterCompany === 'all' || job.company === filterCompany) &&
+              (!showFavoritesOnly || job.isFavorite)
             ).map(job => {
               const matchPercent = calculateMatch(job.requiredSkills);
               let matchColor = 'danger';
               if (matchPercent >= 50) matchColor = 'warning';
               if (matchPercent >= 80) matchColor = 'success';
               const isSelected = selectedJobIds.includes(job.id);
+              const statusColors: Record<string, string> = { 'To Apply': '#6c757d', 'Applied': '#0d6efd', 'Interview': '#ffc107', 'Offer': '#198754', 'Rejected': '#dc3545' };
+              const borderColor = statusColors[job.status] || '#6c757d';
 
               return (
-                <div
-                  key={job.id}
-                  className={`border-bottom p-3 ${isSelected ? 'bg-primary bg-opacity-10' : ''}`}
-                  style={{ 
-                    cursor: 'context-menu', 
-                    transition: 'all 0.2s', 
-                    minHeight: 'auto',
-                    height: 'auto',
-                    overflow: 'visible'
-                  }}
-                  draggable
-                  onDragStart={(e) => {
-                    e.dataTransfer.setData('text/plain', job.id.toString());
-                  }}
-                  onContextMenu={(e) => handleContextMenu(e, job)}
-                  onClick={() => toggleJobSelection(job.id)}
-                >
-                  <div className="d-flex justify-content-between mb-1">
-                    <div className="d-flex align-items-center gap-2" style={{maxWidth: '70%'}}>
-                      {isSelected && <Badge bg="primary" className="shadow-sm">✓</Badge>}
-                      <h5 className="mb-0 text-truncate fw-bold">{job.title}</h5>
-                    </div>
-                    <Dropdown>
-                      <Dropdown.Toggle variant={getStatusColor(job.status)} size="sm" className="shadow-sm">
-                        {job.status}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => updateJobStatus(job.id, 'To Apply')}>To Apply</Dropdown.Item>
-                        <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Applied')}>Applied</Dropdown.Item>
-                        <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Interview')}>Interview</Dropdown.Item>
-                        <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Offer')}>Offer</Dropdown.Item>
-                        <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Rejected')}>Rejected</Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item 
-                          onClick={() => { toggleJobSelection(job.id); closeContextMenu(); }}
-                          className={isSelected ? 'text-success fw-bold' : ''}
-                        >
-                          {isSelected ? '✓ Ve výběru' : 'Přidat do výběru'}
-                        </Dropdown.Item>
-                        {isSelected && (
-                          <Dropdown.Item onClick={() => { removeFromSelection(job.id); closeContextMenu(); }} className="text-danger">
-                            🗑️ Odebrat z výběru
-                          </Dropdown.Item>
-                        )}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mb-2 text-muted small">
-                     <span>{job.company} • {job.location}</span>
-                     <span className="fw-bold text-dark">{job.salaryRange}</span>
-                  </div>
+                <Col key={job.id} xs={12} sm={6}>
+                  <Card
+                    className={`h-100 border-0 shadow-sm ${isSelected ? 'bg-primary bg-opacity-10' : ''}`}
+                    style={{ 
+                      cursor: 'context-menu', 
+                      transition: 'all 0.2s', 
+                      borderLeft: `4px solid ${borderColor}`,
+                      borderRadius: '8px'
+                    }}
+                    draggable
+                    onDragStart={(e) => {
+                      e.dataTransfer.setData('text/plain', job.id.toString());
+                    }}
+                    onContextMenu={(e) => handleContextMenu(e, job)}
+                    onClick={() => toggleJobSelection(job.id)}
+                  >
+                    <Card.Body className="p-3">
+                      <div className="d-flex justify-content-between mb-1">
+                        <div className="d-flex align-items-center gap-2 text-truncate" style={{ flex: 1 }}>
+                          {isSelected && <Badge bg="primary" className="shadow-sm">✓</Badge>}
+                          <button onClick={(e) => { e.stopPropagation(); toggleFavorite(job.id); }} className="btn btn-link p-0 text-warning" style={{fontSize: '1.1rem', lineHeight: 1, textDecoration: 'none'}}>
+                            {job.isFavorite ? '★' : '☆'}
+                          </button>
+                          <h6 className="mb-0 text-truncate fw-bold">{job.title}</h6>
+                        </div>
+                        <Dropdown onClick={(e) => e.stopPropagation()}>
+                          <Dropdown.Toggle variant={getStatusColor(job.status)} size="sm" className="shadow-sm border-0 py-0 px-2" style={{fontSize: '0.7rem'}}>
+                            {job.status}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => updateJobStatus(job.id, 'To Apply')}>To Apply</Dropdown.Item>
+                            <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Applied')}>Applied</Dropdown.Item>
+                            <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Interview')}>Interview</Dropdown.Item>
+                            <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Offer')}>Offer</Dropdown.Item>
+                            <Dropdown.Item onClick={() => updateJobStatus(job.id, 'Rejected')}>Rejected</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item onClick={() => { toggleJobSelection(job.id); closeContextMenu(); }} className={isSelected ? 'text-success fw-bold' : ''}>
+                              {isSelected ? '✓ Ve výběru' : 'Přidat do výběru'}
+                            </Dropdown.Item>
+                            {isSelected && (
+                              <Dropdown.Item onClick={() => { removeFromSelection(job.id); closeContextMenu(); }} className="text-danger">🗑️ Odebrat</Dropdown.Item>
+                            )}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
+                      <div className="d-flex justify-content-between align-items-center mb-2 text-muted small">
+                        <span className="text-truncate">{job.company} • {job.location}</span>
+                        <span className="fw-bold text-dark ms-1">{job.salaryRange}</span>
+                      </div>
 
-                    {/* Skills Match Visualization */}
-                  <div className="mb-2 p-2 rounded border-0" style={{ background: 'rgba(0,0,0,0.2)' }}>
-                     <div className="d-flex justify-content-between small mb-1">
-                        <span className="fw-bold text-muted">Ready?</span>
-                        <span className={`fw-bold text-${matchColor}`}>{matchPercent}% Match</span>
-                     </div>
-                     <ProgressBar now={matchPercent} variant={matchColor} style={{ height: '6px' }} />
-                  </div>
+                      <div className="mb-2 p-2 rounded" style={{ background: 'rgba(0,0,0,0.03)' }}>
+                        <div className="d-flex justify-content-between small mb-1">
+                          <span className="fw-bold text-muted">Ready?</span>
+                          <span className={`fw-bold text-${matchColor}`}>{matchPercent}% Match</span>
+                        </div>
+                        <ProgressBar now={matchPercent} variant={matchColor} style={{ height: '4px' }} />
+                      </div>
 
-                    {/* Missing Skills Helper */}
-                    <div className="d-flex flex-wrap gap-1" style={{ overflow: 'visible' }}>
-                      {job.requiredSkills.map((skill, idx) => {
+                      <div className="d-flex flex-wrap gap-1" style={{ overflow: 'visible' }}>
+                        {job.requiredSkills.map((skill) => {
                           const haveSkill = myCourses.some(c => c.tags.includes(skill));
                           return (
-                              <Badge 
-                                  key={skill} 
-                                  bg={haveSkill ? 'success' : 'warning'}
-                                  text={haveSkill ? 'white' : 'dark'}
-                                  className={`fw-normal ${haveSkill ? '' : 'border border-warning'}`}
-                                  style={{ 
-                                    cursor: haveSkill ? 'default' : 'pointer',
-                                    opacity: haveSkill ? 1 : 0.7,
-                                    transition: 'all 0.2s',
-                                    fontSize: '0.7rem'
-                                  }}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (!haveSkill) {
-                                      handleAddSkillFromJob(skill);
-                                    }
-                                  }}
-                                  title={haveSkill ? 'Skill máš' : 'Klikni pro přidání do Skill Tree'}
-                              >
-                                  {skill} {!haveSkill && ' +'}
-                              </Badge>
+                            <Badge 
+                              key={skill} 
+                              bg={haveSkill ? 'success' : 'warning'}
+                              text={haveSkill ? 'white' : 'dark'}
+                              className={`fw-normal ${haveSkill ? '' : 'border border-warning'}`}
+                              style={{ cursor: haveSkill ? 'default' : 'pointer', opacity: haveSkill ? 1 : 0.7, fontSize: '0.65rem' }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (!haveSkill) handleAddSkillFromJob(skill);
+                              }}
+                              title={haveSkill ? 'Skill máš' : 'Klikni pro přidání'}
+                            >
+                              {skill} {!haveSkill && ' +'}
+                            </Badge>
                           );
-                      })}
-                    </div>
-                </div>
+                        })}
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
               );
             })}
-          </div>
+          </Row>
           {jobs.length === 0 && (
              <div className="p-5 text-center text-muted">
                 <div className="display-4 mb-3">📭</div>
@@ -2163,11 +2807,28 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
             </div>
         </Modal.Header>
         <Modal.Body className="bg-light p-4">
-              <Tabs defaultActiveKey="Programming" className="mb-4 custom-tabs" fill variant="pills">
-                  {['Programming', '3D & GameDev', 'CNC & Engineering', 'Automechanic', 'Data Science & AI', '3D Tisk', 'Cybersecurity', 'Music Production', 'Art & Creativity', 'Fitness & Health', 'Reselling & Business', 'Science & Education'].map(cat => (
-                     <Tab eventKey={cat} title={<span className="fw-bold">{cat}</span>} key={cat}>
-                        <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
-                            {JOB_TEMPLATES.filter(tpl => tpl.category === cat).map((tpl, idx) => {
+                  <div className="mb-4">
+                    {[
+                      { group: '💻 IT & Technology', cats: ['Programming', 'Data Science & AI', 'Web Design', 'Cloud & DevOps', 'Cybersecurity'] },
+                      { group: '🎨 Creative & Design', cats: ['3D & GameDev', '3D Tisk', 'Music Production', 'Art & Creativity'] },
+                      { group: '⚙️ Manufacturing & Trades', cats: ['CNC & Engineering', 'Automechanic'] },
+                      { group: '🧬 Science & Health', cats: ['Science & Education', 'Fitness & Health'] },
+                      { group: '💼 Business & Agencies', cats: ['Reselling & Business', '🏢 Agentury'] }
+                    ].map(({ group, cats }) => (
+                      <div key={group} className="mb-3">
+                        <h6 className="fw-bold text-dark mb-2 border-bottom pb-1">{group}</h6>
+                        <div className="d-flex flex-wrap gap-2">
+                          {cats.map(cat => (
+                            <Button key={cat} variant={selectedCategory === cat ? 'dark' : 'outline-dark'} size="sm" onClick={() => setSelectedCategory(cat)}>
+                              {cat}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
+                    {JOB_TEMPLATES.filter(tpl => tpl.category === selectedCategory).map((tpl, idx) => {
                                 const matchPercent = calculateMatch(tpl.requiredSkills || []);
                                 let matchColor = 'danger';
                                 if (matchPercent >= 50) matchColor = 'warning';
@@ -2208,19 +2869,16 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
                                         </Card>
                                     </Col>
                                 );
-                            })}
-                        </Row>
-                        {/* Empty state for category if needed */}
-                        {JOB_TEMPLATES.filter(tpl => tpl.category === cat).length === 0 && (
-                            <div className="text-center text-muted py-5">
-                                Žádné mise v této kategorii.
-                            </div>
-                        )}
-                    </Tab>
-                  ))}
-                  <Tab eventKey="Agencies" title={<span className="fw-bold">🏢 Agentury</span>}>
-                    <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
-                      {AGENCY_JOBS.map((job, idx) => {
+                             })}
+                         </Row>
+                         {JOB_TEMPLATES.filter(tpl => tpl.category === selectedCategory).length === 0 && (
+                             <div className="text-center text-muted py-5">
+                                 Žádné mise v této kategorii.
+                             </div>
+                         )}
+                   <h6 className="fw-bold mt-4">🏢 Agentury</h6>
+                   <Row className="g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
+                       {AGENCY_JOBS.map((job, idx) => {
                         const agency = CZECH_AGENCIES.find(a => a.id === job.agencyId);
                         const matchPercent = 50;
                         const matchColor = 'warning';
@@ -2265,11 +2923,9 @@ export const JOB_TEMPLATES: (Partial<Job> & { category: JobCategory })[] = [
                         );
                       })}
                     </Row>
-                    <div className="text-center mt-3">
-                      <small className="text-muted">🏢 {CZECH_AGENCIES.length} agentur • 💼 {AGENCY_JOBS.length} nabídek</small>
-                    </div>
-                  </Tab>
-                </Tabs>
+                     <div className="text-center mt-3">
+                       <small className="text-muted">🏢 {CZECH_AGENCIES.length} agentur • 💼 {AGENCY_JOBS.length} nabídek</small>
+                     </div>
 
             <hr className="my-4"/>
             <div className="text-center">

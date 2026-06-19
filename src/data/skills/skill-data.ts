@@ -3,7 +3,7 @@ import { EnhancedSkillData, SoftSkill, SkillCategory, ProficiencyLevel, Difficul
 const CZECH_REGIONS = ['Praha', 'Středočeský', 'Jihočeský', 'Plzeňský', 'Karlovarský', 'Ústecký', 'Liberecký', 'Královéhradecký', 'Pardubický', 'Vysočina', 'Jihomoravský', 'Olomoucký', 'Zlínský', 'Moravskoslezský'] as const;
 
 const generateGeographicDemand = (baseRegion: string): Record<string, number> => {
-  const baseIndex = CZECH_REGIONS.indexOf(baseRegion as any);
+  const baseIndex = CZECH_REGIONS.indexOf(baseRegion);
   return CZECH_REGIONS.reduce((acc, region, index) => {
     const diff = Math.abs(index - baseIndex);
     const demand = Math.max(40, 100 - (diff * 10) + (Math.random() * 10 - 5));
@@ -224,7 +224,7 @@ export const SKILL_DATA: EnhancedSkillData[] = [
     id: 'postgresql',
     name: 'PostgreSQL',
     slug: 'postgresql',
-    category: 'Programming' as SkillCategory,
+    category: 'Data & Analytics' as SkillCategory,
     subcategory: 'Database',
     proficiency: 'Intermediate' as ProficiencyLevel,
     description: 'Advanced open-source relational database system known for reliability and features.',
@@ -292,7 +292,7 @@ export const SKILL_DATA: EnhancedSkillData[] = [
     id: 'kubernetes',
     name: 'Kubernetes',
     slug: 'kubernetes',
-    category: 'Programming' as SkillCategory,
+    category: 'Cloud & DevOps' as SkillCategory,
     subcategory: 'DevOps',
     proficiency: 'Advanced' as ProficiencyLevel,
     description: 'Open-source container orchestration platform for automating deployment and scaling.',
@@ -503,7 +503,7 @@ export const SKILL_DATA: EnhancedSkillData[] = [
     id: 'docker',
     name: 'Docker',
     slug: 'docker',
-    category: 'Programming' as SkillCategory,
+    category: 'Cloud & DevOps' as SkillCategory,
     subcategory: 'DevOps',
     proficiency: 'Intermediate' as ProficiencyLevel,
     description: 'Platform for developing, shipping, and running applications in containers.',
@@ -571,7 +571,7 @@ export const SKILL_DATA: EnhancedSkillData[] = [
     id: 'aws',
     name: 'AWS',
     slug: 'aws',
-    category: 'Programming' as SkillCategory,
+    category: 'Cloud & DevOps' as SkillCategory,
     subcategory: 'Cloud',
     proficiency: 'Advanced' as ProficiencyLevel,
     description: 'Amazon Web Services - comprehensive cloud computing platform.',
@@ -641,7 +641,7 @@ export const SKILL_DATA: EnhancedSkillData[] = [
     id: 'git',
     name: 'Git',
     slug: 'git',
-    category: 'Programming' as SkillCategory,
+    category: 'Cloud & DevOps' as SkillCategory,
     subcategory: 'Version Control',
     proficiency: 'Intermediate' as ProficiencyLevel,
     description: 'Distributed version control system for tracking changes in source code.',
@@ -1378,6 +1378,172 @@ export const SKILL_DATA: EnhancedSkillData[] = [
     tools: ['Go CLI', 'Gofmt', 'Delve', 'GoLand', 'VS Code'],
     frameworks: ['Gin', 'Echo', 'Fiber', 'GORM'],
     platforms: ['Windows', 'macOS', 'Linux', 'Cloud', 'Docker']
+  },
+  {
+    id: 'figma',
+    name: 'Figma',
+    slug: 'figma',
+    category: 'Design & Fashion' as SkillCategory,
+    subcategory: 'UI/UX Design',
+    proficiency: 'Intermediate' as ProficiencyLevel,
+    description: 'Collaborative interface design tool for web and app prototypes.',
+    longDescription: 'Figma is the leading browser-based design platform used for UI/UX design, prototyping, and design systems. Supports real-time collaboration, component libraries, auto-layout, variants, and developer handoff with CSS/Swift/Kotlin code generation.',
+    icon: '🎨',
+    iconColor: '#F24E1E',
+    tags: ['design', 'ui', 'ux', 'prototyping', 'webdesign', 'appdesign', 'collaboration'],
+    relatedSkills: ['UI/UX Design', 'Webflow', 'Adobe XD', 'Prototyping', 'Design Systems'],
+    prerequisites: [
+      { prerequisite: 'Design Basics', type: 'required', strength: 0.8, description: 'Understanding of layout, typography, color theory' }
+    ],
+    dependencies: [
+      { prerequisite: 'UI/UX Design', type: 'related', strength: 0.95, description: 'Core design principles' }
+    ],
+    weight: {
+      frontend: 0.7, backend: 0.1, fullstack: 0.4, datascience: 0.1, cybersecurity: 0.1, devops: 0.1,
+      mobile: 0.6, ai_ml: 0.2, design: 1.0, product: 0.8, marketing: 0.5, management: 0.3
+    },
+    marketData: {
+      demandIndex: 92,
+      trend: 'rising' as SkillTrend,
+      growthRate: 25,
+      salaryRange: { junior: 48000, mid: 78000, senior: 115000, lead: 155000 },
+      geographicDemand: generateGeographicDemand('Praha'),
+      topCompanies: ['Seznam.cz', 'Alza', 'DámeJídlo', 'Productboard', 'Mews'],
+      jobPostingsCount: 980,
+      competitionLevel: 'medium' as CompetitionLevel,
+      difficultyToLearn: 2 as DifficultyRating,
+      timeToProficiency: '2-4 months',
+      industryAdoption: 89,
+      automationRisk: 20,
+      futureOutlook: 'excellent'
+    },
+    certifications: [],
+    assessment: { type: 'quiz', questions: 30, duration: 40, passingScore: 70, topics: ['Interface', 'Components', 'Prototyping', 'Design Systems', 'Handoff'] },
+    resources: [
+      { name: 'Figma Official', url: 'https://help.figma.com/', type: 'doc' },
+      { name: 'Figma for Beginners', url: 'https://www.figma.com/community/file/123', type: 'course' }
+    ],
+    projects: [
+      { title: 'Mobile App Prototype', difficulty: 2 as DifficultyRating, description: 'Design complete app flow in Figma', outcomes: ['Wireframes', 'High-fidelity UI', 'Interactive prototype'] },
+      { title: 'Design System', difficulty: 4 as DifficultyRating, description: 'Build reusable component library', outcomes: ['Tokens', 'Variants', 'Documentation'] }
+    ],
+    careerPaths: ['design', 'product'] as CareerPath[],
+    alternativeNames: ['Figma Design'],
+    synonyms: ['UI Tool'],
+    languages: ['English', 'Czech'],
+    tools: ['Figma', 'FigJam'],
+    frameworks: ['Design Systems'],
+    platforms: ['Web', 'Desktop', 'Mobile']
+  },
+  {
+    id: 'webflow',
+    name: 'Webflow',
+    slug: 'webflow',
+    category: 'Design & Fashion' as SkillCategory,
+    subcategory: 'No-Code Web Design',
+    proficiency: 'Intermediate' as ProficiencyLevel,
+    description: 'Visual web design platform with production-ready code output.',
+    longDescription: 'Webflow allows designers to build responsive websites visually while generating clean, semantic HTML/CSS/JS. Includes CMS, e-commerce, interactions, and hosting. Popular for client projects and marketing sites.',
+    icon: '🌐',
+    iconColor: '#4353FF',
+    tags: ['webdesign', 'nocode', 'responsive', 'cms', 'interactions', 'ecommerce'],
+    relatedSkills: ['Figma', 'HTML/CSS', 'UI/UX Design', 'JavaScript'],
+    prerequisites: [
+      { prerequisite: 'HTML/CSS Basics', type: 'recommended', strength: 0.7, description: 'Basic markup knowledge helps' }
+    ],
+    dependencies: [
+      { prerequisite: 'UI/UX Design', type: 'related', strength: 0.9, description: 'Strong design fundamentals needed' }
+    ],
+    weight: {
+      frontend: 0.9, backend: 0.3, fullstack: 0.6, datascience: 0.1, cybersecurity: 0.1, devops: 0.2,
+      mobile: 0.3, ai_ml: 0.1, design: 1.0, product: 0.7, marketing: 0.6, management: 0.3
+    },
+    marketData: {
+      demandIndex: 85,
+      trend: 'rising' as SkillTrend,
+      growthRate: 32,
+      salaryRange: { junior: 52000, mid: 82000, senior: 125000, lead: 165000 },
+      geographicDemand: generateGeographicDemand('Praha'),
+      topCompanies: ['Webflow Partners', 'Freelance Agencies', 'Startup Studios'],
+      jobPostingsCount: 620,
+      competitionLevel: 'medium' as CompetitionLevel,
+      difficultyToLearn: 3 as DifficultyRating,
+      timeToProficiency: '3-5 months',
+      industryAdoption: 78,
+      automationRisk: 25,
+      futureOutlook: 'excellent'
+    },
+    certifications: [{ id: 'webflow-cert', name: 'Webflow Expert Certification', provider: 'Webflow', difficulty: 3 as DifficultyRating, cost: 149, duration: '2 hours', validity: '2 years', validityMonths: 24, careerValue: 88, description: 'Official Webflow certification', examFormat: 'Practical project', prerequisites: [], renewalRequirements: 'Re-exam', careerImpact: 'Validates production-ready Webflow skills' }],
+    assessment: { type: 'quiz', questions: 35, duration: 45, passingScore: 70, topics: ['CMS', 'Interactions', 'Responsive', 'SEO', 'Hosting'] },
+    resources: [
+      { name: 'Webflow University', url: 'https://university.webflow.com/', type: 'course' },
+      { name: 'Webflow Showcase', url: 'https://webflow.com/showcase', type: 'doc' }
+    ],
+    projects: [
+      { title: 'Corporate Website', difficulty: 3 as DifficultyRating, description: 'Build fully responsive marketing site', outcomes: ['CMS Collections', 'Animations', 'SEO optimization'] }
+    ],
+    careerPaths: ['design', 'frontend'] as CareerPath[],
+    alternativeNames: ['Webflow Designer'],
+    synonyms: ['No-code'],
+    languages: ['English'],
+    tools: ['Webflow Designer', 'Editor'],
+    frameworks: ['Webflow'],
+    platforms: ['Web']
+  },
+  {
+    id: 'app-design',
+    name: 'App Design',
+    slug: 'app-design',
+    category: 'Design & Fashion' as SkillCategory,
+    subcategory: 'Mobile & Web App Design',
+    proficiency: 'Intermediate' as ProficiencyLevel,
+    description: 'Designing intuitive interfaces for mobile and web applications.',
+    longDescription: 'App Design covers mobile-first UI patterns, navigation, gestures, accessibility, and platform guidelines (Material Design / Human Interface). Includes wireframing, high-fidelity mockups, user testing, and developer collaboration for Flutter, React Native, SwiftUI and Jetpack Compose.',
+    icon: '📱',
+    iconColor: '#00C853',
+    tags: ['appdesign', 'mobile', 'ui', 'ux', 'prototyping', 'material', 'accessibility'],
+    relatedSkills: ['Figma', 'UI/UX Design', 'React Native', 'Flutter', 'Prototyping'],
+    prerequisites: [
+      { prerequisite: 'UI/UX Design', type: 'required', strength: 0.9, description: 'Core UX principles essential' }
+    ],
+    dependencies: [
+      { prerequisite: 'Figma', type: 'related', strength: 0.85, description: 'Primary tool for app mockups' }
+    ],
+    weight: {
+      frontend: 0.6, backend: 0.1, fullstack: 0.4, datascience: 0.1, cybersecurity: 0.1, devops: 0.1,
+      mobile: 1.0, ai_ml: 0.3, design: 1.0, product: 0.9, marketing: 0.4, management: 0.3
+    },
+    marketData: {
+      demandIndex: 88,
+      trend: 'rising' as SkillTrend,
+      growthRate: 22,
+      salaryRange: { junior: 50000, mid: 80000, senior: 120000, lead: 160000 },
+      geographicDemand: generateGeographicDemand('Praha'),
+      topCompanies: ['Mews', 'Productboard', 'Smartlook', 'STRV', 'Apify'],
+      jobPostingsCount: 740,
+      competitionLevel: 'medium' as CompetitionLevel,
+      difficultyToLearn: 3 as DifficultyRating,
+      timeToProficiency: '4-6 months',
+      industryAdoption: 85,
+      automationRisk: 18,
+      futureOutlook: 'excellent'
+    },
+    certifications: [],
+    assessment: { type: 'quiz', questions: 40, duration: 50, passingScore: 70, topics: ['Mobile Patterns', 'Navigation', 'Gestures', 'Accessibility', 'Platform Guidelines'] },
+    resources: [
+      { name: 'Material Design 3', url: 'https://m3.material.io/', type: 'doc' },
+      { name: 'Apple HIG', url: 'https://developer.apple.com/design/human-interface-guidelines/', type: 'doc' }
+    ],
+    projects: [
+      { title: 'Fintech Mobile App', difficulty: 4 as DifficultyRating, description: 'Complete mobile banking UI flow', outcomes: ['Onboarding', 'Dashboard', 'Transactions', 'Dark mode'] }
+    ],
+    careerPaths: ['design', 'mobile', 'product'] as CareerPath[],
+    alternativeNames: ['Mobile UI Design'],
+    synonyms: ['App UI'],
+    languages: ['English', 'Czech'],
+    tools: ['Figma', 'Principle', 'ProtoPie'],
+    frameworks: ['Material Design', 'Human Interface'],
+    platforms: ['iOS', 'Android', 'Web']
   }
 ];
 

@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
 import { Course, SkillCategory } from '@/types';
-import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS } from '@/data/skills/comprehensive-skills';
+import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS, ELECTRICIAN_FACTS, MECHANIC_FACTS, CARPENTER_FACTS, ARCHITECT_FACTS, DESIGNER_FACTS, INTERIOR_FACTS, ROBOTICS_FACTS, CRYPTO_FACTS, VIBE_CODING_FACTS, INVESTING_FACTS } from '@/data/skills/comprehensive-skills';
 import AchievementRoadmap from '@/components/gamification/AchievementRoadmap';
 
 type DisplaySkill = {
@@ -69,6 +69,17 @@ const SKILL_CATEGORIES = [
   'Data Science & AI',
   'Cybersecurity',
   'Cloud & DevOps',
+  'Architecture & Engineering',
+  'Design & Fashion',
+  'Interior Design',
+  'Construction & Trades',
+  'Tesařství',
+  'CNC & Engineering',
+  'Elektrikářství',
+  'Automechanic',
+  'Robotics',
+  'Crypto & Blockchain',
+  'Vibe Coding',
   'Management & Leadership',
   'Data & Analytics',
   'Green & Sustainability',
@@ -76,7 +87,6 @@ const SKILL_CATEGORIES = [
   'Human Resources',
   'Business & Finance',
   'Legal & Compliance',
-  'Construction & Trades',
   'Agriculture & Environment',
   'Hospitality & Tourism',
   'Education & Training',
@@ -90,13 +100,15 @@ const SKILL_CATEGORIES = [
   'Project Management',
   'Security & Safety',
   'Writing & Content',
-  'CNC & Engineering',
   '3D & GameDev',
-  'Automechanic',
   'Art & Creativity',
   'Music Production',
   'Fitness & Health',
-  'Reselling & Business'
+  'Reselling & Business',
+  'Robotics',
+  'Crypto & Blockchain',
+  'Vibe Coding',
+  'Investing'
 ];
 
 const CATEGORY_STYLES: Record<string, { primary: string; secondary: string; gradient: string }> = {
@@ -107,6 +119,40 @@ const CATEGORY_STYLES: Record<string, { primary: string; secondary: string; grad
   'Cloud & DevOps': { primary: '#FF9900', secondary: '#CC7A00', gradient: 'linear-gradient(135deg, #FF9900 0%, #CC7A00 100%)' },
   'Management & Leadership': { primary: '#4CAF50', secondary: '#388E3C', gradient: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)' },
   'Marketing & PR': { primary: '#E91E63', secondary: '#C2185B', gradient: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)' },
+  'Architecture & Engineering': { primary: '#8D6E63', secondary: '#6D4C41', gradient: 'linear-gradient(135deg, #8D6E63 0%, #6D4C41 100%)' },
+  'Design & Fashion': { primary: '#9C27B0', secondary: '#7B1FA2', gradient: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)' },
+  'Interior Design': { primary: '#FF7043', secondary: '#E64A19', gradient: 'linear-gradient(135deg, #FF7043 0%, #E64A19 100%)' },
+  'Tesařství': { primary: '#A1887F', secondary: '#8D6E63', gradient: 'linear-gradient(135deg, #A1887F 0%, #8D6E63 100%)' },
+  'Construction & Trades': { primary: '#795548', secondary: '#5D4037', gradient: 'linear-gradient(135deg, #795548 0%, #5D4037 100%)' },
+  'Elektrikářství': { primary: '#FFC107', secondary: '#FFA000', gradient: 'linear-gradient(135deg, #FFC107 0%, #FFA000 100%)' },
+  'Automechanic': { primary: '#F44336', secondary: '#D32F2F', gradient: 'linear-gradient(135deg, #F44336 0%, #D32F2F 100%)' },
+  'Robotics': { primary: '#E91E63', secondary: '#C2185B', gradient: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)' },
+  'Crypto & Blockchain': { primary: '#F7931A', secondary: '#D97A00', gradient: 'linear-gradient(135deg, #F7931A 0%, #D97A00 100%)' },
+  'Vibe Coding': { primary: '#9C27B0', secondary: '#7B1FA2', gradient: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)' },
+  'Investing': { primary: '#4CAF50', secondary: '#388E3C', gradient: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)' },
+  'Data & Analytics': { primary: '#2196F3', secondary: '#1976D2', gradient: 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)' },
+  'Green & Sustainability': { primary: '#4CAF50', secondary: '#388E3C', gradient: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)' },
+  'Human Resources': { primary: '#607D8B', secondary: '#455A64', gradient: 'linear-gradient(135deg, #607D8B 0%, #455A64 100%)' },
+  'Business & Finance': { primary: '#009688', secondary: '#00796B', gradient: 'linear-gradient(135deg, #009688 0%, #00796B 100%)' },
+  'Legal & Compliance': { primary: '#2E7D32', secondary: '#1B5E20', gradient: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)' },
+  'Agriculture & Environment': { primary: '#8BC34A', secondary: '#689F38', gradient: 'linear-gradient(135deg, #8BC34A 0%, #689F38 100%)' },
+  'Hospitality & Tourism': { primary: '#FF9800', secondary: '#F57C00', gradient: 'linear-gradient(135deg, #FF9800 0%, #F57C00 100%)' },
+  'Education & Training': { primary: '#2196F3', secondary: '#1565C0', gradient: 'linear-gradient(135deg, #2196F3 0%, #1565C0 100%)' },
+  'Creative & Media': { primary: '#E91E63', secondary: '#C2185B', gradient: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)' },
+  'Healthcare & Medical': { primary: '#00BCD4', secondary: '#0097A7', gradient: 'linear-gradient(135deg, #00BCD4 0%, #0097A7 100%)' },
+  'Science & Research': { primary: '#673AB7', secondary: '#512DA8', gradient: 'linear-gradient(135deg, #673AB7 0%, #512DA8 100%)' },
+  'Retail & Sales': { primary: '#FF5722', secondary: '#E64A19', gradient: 'linear-gradient(135deg, #FF5722 0%, #E64A19 100%)' },
+  'Transportation & Logistics': { primary: '#795548', secondary: '#5D4037', gradient: 'linear-gradient(135deg, #795548 0%, #5D4037 100%)' },
+  'Customer Service': { primary: '#03A9F4', secondary: '#0288D1', gradient: 'linear-gradient(135deg, #03A9F4 0%, #0288D1 100%)' },
+  'Quality Assurance': { primary: '#9C27B0', secondary: '#7B1FA2', gradient: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)' },
+  'Project Management': { primary: '#FFC107', secondary: '#FFA000', gradient: 'linear-gradient(135deg, #FFC107 0%, #FFA000 100%)' },
+  'Security & Safety': { primary: '#F44336', secondary: '#C62828', gradient: 'linear-gradient(135deg, #F44336 0%, #C62828 100%)' },
+  'Writing & Content': { primary: '#AB47BC', secondary: '#8E24AA', gradient: 'linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%)' },
+  '3D & GameDev': { primary: '#00BCD4', secondary: '#00ACC1', gradient: 'linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%)' },
+  'Art & Creativity': { primary: '#FF7043', secondary: '#F4511E', gradient: 'linear-gradient(135deg, #FF7043 0%, #F4511E 100%)' },
+  'Music Production': { primary: '#E91E63', secondary: '#D81B60', gradient: 'linear-gradient(135deg, #E91E63 0%, #D81B60 100%)' },
+  'Fitness & Health': { primary: '#4CAF50', secondary: '#43A047', gradient: 'linear-gradient(135deg, #4CAF50 0%, #43A047 100%)' },
+  'Reselling & Business': { primary: '#FFD600', secondary: '#FFC107', gradient: 'linear-gradient(135deg, #FFD600 0%, #FFC107 100%)' },
   'default': { primary: '#6C757D', secondary: '#545B62', gradient: 'linear-gradient(135deg, #6C757D 0%, #545B62 100%)' }
 };
 
@@ -222,6 +268,127 @@ const CNCSkillsWithFacts = ({
       {renderSkillRow(cncSkills.slice(25, 30))}
       <div className="text-center mt-3">
         <small className="text-muted">⚙️ CNC & Engineering: {cncSkills.length} skills</small>
+      </div>
+    </div>
+  );
+};
+
+const TradeSkillsWithFacts = ({
+  category,
+  facts,
+  icon,
+  color,
+  onAddSkill,
+  onShowDetail,
+}: {
+  category: string;
+  facts: { id: string; text: string; position: number }[];
+  icon: string;
+  color: string;
+  onAddSkill: (skill: DisplaySkill) => void;
+  onShowDetail: (skill: DisplaySkill) => void;
+}) => {
+  const skills = SKILL_TEMPLATES.filter(s => s.category === category);
+  const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const [isPressed, setIsPressed] = useState(false);
+  const [pendingSkill, setPendingSkill] = useState<DisplaySkill | null>(null);
+
+  const handleMouseDown = (skill: DisplaySkill) => {
+    setIsPressed(true);
+    setPendingSkill(skill);
+    const timer = setTimeout(() => {
+      setIsPressed(false);
+      onShowDetail(skill);
+    }, 500);
+    setPressTimer(timer);
+  };
+
+  const handleMouseUp = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+    if (isPressed && pendingSkill) {
+      onAddSkill(pendingSkill);
+    }
+    setIsPressed(false);
+    setPendingSkill(null);
+  };
+
+  const handleMouseLeave = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      setPressTimer(null);
+    }
+    setIsPressed(false);
+    setPendingSkill(null);
+  };
+
+  const renderSkill = (skill: DisplaySkill) => (
+    <Card 
+      key={skill.id}
+      className={`h-100 border-0 shadow-sm hover-shadow ${isPressed && pendingSkill?.id === skill.id ? 'scale-95' : ''}`}
+      style={{ 
+        transition: 'all 0.15s', 
+        cursor: 'pointer', 
+        flex: '1 1 200px', 
+        minWidth: '200px',
+        transform: isPressed && pendingSkill?.id === skill.id ? 'scale(0.95)' : 'scale(1)',
+        opacity: isPressed && pendingSkill?.id === skill.id ? 0.7 : 1
+      }}
+      onMouseDown={() => handleMouseDown(skill)}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div style={{ height: '6px', backgroundColor: skill.iconColor }}></div>
+      <Card.Body className="d-flex flex-column p-3">
+        <div className="d-flex justify-content-between align-items-start mb-2">
+          <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.75rem' }}>{skill.difficulty}/5</Badge>
+          {skill.marketData && (
+            <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} className="shadow-sm" style={{ fontSize: '0.75rem' }}>
+              {skill.marketData.demandIndex}%
+            </Badge>
+          )}
+        </div>
+        <h6 className="card-title fw-bold mb-0 text-truncate" title={skill.title} style={{ fontSize: '0.95rem' }}>
+          {skill.icon} {skill.title}
+        </h6>
+      </Card.Body>
+    </Card>
+  );
+
+  const renderFact = (fact: typeof facts[0]) => (
+    <Card className="border-0 shadow-sm w-100" style={{ background: `linear-gradient(135deg, ${color} 0%, ${color}CC 100%)` }}>
+      <Card.Body className="py-3 px-4">
+        <p className="mb-0 text-center fw-bold text-white" style={{ fontSize: '1rem' }}>{fact.text}</p>
+      </Card.Body>
+    </Card>
+  );
+
+  const renderSkillRow = (skillList: DisplaySkill[]) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+      {skillList.map((skill) => renderSkill(skill))}
+    </div>
+  );
+
+  const chunkSize = 5;
+  const chunks: DisplaySkill[][] = [];
+  for (let i = 0; i < skills.length; i += chunkSize) {
+    chunks.push(skills.slice(i, i + chunkSize));
+  }
+
+  return (
+    <div>
+      {chunks.map((chunk, idx) => (
+        <div key={idx}>
+          {renderSkillRow(chunk)}
+          {idx < facts.length && (
+            <div className="my-3">{renderFact(facts[idx])}</div>
+          )}
+        </div>
+      ))}
+      <div className="text-center mt-3">
+        <small className="text-muted">{icon} {category}: {skills.length} skills</small>
       </div>
     </div>
   );
@@ -355,6 +522,18 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
       'Data Science & AI': '🤖',
       'Cybersecurity': '🛡️',
       'Cloud & DevOps': '☁️',
+      'Architecture & Engineering': '🏗️',
+      'Design & Fashion': '🎨',
+      'Interior Design': '🛋️',
+      'Construction & Trades': '🔨',
+      'Tesařství': '🪚',
+      'CNC & Engineering': '⚙️',
+      'Elektrikářství': '⚡',
+      'Automechanic': '🔧',
+      'Robotics': '🤖',
+      'Crypto & Blockchain': '🔗',
+      'Vibe Coding': '✨',
+      'Investing': '📈',
       'Management & Leadership': '👔',
       'Data & Analytics': '📊',
       'Green & Sustainability': '🌱',
@@ -362,7 +541,6 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
       'Human Resources': '👥',
       'Business & Finance': '💰',
       'Legal & Compliance': '⚖️',
-      'Construction & Trades': '🔨',
       'Agriculture & Environment': '🌾',
       'Hospitality & Tourism': '🏨',
       'Education & Training': '📚',
@@ -376,9 +554,7 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
       'Project Management': '📋',
       'Security & Safety': '🔒',
       'Writing & Content': '✍️',
-      'CNC & Engineering': '⚙️',
       '3D & GameDev': '🎮',
-      'Automechanic': '🔧',
       'Art & Creativity': '🎭',
       'Music Production': '🎵',
       'Fitness & Health': '💪',
@@ -423,69 +599,76 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
       ) : (
         <Row>
           <Col md={8}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
-              {displayedSkills.map(skill => (
-                <Card 
-                  key={skill.id} 
-                  className="h-100"
-                  style={{ cursor: 'context-menu' }}
-                  draggable
-                  onDragStart={(e) => {
-                    e.dataTransfer.setData('text/plain', skill.id);
-                  }}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    setSelectedSkill(skill);
-                    setShowSkillModal(true);
-                  }}
-                >
-                  <Card.Header className="d-flex justify-content-between align-items-center" style={{ backgroundColor: skill.iconColor, color: 'white' }}>
-                    <span className="fw-bold">{skill.icon} {skill.title}</span>
-                    <Dropdown>
-                      <Dropdown.Toggle variant="light" size="sm" className="shadow-sm">
-                        ⋮
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => { setSelectedSkill(skill); setShowSkillModal(true); }}>
-                          📊 Zobrazit detail
-                        </Dropdown.Item>
-                        <Dropdown.Item 
-                          onClick={() => archiveSkill(skill.id)}
-                          className="text-warning"
-                        >
-                          📁 Archivovat
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item 
-                          onClick={() => removeSkill(skill.id)}
-                          className="text-danger"
-                        >
-                          🗑️ Smazat
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Card.Header>
-                  <Card.Body>
-                    <Card.Text className="small text-muted mb-2">{skill.platform}</Card.Text>
-                    <p className="small">{skill.description.substring(0, 100)}...</p>
-                    <div className="mb-2">
-                      {skill.tags.slice(0, 3).map(tag => (
-                        <Badge key={tag} bg="secondary" className="me-1" pill>{tag}</Badge>
-                      ))}
-                    </div>
-                    {skill.marketData && (
-                      <div className="small">
-                        <span className="text-success">📈 {skill.marketData.demandIndex}%</span>
-                      </div>
-                    )}
-                  </Card.Body>
-                  <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <Badge bg="primary">{skill.difficulty}/5</Badge>
-                    <small className="text-muted">{skill.totalHours}h</small>
-                  </Card.Footer>
-                </Card>
-              ))}
-            </div>
+            <Row className="g-3">
+              {displayedSkills.map(skill => {
+                const categoryStyle = getCategoryStyle(skill.category);
+                const catColor = categoryStyle.primary;
+                const moduleProgress = skill.modules.length > 0 ? Math.round((skill.modules.filter(m => m.isCompleted).length / skill.modules.length) * 100) : 0;
+                return (
+                  <Col key={skill.id} xs={12} sm={6} lg={4} xl={3}>
+                    <Card 
+                      className="h-100 border-0 shadow-sm hover-shadow"
+                      style={{ 
+                        cursor: 'context-menu',
+                        borderLeft: `4px solid ${catColor}`,
+                        transition: 'all 0.2s ease',
+                        borderRadius: '8px'
+                      }}
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData('text/plain', skill.id);
+                      }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        setSelectedSkill(skill);
+                        setShowSkillModal(true);
+                      }}
+                    >
+                      <Card.Header className="d-flex justify-content-between align-items-center py-2" style={{ background: `linear-gradient(135deg, ${catColor}22, ${catColor}11)`, borderBottom: `2px solid ${catColor}` }}>
+                        <span className="fw-bold" style={{ color: catColor }}>{skill.icon} {skill.title}</span>
+                        <Dropdown>
+                          <Dropdown.Toggle variant="light" size="sm" className="shadow-sm border-0">
+                            ⋮
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => { setSelectedSkill(skill); setShowSkillModal(true); }}>
+                              📊 Detail
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => archiveSkill(skill.id)} className="text-warning">
+                              📁 Archivovat
+                            </Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item onClick={() => removeSkill(skill.id)} className="text-danger">
+                              🗑️ Smazat
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Card.Header>
+                      <Card.Body className="py-2">
+                        <p className="small text-muted mb-1">{skill.description.substring(0, 80)}...</p>
+                        <div className="mb-2">
+                          {skill.tags.slice(0, 2).map(tag => (
+                            <Badge key={tag} bg="light" text="dark" className="me-1 small" style={{ fontSize: '0.7rem' }}>{tag}</Badge>
+                          ))}
+                        </div>
+                        {moduleProgress > 0 && (
+                          <ProgressBar now={moduleProgress} variant="success" className="mb-1" style={{ height: '4px' }} />
+                        )}
+                        <div className="d-flex justify-content-between align-items-center small">
+                          {skill.marketData && (
+                            <span className="text-success fw-bold">📈 {skill.marketData.demandIndex}%</span>
+                          )}
+                          <span className="text-muted">
+                            <Badge bg="primary" className="me-1" style={{ fontSize: '0.65rem' }}>{skill.difficulty}/5</Badge>
+                            <small>{skill.totalHours}h</small>
+                          </span>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
           </Col>
 
           <Col md={4}>
@@ -686,6 +869,60 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
                 {category === 'CNC & Engineering' ? (
                   <CNCSkillsWithFacts 
                     onAddSkill={handleAddSkill} 
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
+                ) : category === 'Elektrikářství' ? (
+                  <TradeSkillsWithFacts
+                    category="Elektrikářství"
+                    facts={ELECTRICIAN_FACTS}
+                    icon="⚡"
+                    color="#FFC107"
+                    onAddSkill={handleAddSkill}
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
+                ) : category === 'Automechanic' ? (
+                  <TradeSkillsWithFacts
+                    category="Automechanic"
+                    facts={MECHANIC_FACTS}
+                    icon="🔧"
+                    color="#455A64"
+                    onAddSkill={handleAddSkill}
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
+                ) : category === 'Tesařství' ? (
+                  <TradeSkillsWithFacts
+                    category="Tesařství"
+                    facts={CARPENTER_FACTS}
+                    icon="🪚"
+                    color="#A1887F"
+                    onAddSkill={handleAddSkill}
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
+                ) : category === 'Architecture & Engineering' ? (
+                  <TradeSkillsWithFacts
+                    category="Architecture & Engineering"
+                    facts={ARCHITECT_FACTS}
+                    icon="🏗️"
+                    color="#8D6E63"
+                    onAddSkill={handleAddSkill}
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
+                ) : category === 'Design & Fashion' ? (
+                  <TradeSkillsWithFacts
+                    category="Design & Fashion"
+                    facts={DESIGNER_FACTS}
+                    icon="🎨"
+                    color="#9C27B0"
+                    onAddSkill={handleAddSkill}
+                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                  />
+                ) : category === 'Interior Design' ? (
+                  <TradeSkillsWithFacts
+                    category="Interior Design"
+                    facts={INTERIOR_FACTS}
+                    icon="🛋️"
+                    color="#FF7043"
+                    onAddSkill={handleAddSkill}
                     onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
                   />
                 ) : (
