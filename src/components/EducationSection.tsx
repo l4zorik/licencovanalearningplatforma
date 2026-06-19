@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from 'react';
-import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { Card, Badge, Button, ListGroup, Row, Col, Modal, Tabs, Tab, Dropdown, Toast, ToastContainer, ProgressBar, Form } from 'react-bootstrap';
 import { Course, SkillCategory } from '@/types';
 import { COMPREHENSIVE_SKILL_DATA, CNC_FACTS, ELECTRICIAN_FACTS, MECHANIC_FACTS, CARPENTER_FACTS, ARCHITECT_FACTS, DESIGNER_FACTS, INTERIOR_FACTS, ROBOTICS_FACTS, CRYPTO_FACTS, VIBE_CODING_FACTS, INVESTING_FACTS } from '@/data/skills/comprehensive-skills';
 import AchievementRoadmap from '@/components/gamification/AchievementRoadmap';
@@ -105,9 +105,6 @@ const SKILL_CATEGORIES = [
   'Music Production',
   'Fitness & Health',
   'Reselling & Business',
-  'Robotics',
-  'Crypto & Blockchain',
-  'Vibe Coding',
   'Investing'
 ];
 
@@ -162,116 +159,6 @@ interface Props {
   myCourses: Course[];
   setCourses?: React.Dispatch<React.SetStateAction<Course[]>>;
 }
-
-const CNCSkillsWithFacts = ({ 
-  onAddSkill, 
-  onShowDetail 
-}: { 
-  onAddSkill: (skill: DisplaySkill) => void;
-  onShowDetail: (skill: DisplaySkill) => void;
-}) => {
-  const cncSkills = SKILL_TEMPLATES.filter(s => s.category === 'CNC & Engineering');
-  const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
-  const [isPressed, setIsPressed] = useState(false);
-  const [pendingSkill, setPendingSkill] = useState<DisplaySkill | null>(null);
-
-  const handleMouseDown = (skill: DisplaySkill) => {
-    setIsPressed(true);
-    setPendingSkill(skill);
-    const timer = setTimeout(() => {
-      setIsPressed(false);
-      onShowDetail(skill);
-    }, 500);
-    setPressTimer(timer);
-  };
-
-  const handleMouseUp = () => {
-    if (pressTimer) {
-      clearTimeout(pressTimer);
-      setPressTimer(null);
-    }
-    if (isPressed && pendingSkill) {
-      onAddSkill(pendingSkill);
-    }
-    setIsPressed(false);
-    setPendingSkill(null);
-  };
-
-  const handleMouseLeave = () => {
-    if (pressTimer) {
-      clearTimeout(pressTimer);
-      setPressTimer(null);
-    }
-    setIsPressed(false);
-    setPendingSkill(null);
-  };
-
-  const renderSkill = (skill: DisplaySkill) => (
-    <Card 
-      key={skill.id}
-      className={`h-100 border-0 shadow-sm hover-shadow ${isPressed && pendingSkill?.id === skill.id ? 'scale-95' : ''}`}
-      style={{ 
-        transition: 'all 0.15s', 
-        cursor: 'pointer', 
-        flex: '1 1 200px', 
-        minWidth: '200px',
-        transform: isPressed && pendingSkill?.id === skill.id ? 'scale(0.95)' : 'scale(1)',
-        opacity: isPressed && pendingSkill?.id === skill.id ? 0.7 : 1
-      }}
-      onMouseDown={() => handleMouseDown(skill)}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div style={{ height: '6px', backgroundColor: skill.iconColor }}></div>
-      <Card.Body className="d-flex flex-column p-3">
-        <div className="d-flex justify-content-between align-items-start mb-2">
-          <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.75rem' }}>{skill.difficulty}/5</Badge>
-          {skill.marketData && (
-            <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} className="shadow-sm" style={{ fontSize: '0.75rem' }}>
-              {skill.marketData.demandIndex}%
-            </Badge>
-          )}
-        </div>
-        <h6 className="card-title fw-bold mb-0 text-truncate" title={skill.title} style={{ fontSize: '0.95rem' }}>
-          {skill.icon} {skill.title}
-        </h6>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderFact = (fact: typeof CNC_FACTS[0]) => (
-    <Card className="border-0 shadow-sm w-100" style={{ background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)' }}>
-      <Card.Body className="py-3 px-4">
-        <p className="mb-0 text-center fw-bold text-white" style={{ fontSize: '1rem' }}>{fact.text}</p>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderSkillRow = (skills: DisplaySkill[]) => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-      {skills.map((skill) => renderSkill(skill))}
-    </div>
-  );
-
-  return (
-    <div>
-      {renderSkillRow(cncSkills.slice(0, 5))}
-      <div className="my-3">{renderFact(CNC_FACTS[0])}</div>
-      {renderSkillRow(cncSkills.slice(5, 10))}
-      <div className="my-3">{renderFact(CNC_FACTS[1])}</div>
-      {renderSkillRow(cncSkills.slice(10, 15))}
-      <div className="my-3">{renderFact(CNC_FACTS[2])}</div>
-      {renderSkillRow(cncSkills.slice(15, 20))}
-      <div className="my-3">{renderFact(CNC_FACTS[3])}</div>
-      {renderSkillRow(cncSkills.slice(20, 25))}
-      <div className="my-3">{renderFact(CNC_FACTS[4])}</div>
-      {renderSkillRow(cncSkills.slice(25, 30))}
-      <div className="text-center mt-3">
-        <small className="text-muted">⚙️ CNC & Engineering: {cncSkills.length} skills</small>
-      </div>
-    </div>
-  );
-};
 
 const TradeSkillsWithFacts = ({
   category,
@@ -439,7 +326,19 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'success' | 'warning' | 'info'>('success');
-  const [archivedSkills, setArchivedSkills] = useState<DisplaySkill[]>([]);
+  const [archivedSkills, setArchivedSkills] = useState<DisplaySkill[]>(() => {
+    if (typeof window === 'undefined') return [];
+    const saved = localStorage.getItem('education-archived-skills');
+    if (saved) {
+      try { return JSON.parse(saved); } catch { return []; }
+    }
+    return [];
+  });
+  const [modalSearch, setModalSearch] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('education-archived-skills', JSON.stringify(archivedSkills));
+  }, [archivedSkills]);
 
   const mySkillIds = useMemo(() => new Set(myCourses.map(c => c.title)), [myCourses]);
 
@@ -458,14 +357,15 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
   }, [mySkillIds, searchTerm]);
 
   const handleAddToCourses = useCallback((skill: DisplaySkill) => {
+    const priorityByDifficulty: Record<number, 'Low' | 'Medium' | 'High'> = { 1: 'Low', 2: 'Low', 3: 'Medium', 4: 'High', 5: 'High' };
     const newCourse: Course = {
-      id: Date.now(),
+      id: crypto.randomUUID ? crypto.randomUUID() : Date.now(),
       title: skill.title,
       platform: skill.platform,
       instructor: skill.instructor,
       totalHours: skill.totalHours,
       spentHours: 0,
-      priority: 'Medium' as const,
+      priority: priorityByDifficulty[skill.difficulty] || 'Medium',
       tags: skill.tags,
       description: skill.description,
       modules: skill.modules,
@@ -566,6 +466,60 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
   const trendingSkills = useMemo(() => SKILL_TEMPLATES.filter(s => 
     s.marketData && s.marketData.demandIndex > 70
   ).slice(0, 10), []);
+
+  const filteredModalSkills = useMemo(() => {
+    if (!modalSearch.trim()) return null;
+    const lower = modalSearch.toLowerCase();
+    return SKILL_TEMPLATES.filter(s =>
+      s.title.toLowerCase().includes(lower) ||
+      s.tags.some(t => t.toLowerCase().includes(lower)) ||
+      s.category.toLowerCase().includes(lower) ||
+      s.description.toLowerCase().includes(lower)
+    );
+  }, [modalSearch]);
+
+  const renderSkillCard = (skill: DisplaySkill, isTrending = false) => {
+    const catStyle = getCategoryStyle(skill.category);
+    return (
+      <Card 
+        className="h-100 border-0 cursor-pointer fancy-skill-card"
+        style={{ 
+          transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+          cursor: 'pointer',
+          background: '#ffffff',
+          borderRadius: '14px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+        }}
+        onClick={() => handleAddSkill(skill)}
+      >
+        <div style={{ height: '6px', borderRadius: '14px 14px 0 0', background: `linear-gradient(90deg, ${skill.iconColor}, ${catStyle.primary}88)` }}></div>
+        <Card.Body className="d-flex flex-column p-3">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <Badge className="fw-bold border-0 px-2" style={{ background: `linear-gradient(135deg, ${catStyle.primary}, ${catStyle.secondary})`, fontSize: '0.65rem' }}>{skill.difficulty}/5</Badge>
+            {skill.marketData && (
+              <Badge className="fw-bold border-0 px-2" style={{ fontSize: '0.65rem', background: isTrending ? 'linear-gradient(135deg, #00b894, #00cec9)' : skill.marketData.demandIndex > 70 ? 'linear-gradient(135deg, #00b894, #00cec9)' : 'linear-gradient(135deg, #fdcb6e, #e17055)' }}>
+                📈 {skill.marketData.demandIndex}%
+              </Badge>
+            )}
+          </div>
+          <h6 className="fw-bold mb-1" style={{ fontSize: '0.95rem', lineHeight: 1.3 }}>
+            {skill.icon} {skill.title}
+          </h6>
+          <div className="d-flex align-items-center gap-1 mb-2">
+            <Badge bg="light" text="dark" className="fw-normal px-2" style={{ fontSize: '0.6rem', border: '1px solid #dee2e6' }}>{skill.category}</Badge>
+          </div>
+          <p className="small flex-grow-1 mb-2" style={{ fontSize: '0.72rem', color: '#6c7a89', lineHeight: 1.4 }}>{skill.description.substring(0, 70)}...</p>
+          {skill.marketData && (
+            <div className="d-flex align-items-center gap-2 small fw-bold" style={{ fontSize: '0.65rem' }}>
+              <span style={{ color: '#00b894' }}>💰 {skill.marketData.salaryRange.junior}Kč</span>
+              <span style={{ color: '#6c7a89' }}>→</span>
+              <span style={{ color: '#0984e3' }}>{skill.marketData.salaryRange.senior}Kč</span>
+            </div>
+          )}
+        </Card.Body>
+      </Card>
+    );
+  };
 
   return (
     <div className="education-section">
@@ -819,152 +773,243 @@ export default function EducationSection({ myCourses, setCourses }: Props) {
         )}
       </Modal>
 
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)} size="xl" centered>
-        <Modal.Header closeButton className="bg-primary text-white border-0 py-3">
-          <div>
-            <Modal.Title className="fw-bold h4">🛠️ Skill Board</Modal.Title>
-            <div className="small text-white-50">Vyber si skill k přidání.</div>
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)} size="xl" centered dialogClassName="modal-95w" scrollable>
+        <Modal.Header closeButton className="border-0 py-3 position-relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+          <div className="position-relative z-1">
+            <Modal.Title className="fw-bold h3 text-white">🛠️ Skill Board</Modal.Title>
+            <div className="text-white-50 small fw-medium">Vyber si skill k přidání — klikni na kartu a skill je tvůj</div>
           </div>
+          <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '8rem', opacity: 0.06, lineHeight: 1, pointerEvents: 'none' }}>🛠️</div>
         </Modal.Header>
-        <Modal.Body className="bg-light p-4">
-          <Tabs defaultActiveKey="Trending" className="mb-4" fill variant="pills">
-            <Tab eventKey="Trending" title={<span className="fw-bold">🔥 Trending</span>}>
-              <Row className="g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+        <Modal.Body className="p-4" style={{ background: 'linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%)' }}>
+          <div className="mb-3 position-relative">
+            <Form.Control
+              type="search"
+              placeholder="🔍 Hledat skill napříč všemi kategoriemi..."
+              value={modalSearch}
+              onChange={(e) => setModalSearch(e.target.value)}
+              className="border-0 shadow-sm rounded-3 py-2 ps-4"
+              style={{ background: '#f1f3f5', fontSize: '0.9rem', paddingLeft: '40px !important' }}
+            />
+            {modalSearch && (
+              <Button variant="link" className="position-absolute end-0 top-0 text-muted p-2" onClick={() => setModalSearch('')} style={{ textDecoration: 'none' }}>
+                ✕
+              </Button>
+            )}
+          </div>
+
+          {modalSearch.trim() && filteredModalSkills ? (
+            <div>
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <span className="fw-bold">🔍 Výsledky hledání</span>
+                <Badge bg="primary">{filteredModalSkills.length} skillů</Badge>
+                <Button variant="link" size="sm" className="ms-auto text-muted" onClick={() => setModalSearch('')}>
+                  Zpět ✕
+                </Button>
+              </div>
+              {filteredModalSkills.length === 0 ? (
+                <div className="text-center py-5 text-muted">
+                  <div style={{ fontSize: '3rem' }}>🔍</div>
+                  <p className="mt-2">{'Žádný skill neodpovídá hledání "' + modalSearch + '"'}</p>
+                </div>
+              ) : (
+                <Row className="g-3">
+                  {filteredModalSkills.map((skill, idx) => (
+                    <Col key={idx} xs={12} sm={6} md={4} lg={3}>
+                      {renderSkillCard(skill)}
+                    </Col>
+                  ))}
+                </Row>
+              )}
+            </div>
+          ) : (
+          <Tabs defaultActiveKey="Trending" className="mb-4 fancy-tabs" fill variant="pills">
+            <Tab eventKey="Trending" title={<span className="fw-bold px-2">🔥 Trending</span>}>
+              <div className="position-relative mb-3">
+                <div className="d-flex align-items-center gap-2 p-3 rounded-3" style={{ background: 'linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(255,217,61,0.1) 100%)', border: '1px solid rgba(255,107,107,0.2)' }}>
+                  <span style={{ fontSize: '1.5rem' }}>🔥</span>
+                  <div>
+                    <div className="fw-bold" style={{ fontSize: '1rem' }}>Nejžádanější dovednosti</div>
+                    <div className="text-muted small">Top {trendingSkills.length} skills s nejvyšší poptávkou na trhu</div>
+                  </div>
+                </div>
+              </div>
+              <Row className="g-3">
                 {trendingSkills.map((skill, idx) => (
-                  <Col key={idx}>
-                    <Card 
-                      className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
-                      style={{ transition: '0.2s', cursor: 'pointer' }}
-                      onClick={() => handleAddSkill(skill)}
-                    >
-                      <div style={{ height: '5px', backgroundColor: skill.iconColor }}></div>
-                      <Card.Body className="d-flex flex-column p-2">
-                        <div className="d-flex justify-content-between align-items-start mb-1">
-                          <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.7rem' }}>{skill.difficulty}/5</Badge>
-                          {skill.marketData && (
-                            <Badge bg="success" style={{ fontSize: '0.7rem' }}>{skill.marketData.demandIndex}%</Badge>
-                          )}
-                        </div>
-                        <h6 className="card-title fw-bold mb-1" style={{ fontSize: '0.9rem' }}>
-                          {skill.icon} {skill.title}
-                        </h6>
-                        <div className="text-muted small mb-2">{skill.category}</div>
-                        <p className="small flex-grow-1" style={{ fontSize: '0.75rem' }}>{skill.description.substring(0, 60)}...</p>
-                      </Card.Body>
-                    </Card>
+                  <Col key={idx} xs={12} sm={6} md={4} lg={3}>
+                    {renderSkillCard(skill, true)}
                   </Col>
                 ))}
               </Row>
               <div className="text-center mt-3">
-                <small className="text-muted">🔥 {trendingSkills.length} trending skills</small>
+                <small className="text-muted fw-medium">🔥 {trendingSkills.length} trending skills</small>
               </div>
             </Tab>
 
-            {SKILL_CATEGORIES.map(category => (
-              <Tab 
-                eventKey={category} 
-                title={<span className="fw-bold">{getCategoryIcon(category)} {category}</span>}
-                key={category}
-              >
-                {category === 'CNC & Engineering' ? (
-                  <CNCSkillsWithFacts 
-                    onAddSkill={handleAddSkill} 
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : category === 'Elektrikářství' ? (
-                  <TradeSkillsWithFacts
-                    category="Elektrikářství"
-                    facts={ELECTRICIAN_FACTS}
-                    icon="⚡"
-                    color="#FFC107"
-                    onAddSkill={handleAddSkill}
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : category === 'Automechanic' ? (
-                  <TradeSkillsWithFacts
-                    category="Automechanic"
-                    facts={MECHANIC_FACTS}
-                    icon="🔧"
-                    color="#455A64"
-                    onAddSkill={handleAddSkill}
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : category === 'Tesařství' ? (
-                  <TradeSkillsWithFacts
-                    category="Tesařství"
-                    facts={CARPENTER_FACTS}
-                    icon="🪚"
-                    color="#A1887F"
-                    onAddSkill={handleAddSkill}
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : category === 'Architecture & Engineering' ? (
-                  <TradeSkillsWithFacts
-                    category="Architecture & Engineering"
-                    facts={ARCHITECT_FACTS}
-                    icon="🏗️"
-                    color="#8D6E63"
-                    onAddSkill={handleAddSkill}
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : category === 'Design & Fashion' ? (
-                  <TradeSkillsWithFacts
-                    category="Design & Fashion"
-                    facts={DESIGNER_FACTS}
-                    icon="🎨"
-                    color="#9C27B0"
-                    onAddSkill={handleAddSkill}
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : category === 'Interior Design' ? (
-                  <TradeSkillsWithFacts
-                    category="Interior Design"
-                    facts={INTERIOR_FACTS}
-                    icon="🛋️"
-                    color="#FF7043"
-                    onAddSkill={handleAddSkill}
-                    onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
-                  />
-                ) : (
-                  <>
-                    <Row className="g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-                      {SKILL_TEMPLATES.filter(s => s.category === category).map((skill, idx) => (
-                        <Col key={idx}>
-                          <Card 
-                            className="h-100 border-0 shadow-sm hover-shadow cursor-pointer"
-                            style={{ transition: '0.2s', cursor: 'pointer' }}
-                            onClick={() => handleAddSkill(skill)}
-                          >
-                            <div style={{ height: '5px', backgroundColor: skill.iconColor }}></div>
-                            <Card.Body className="d-flex flex-column p-2">
-                              <div className="d-flex justify-content-between align-items-start mb-1">
-                                <Badge bg="secondary" className="fw-normal" style={{ fontSize: '0.7rem' }}>{skill.difficulty}/5</Badge>
-                                {skill.marketData && (
-                                  <Badge bg={skill.marketData.demandIndex > 70 ? 'success' : 'warning'} style={{ fontSize: '0.7rem' }}>
-                                    {skill.marketData.demandIndex}%
-                                  </Badge>
-                                )}
-                              </div>
-                              <h6 className="card-title fw-bold mb-1" style={{ fontSize: '0.9rem' }}>
-                                {skill.icon} {skill.title}
-                              </h6>
-                              <p className="small flex-grow-1" style={{ fontSize: '0.75rem' }}>{skill.description.substring(0, 60)}...</p>
-                            </Card.Body>
-                          </Card>
+            {SKILL_CATEGORIES.map(category => {
+              const catStyle = getCategoryStyle(category);
+              const catIcon = getCategoryIcon(category);
+              const catSkills = SKILL_TEMPLATES.filter(s => s.category === category);
+              return (
+                <Tab 
+                  eventKey={category} 
+                  title={<span className="fw-bold px-1" style={{ fontSize: '0.82rem' }}>{catIcon} {category}</span>}
+                  key={category}
+                >
+                  <div className="position-relative mb-3">
+                    <div className="d-flex align-items-center gap-2 p-3 rounded-3" style={{ background: `${catStyle.primary}0D`, border: `1px solid ${catStyle.primary}22` }}>
+                      <span style={{ fontSize: '1.5rem' }}>{catIcon}</span>
+                      <div>
+                        <div className="fw-bold" style={{ fontSize: '1rem', color: catStyle.primary }}>{category}</div>
+                        <div className="text-muted small">{catSkills.length} dovedností k přidání</div>
+                      </div>
+                    </div>
+                  </div>
+                  {category === 'CNC & Engineering' ? (
+                    <TradeSkillsWithFacts
+                      category="CNC & Engineering"
+                      facts={CNC_FACTS}
+                      icon="⚙️"
+                      color="#607D8B"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Elektrikářství' ? (
+                    <TradeSkillsWithFacts
+                      category="Elektrikářství"
+                      facts={ELECTRICIAN_FACTS}
+                      icon="⚡"
+                      color="#FFC107"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Automechanic' ? (
+                    <TradeSkillsWithFacts
+                      category="Automechanic"
+                      facts={MECHANIC_FACTS}
+                      icon="🔧"
+                      color="#455A64"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Tesařství' ? (
+                    <TradeSkillsWithFacts
+                      category="Tesařství"
+                      facts={CARPENTER_FACTS}
+                      icon="🪚"
+                      color="#A1887F"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Architecture & Engineering' ? (
+                    <TradeSkillsWithFacts
+                      category="Architecture & Engineering"
+                      facts={ARCHITECT_FACTS}
+                      icon="🏗️"
+                      color="#8D6E63"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Design & Fashion' ? (
+                    <TradeSkillsWithFacts
+                      category="Design & Fashion"
+                      facts={DESIGNER_FACTS}
+                      icon="🎨"
+                      color="#9C27B0"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Interior Design' ? (
+                    <TradeSkillsWithFacts
+                      category="Interior Design"
+                      facts={INTERIOR_FACTS}
+                      icon="🛋️"
+                      color="#FF7043"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Robotics' ? (
+                    <TradeSkillsWithFacts
+                      category="Robotics"
+                      facts={ROBOTICS_FACTS}
+                      icon="🤖"
+                      color="#E91E63"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Crypto & Blockchain' ? (
+                    <TradeSkillsWithFacts
+                      category="Crypto & Blockchain"
+                      facts={CRYPTO_FACTS}
+                      icon="🔗"
+                      color="#F7931A"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Vibe Coding' ? (
+                    <TradeSkillsWithFacts
+                      category="Vibe Coding"
+                      facts={VIBE_CODING_FACTS}
+                      icon="✨"
+                      color="#9C27B0"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : category === 'Investing' ? (
+                    <TradeSkillsWithFacts
+                      category="Investing"
+                      facts={INVESTING_FACTS}
+                      icon="📈"
+                      color="#4CAF50"
+                      onAddSkill={handleAddSkill}
+                      onShowDetail={(skill) => { setDetailSkill(skill); setShowSkillDetail(true); }}
+                    />
+                  ) : (
+                    <Row className="g-3">
+                      {catSkills.map((skill, idx) => (
+                        <Col key={idx} xs={12} sm={6} md={4} lg={3}>
+                          {renderSkillCard(skill)}
                         </Col>
                       ))}
                     </Row>
-                    <div className="text-center mt-3">
-                      <small className="text-muted">
-                        {getCategoryIcon(category)} {category}: {SKILL_TEMPLATES.filter(s => s.category === category).length} skills
-                      </small>
-                    </div>
-                  </>
-                )}
-              </Tab>
-            ))}
+                  )}
+                </Tab>
+              );
+            })}
           </Tabs>
+          )}
         </Modal.Body>
+        <style>{`
+          .fancy-tabs.nav-pills .nav-link {
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            color: #495057;
+            margin: 0 2px;
+          }
+          .fancy-tabs.nav-pills .nav-link:hover {
+            background: rgba(102,126,234,0.08);
+            transform: translateY(-1px);
+          }
+          .fancy-tabs.nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 16px rgba(102,126,234,0.3);
+          }
+          .fancy-skill-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12) !important;
+          }
+          .fancy-skill-card:active {
+            transform: translateY(-1px) scale(0.98);
+          }
+          .modal-95w {
+            max-width: 95vw !important;
+          }
+          @media (min-width: 1400px) {
+            .modal-95w {
+              max-width: 1400px !important;
+            }
+          }
+        `}</style>
       </Modal>
 
       <Modal show={showSkillDetail} onHide={() => setShowSkillDetail(false)} size="xl" centered contentClassName="border-0 shadow-lg" dialogClassName="modal-90w">

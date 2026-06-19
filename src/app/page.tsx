@@ -823,29 +823,64 @@ export default function Home() {
           position: 'relative',
           zIndex: 1031
         }}>
-          <div style={{
-            display: 'inline-block',
-            animation: 'ticker-scroll 40s linear infinite',
-            paddingLeft: '100%'
-          }}>
-            <span style={{ color: '#ff6b6b', fontWeight: 'bold', marginRight: '24px' }}>🔴 HOT</span>
-            <span style={{ marginRight: '40px' }}>🎯 AI Coding Boom: Vibe Coding skills +250% poptávka v 2026</span>
-            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
-            <span style={{ marginRight: '40px' }}>🤖 Robotika: Česká republika v TOP 10 robotizace světa</span>
-            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
-            <span style={{ marginRight: '40px' }}>🔗 Bitcoin ETF schváleny - Krypto trading rekordní objemy</span>
-            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
-            <span style={{ marginRight: '40px' }}>📈 Nové RVP: Programování a robotika povinné na ZŠ od 2027</span>
-            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
-            <span style={{ marginRight: '40px' }}>⚡ CNC obrábění: Průměrná mzda programátora CNC přes 70 000 Kč</span>
-            <span style={{ color: '#ffd93d', marginRight: '24px' }}>✦</span>
-            <span style={{ marginRight: '40px' }}>💡 Investice do AI startupů v ČR vzrostly o 340% meziročně</span>
+          <div className="ticker-track">
+            <div className="ticker-content">
+              <span className="ticker-hot">🔴 HOT</span>
+              <span className="ticker-item">🎯 AI Coding Boom: Vibe Coding skills +250% poptávka v 2026</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">🤖 Robotika: Česká republika v TOP 10 robotizace světa</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">🔗 Bitcoin ETF schváleny - Krypto trading rekordní objemy</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">📈 Nové RVP: Programování a robotika povinné na ZŠ od 2027</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">⚡ CNC obrábění: Průměrná mzda programátora CNC přes 70 000 Kč</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">💡 Investice do AI startupů v ČR vzrostly o 340% meziročně</span>
+            </div>
+            <div className="ticker-content">
+              <span className="ticker-hot">🔴 HOT</span>
+              <span className="ticker-item">🎯 AI Coding Boom: Vibe Coding skills +250% poptávka v 2026</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">🤖 Robotika: Česká republika v TOP 10 robotizace světa</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">🔗 Bitcoin ETF schváleny - Krypto trading rekordní objemy</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">📈 Nové RVP: Programování a robotika povinné na ZŠ od 2027</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">⚡ CNC obrábění: Průměrná mzda programátora CNC přes 70 000 Kč</span>
+              <span className="ticker-sep">✦</span>
+              <span className="ticker-item">💡 Investice do AI startupů v ČR vzrostly o 340% meziročně</span>
+            </div>
           </div>
         </div>
         <style>{`
+          .ticker-track {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker-scroll 40s linear infinite;
+            width: fit-content;
+          }
+          .ticker-content {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+          }
+          .ticker-hot {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-right: 24px;
+          }
+          .ticker-item {
+            margin-right: 40px;
+          }
+          .ticker-sep {
+            color: #ffd93d;
+            margin-right: 24px;
+          }
           @keyframes ticker-scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            100% { transform: translateX(-50%); }
           }
         `}</style>
 

@@ -1,260 +1,178 @@
-# Tomas Learning Platform - Kariérní Rozvojová Platforma
+# 🚀 Tomas Learning Platform (TLP) — Kariérní Rozvojová Platforma
 
-## 📋 Přehled Projektu
+Moderní webová aplikace pro **sledování kariérního rozvoje**, **skill management**, **AI asistované učení** a **job hunting**. Postavená na Next.js 16 s gamifikací, AI průvodcem a komplexním systémem dovedností.
 
-Moderní webová aplikace pro sledování kariérního rozvoje, skill management a job hunting. Kombinuje osobní development tracking s komplexním kariérním poradenstvím.
+🌐 **Live**: [tlp.vercel.app](https://tlp.vercel.app)  
+📦 **Stack**: Next.js 16 · React 19 · TypeScript · Bootstrap 5 · Prisma · SQLite
 
-## 🎯 Klíčové Funkce
+---
 
-### 🚀 Projekty (Nové - Hlavní Nad téma)
-- **Algoritmy Logování**: 14 typů algoritmů (učení, kódování, debugging, deployment, atd.)
-- **XP Systém**: Gamifikace s levely, streak, combo meter
-- **Projekty Dashboard**: Level progress, streak flame, combo bonus
-- **Goal-Project Linking**: Projekty propojené s Cíli
-- **Daily Progress**: Trakování denní aktivity
+## 🎯 Přehled
 
-### 👤 Osobní Rozvoj
-- **Skill Tracking**: Sledování pokroku ve vzdělávání
-- **XP Systém**: Gamifikace s levely a achievementy
-- **Kurzy a Lekce**: Strukturované vzdělávací moduly
-- **Milestony**: Dlouhodobé cíle s odměnami
-- **Roadmap**: Vizuální postup kariérní cestou
-- **🎯 Cíle**: Komplexní life goal tracking (dříve Life OS 2026)
-  - Zatahovací karta s animací
-  - Goals Manager modal
-  - Přidávání/odstraňování cílů
-  - Hromadné akce (delete completed, reset)
-  - 13 životních kategorií
+Platforma kombinuje **osobní development tracking** s **komplexním kariérním poradenstvím**. Od skill boardu přes AI chatbota až po job hunting — vše na jednom místě, v češtině.
+
+**283 skillů** ve **40+ kategoriích** — od programování přes robotiku až po vibe coding a investování.
+
+---
+
+## 🔥 Klíčové Funkce
+
+### 🛠️ Skill Board
+- **283 dovedností** ve 40+ kategoriích (Programming, Data Science, Cybersecurity, Cloud & DevOps, Robotics, Crypto & Blockchain, Vibe Coding, Investing...)
+- **Trending systém**: Top 10 nejžádanějších skillů podle poptávky
+- **Fancy skill karty** s gradient bordery, platy (junior → senior), kategoriovými badges
+- **Drag & drop** archivace, kontextové menu (detail, archivace, smazání)
+- **Vyhledávání** napříč všemi kategoriemi v modálním okně
+- **FACTS system**: Zajímavosti z oboru mezi skill kartami (CNC, elektrikářství, automechanik, tesařství, robotika, krypto...)
+
+### 📜 Certification Board
+- Gridové zobrazení certifikací s progress bary
+- 20+ certifikací seskupených podle typu (Cloud, Security, Data, Development, Management)
+- Status tracking (Planned → In Progress → Obtained)
+
+### 💼 Job Board
+- Gridové zobrazení pracovních pozic
+- 30+ job templateů napříč obory
+- Aplikace tracking (stav, poznámky, deadline)
+- Drag & drop mezi status columns
+
+### 🧠 AI Průvodce Akize
+- Interaktivní AI chat bot s kontextovou pamětí
+- **Command menu** s 30+ příkazy v 6 kategoriích (Kariéra, Programování, Motivace, Life OS, Vzdělávání, Finance)
+- **Prompt Manager**: 15+ předpřipravených promptů s proměnnými, CRUD editor, localStorage persistence
+- 12 náladových stavů s vlastními odpověďmi
+- Automatické response na základě kontextu (skills, jobs, achievements)
 
 ### 🎮 Gamifikace
-- **30 Levelů**: Od Nováčka po Ultimate
-- **35+ Achievementů**: Common, Rare, Epic, Legendary, Mythic
+- **30 levelů**: Od Nováčka po Neohroženého
+- **35+ achievementů** v 5 raritách (Common, Rare, Epic, Legendary, Mythic)
+- **XP systém**: Za skillování, mise, kurzy
 - **Milestony**: 30+ sledovaných cílů s odměnami
-- **Streaky**: Denní streak tracking s bonusy
-- **Combo Meter**: Bonus za 5+ algoritmů/den
-- **Kariérní Roadmap**: 5 fází od Základů po Expert
-- **8 Kariérních cest**: Frontend, Backend, Full Stack, Data Science, Security, DevOps, Mobile, AI/ML
+- **Kariérní roadmap**: 8 cest (Frontend, Backend, Full Stack, Data Science, Security, DevOps, Mobile, AI/ML)
 
-### 💼 Job Hunting
-- **Job Board**: Přehled pracovních příležitostí s drag & drop archivací
-- **Application Tracking**: Sledování stavu přihlášek
-- **Career Matching**: Doporučení na základě skills
+### 📈 Analytics & Reporting
+- Progress analytics s grafy (Recharts)
+- Career report s 500+ pozicemi
+- Skill gap analýza
 
-### 🤖 AI Průvodce Akize
-- **Floating Chat Bot**: Vždy po ruce AI pomocník
-- **Kariérní Rady**: Inteligentní odpovědi na otázky
-- **Skill Doporučení**: Nápady na další kroky v učení
+### 🎯 Life OS — Cíle
+- 13 životních kategorií (Kariéra, Finance, Zdraví, Vztahy, Vzdělání, Cestování...)
+- Finanční a materiální cíle s progress trackingem
+- Ukládání do localStorage
 
-## 📢 Reklamní Systém
-- **Strategické umístění**: Header, content, sidebar reklamy
-- **Premium Ads-free**: Placení uživatelé vidí nulové reklamy
-- **Non-intrusive**: Reklamy jsou diskrétní a relevantní
-- **Multiple formáty**: Banner, native, affiliate reklamy
-- **Ad networks ready**: Google AdSense, Media.net integrace
+### 📝 Další funkce
+- **Hot News Ticker**: Animovaný scrolling news strip s nejnovějšími trendy
+- **Články**: IT & AI novinky s full-text vyhledáváním
+- **Kurzy**: Online kurzy s progress trackingem
+- **Recepty**: Sekce s recepty
+- **Kariérní rady**: Tipy a triky pro kariérní růst
+- **Wiki**: Znalostní báze
+- **Projekty**: Dashboard s logováním algoritmů (14 typů)
 
-### 📝 Články & Novinky
-- **IT & AI Články**: Pravidelné články o technologiích
-- **Kariérní Rady**: Tipy pro pracovní trh
-- **Newsletter**: Odběr nových článků
-
-### 🎓 Online Kurzy
-- **Embedded Databases in Common Lisp**: Komplexní kurz ve stylu Coursera
-- **Interaktivní lekce**: Video obsah, kvízy, projekty
-- **Progress tracking**: Sledování dokončených lekcí
-- **Certifikace**: Možnost získání certifikátu
-
-### 📊 Analytics & Reporting
-- **Progress Analytics**: Grafy a statistiky pokroku
-- **Career Report**: Komplexní přehled pracovního trhu (500+ pozic)
-- **Personal Insights**: Osobní kariérní analýza
-
-### 🎨 Design
-- **WaveBackground**: Animované pozadí s glow efekty a particles
-- **Glassmorphism**: Moderní skleněný efekt pro karty, navbar, modaly
-- **Dark Mode**: Kompletní podpora pro všechny Bootstrap komponenty
-- **Animace**: Plynulé přechody, hover efekty, pulse glow
+---
 
 ## 🏗️ Technologie
 
-- **Frontend**: Next.js 16, React, TypeScript
-- **Styling**: Bootstrap 5, Custom CSS
-- **Authentication**: NextAuth.js
-- **Database**: Prisma + SQLite (development)
-- **State Management**: React Hooks
-- **Drag & Drop**: @dnd-kit (sortable, droppable)
+| Vrstva | Technologie |
+|--------|------------|
+| **Framework** | Next.js 16 (App Router, Turbopack) |
+| **Frontend** | React 19, TypeScript 5 |
+| **Styling** | Bootstrap 5, Custom CSS (Glassmorphism, WaveBackground) |
+| **Auth** | NextAuth.js |
+| **Database** | Prisma ORM + SQLite (dev), PostgreSQL ready |
+| **Charts** | Recharts |
+| **Drag & Drop** | @dnd-kit |
+| **Validation** | Zod |
 
-## 📁 Struktura Projektu
+---
+
+## 📁 Struktura
 
 ```
 src/
-├── app/                    # Next.js App Router
-│   ├── projects/           # Projekty a algoritmy stránka [NOVÉ]
-│   ├── achievements/       # Achievementy a milestones stránka
-│   ├── roadmap/           # Kariérní roadmap stránka
-│   ├── journey/           # User journey vizualizace
-│   ├── analytics/         # Analytics stránka
-│   ├── articles/          # Články o IT & AI
-│   ├── auth/              # Authentication
-│   ├── career-report/     # Kariérní přehled
-│   ├── courses/           # Online kurzy
-│   ├── quick-courses/     # Rychlokurzy
-│   ├── missions/          # Mise a úkoly
-│   └── page.tsx           # Hlavní dashboard
-├── components/            # React komponenty
-│   ├── gamification/      # Gamifikace komponenty
-│   │   ├── AchievementsGallery.tsx
-│   │   ├── UserProgressCard.tsx
-│   │   ├── MilestonesTracker.tsx
-│   │   ├── RoadmapDisplay.tsx
-│   │   └── UserJourneyRoadmap.tsx
-│   ├── AkizeGuide.tsx     # AI chat průvodce
-│   ├── EducationSection.tsx  # Skill management
-│   ├── WorkSection.tsx        # Job board s drag & drop
-│   ├── ProgressAnalytics.tsx  # Grafy
+├── app/                    # Next.js App Router pages
+│   ├── achievements/       # Achievementy
+│   ├── analytics/          # Analytics dashboard
+│   ├── articles/           # IT & AI články
+│   ├── career-advice/      # Kariérní rady
+│   ├── career-report/      # Career report (500+ pozic)
+│   ├── courses/            # Online kurzy
+│   ├── quick-courses/      # Rychlokurzy
+│   ├── missions/           # Mise a úkoly
+│   ├── projects/           # Projektový dashboard
+│   ├── recipes/            # Recepty
+│   ├── training/           # Tréninkové moduly
+│   ├── wiki/               # Znalostní báze
+│   └── page.tsx            # Hlavní dashboard
+├── components/             # React komponenty
+│   ├── gamification/       # XP, achievements, milestony, roadmap
+│   ├── AkizeGuide.tsx      # AI chat bot + Prompt Manager (15+ promptů)
+│   ├── EducationSection.tsx # Skill Board (283 skillů, 40+ kategorií)
+│   ├── CertificationSection.tsx # Certification Board
+│   ├── WorkSection.tsx     # Job Board
+│   ├── TrendySection.tsx   # Trendy a statistiky
 │   └── ...
-├── lib/                   # Utility funkce
-│   └── gamification/      # Gamifikace systém
-│       ├── achievements.ts    # Achievement data (50+)
-│       ├── xp-system.ts       # XP a level systém (30 levelů)
-│       ├── milestones.ts      # Milestone systém (30+ milestones)
-│       └── roadmap.ts         # Roadmap a kariérní cesty
-├── types/                 # TypeScript definice
-└── generated/             # Prisma klient
+├── data/skills/            # Skill data
+│   ├── comprehensive-skills.ts # 283 skillů, 11 FACTS arrays
+│   └── index.ts
+├── lib/                    # Utility
+│   └── gamification/       # XP, achievements, milestones, roadmap
+├── types/                  # TypeScript definice
+└── generated/              # Prisma klient
 ```
 
-## 💰 Monetizační Potenciál
+---
 
-### ✅ Proč má aplikace hodnotu:
-- **Unikátní kombinace**: Kariérní poradenství + skill tracking + job board
-- **Komplexní řešení**: Celý životní cyklus kariérního rozvoje
-- **Lokální trh**: Česko-slovenský trh bez konkurence
-- **Aktuální data**: Reálné platy, trendy, statistiky
+## 💰 Monetizace
 
-### 🎯 Monetizační Modely:
+### Model: Freemium + Reklamy
+- **Free**: Skill tracking, základní job board, omezené kurzy
+- **Premium** ($4.99/měsíc): Neomezené kurzy, pokročilé analytics, bez reklam, CV generátor
+- **Enterprise** ($29/měsíc): Team management, admin dashboard
 
-#### 1. Freemium Model
-- **Zdarma**: Základní skill tracking, omezený počet kurzů, základní job board
-- **Premium** ($4.99/měsíc nebo $49/rok):
-  - Neomezený přístup ke všem kurům
-  - Pokročilé analytics a reporty
-  - Prioritní job matching
-  - Osobní kariérní konzultace
-  - Export dat a CV generátor
-  - **Ads-free zážitek**
+### Cílové trhy
+- ČR/SK — první komplexní řešení v češtině
+- Studenti, freelanceri, kariérní měniči, manažeři
 
-#### 2. Hybrid Model (Reklamy + Subscription)
-- **Free tier**: Základní funkcionalita s non-intrusive reklamami
-- **Premium** ($4.99/měsíc): Kompletní funkcionalita bez reklam
-- **Reklamní příjmy**: Google AdSense, affiliate reklamy kurzů
+---
 
-#### 3. Subscription Tiers
-- **Basic**: $2.99/měsíc - Skill tracking + základní kurzy
-- **Pro**: $9.99/měsíc - Všechno + premium kurzy + job alerts
-- **Enterprise**: $29/měsíc - Pro týmy + admin dashboard
-
-#### 4. One-time Purchases
-- Kompletní kariérní report: $19.99
-- Premium kurz balíčky: $49.99
-- Job search boost: $9.99
-
-#### 5. Affiliate & Referral Program
-- **Partnerské reklamy**: Kurzy, nástroje, hosting
-- **Referral systém**: Uživatelé dostávají odměny za doporučení
-
-### 👥 Cílové Skupiny:
-- **Studenti**: Kariérní poradenství a skill building
-- **Freelanceři**: Job matching a networking
-- **Pracovníci ve změně kariéry**: Kompletní přehled trhu
-- **Manažeři**: Team skill tracking a development
-- **Startupy**: Talent acquisition tools
-
-### 💡 Konkurenční Výhoda:
-- **Český trh**: První komplexní řešení v češtině
-- **AI Průvodce**: Unikátní Akize chat bot pro kariérní rady
-- **Gamifikace**: XP systém a achievementy
-- **Kompletní ekosystém**: Od skill trackingu po job matching
-- **Drag & Drop UX**: Intuitivní správa jobů a skills
-- **Bohatý obsah**: 500+ kariérních pozic, pravidelné články
-
-## 🚀 Roadmap
-
-### Phase 1: MVP (Aktuální stav)
-- ✅ Základní skill tracking
-- ✅ Job board s drag & drop funkcionalitou
-- ✅ Kariérní report (500+ pracovních pozic)
-- ✅ AI průvodce Akize s chat botem
-- ✅ Články o IT & AI novinkách
-- ✅ Online kurzy (Common Lisp, Embedded DB)
-- ✅ User authentication
-- ✅ Advanced analytics
-- ✅ Reklamní systém připraven
-- ✅ Gamifikace (XP, levely, achievements)
-- ✅ Milestone tracking
-- ✅ Kariérní roadmap systém
-- ✅ 8 kariérních cest
-- ✅ Life OS 2026 vylepšení
-  - Zatuhovací karta
-  - Goals Manager modal
-  - Přidávání/odstraňování cílů
-  - Hromadné akce
-- ✅ Design vylepšení
-  - WaveBackground
-  - Glassmorphism
-  - Dark mode
-
-### Phase 2: Monetizace
-- 🔄 Subscription systém ($4.99/měsíc freemium)
-- 🔄 Premium features gating (ads free)
-- 🔄 Payment integration (Stripe)
-- 🔄 Reklamní síť integrace (Google AdSense)
-- 🔄 User onboarding flow
-- 🔄 Mobile app
-
-### Phase 3: Rozšíření
-- 📋 Pokročilý AI kariérní poradce
-- 📋 Team management pro firmy
-- 📋 Integration s LinkedIn
-- 📋 Video kurzy a interaktivní lekce
-- 📋 Community features a networking
-
-## 📊 Technické Metriky
-
-- **Users**: Authentication připraveno
-- **Database**: SQLite (dev), možnost PostgreSQL/MySQL
-- **Performance**: Next.js optimalizace
-- **SEO**: App Router optimalizace
-- **Accessibility**: Bootstrap + ARIA labels
-
-## 🔧 Development Setup
+## 🚀 Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Setup database
-npx prisma generate
-npx prisma db push
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
+npx prisma generate && npx prisma db push
+npm run dev        # → localhost:3000
+npm run build      # Production build
+npm run lint       # ESLint
 ```
 
-## 🤝 Contributing
-
-Projekt je open-source s cílem pomoci lidem v kariérním rozvoji.
+---
 
 ## 📚 Dokumentace
 
-| Dokument | Popis |
-|----------|-------|
-| [DEVELOPMENT.md](DEVELOPMENT.md) | Kompletní vývojová dokumentace |
-| [CHANGELOG.md](CHANGELOG.md) | Historie změn a verzí |
-| [AGENTS.md](AGENTS.md) | AI Agent guidelines |
-| [LICENSE](LICENSE) | GNU GPLv3 License |
+| Soubor | Popis |
+|--------|-------|
+| [AGENTS.md](AGENTS.md) | AI agent guidelines |
+| [CHANGELOG.md](CHANGELOG.md) | Historie verzí |
+| [ROADMAP.md](ROADMAP.md) | Development roadmap |
+| [GAMIFICATION.md](GAMIFICATION.md) | Gamifikace systém |
+| [MONETIZATION_STRATEGY.md](MONETIZATION_STRATEGY.md) | Monetizační strategie |
+| [CAREER_SKILL_MAP.md](CAREER_SKILL_MAP.md) | Skill mapování |
 
-## 📞 Kontakt
+---
 
-Pro otázky ohledně monetizace nebo developmentu kontaktujte maintainer.
+## 📊 Statistiky
+
+- **283 dovedností** ve 40+ kategoriích
+- **30 levelů** gamifikace
+- **35+ achievementů** v 5 raritách
+- **500+ kariérních pozic** v reportu
+- **15+ AI promptů** v Prompt Manageru
+- **30+ job templateů**
+- **20+ certifikací**
+
+---
+
+## 📝 License
+
+GNU GPLv3 — viz [LICENSE](LICENSE)
